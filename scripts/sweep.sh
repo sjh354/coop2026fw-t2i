@@ -97,3 +97,7 @@ column -t -s $'\t' "$SUMMARY"
 echo
 echo "로그: $LOG_DIR/"
 echo "리뷰: streamlit run src/review_app.py"
+
+status=ok
+grep -q -E $'\t(FAIL|SKIP_DISK)\t' "$SUMMARY" && status=fail
+python "$(dirname "$0")/alert.py" --task "sweep.sh" --status "$status" --log "$SUMMARY"

@@ -38,6 +38,9 @@ env/
 # --- conda env freeze는 추적한다 (성공 조합 기록이 자산) ---
 !envs/*.txt
 
+# --- 시크릿 ---
+.env
+
 # --- 도구 ---
 .ipynb_checkpoints/
 .pytest_cache/
