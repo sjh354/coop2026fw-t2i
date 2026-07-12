@@ -1,0 +1,11 @@
+model	exp	status	vram_gb	sec_per_img
+pixart-sigma	coloring-book	OK	14.46	6.27
+pixart-sigma	flat-illust	OK	14.46	6.46
+flux2-klein-4b	coloring-book	OK	17.32	2.95
+flux2-klein-4b	flat-illust	OK	17.32	3.19
+flux2-klein-4b-base	coloring-book	OK	17.33	65.09
+flux2-klein-4b-base	flat-illust	OK	17.33	64.95
+zimage-turbo	coloring-book	OK	21.67	19.01
+zimage-turbo	flat-illust	OK	21.67	19.04
+sdxl	coloring-book	OK	10.74	8.89
+sdxl	flat-illust	OK	10.74	8.94
