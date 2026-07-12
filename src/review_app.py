@@ -97,11 +97,14 @@ if mode == "Browse / Rate":
         st.success("Saved to note.")
 
     st.subheader("Scoring")
-    ref_name = st.text_input("Ref set (refs/<name>/)", post.get("experiment", ""))
+    ref_name = st.text_input("Ref set (refs/<name>/) — 비워두면 golden set 없이 채점",
+                              post.get("experiment", ""))
     sc1, sc2 = st.columns(2)
     if sc1.button("➕ Add best picks to golden set"):
         if not best:
             st.warning("먼저 Best picks를 골라야 golden set에 추가할 수 있다.")
+        elif not ref_name:
+            st.warning("Ref set 이름을 입력해야 golden set에 추가할 수 있다.")
         else:
             ref_dir = REFS_ROOT / ref_name
             ref_dir.mkdir(parents=True, exist_ok=True)
@@ -111,9 +114,10 @@ if mode == "Browse / Rate":
     if sc2.button("Compute scores"):
         import score  # heavy (torch/CLIP) — 버튼을 눌렀을 때만 로드
         with st.spinner("CLIP으로 채점 중..."):
-            post = score.score_version(vdir, ref_name)
+            post = score.score_version(vdir, ref_name or None)
         posts[name] = post
-        st.success(f"harmonic_mean={post.get('harmonic_mean')}")
+        csd_note = "" if post.get("csd_mean") is not None else " (csd 없음 — golden set 미지정)"
+        st.success(f"harmonic_mean={post.get('harmonic_mean')}{csd_note}")
     if post.get("harmonic_mean") is not None:
         st.caption(f"vqascore={post.get('vqascore_mean')} · csd={post.get('csd_mean')} · "
                    f"flatness={post.get('flatness_mean')} · harmonic={post.get('harmonic_mean')}")

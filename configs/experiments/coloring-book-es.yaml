@@ -1,0 +1,17 @@
+# coloring-book과 동일한 style/negative, keywords만 spanish30.
+# score.py는 vqascore 채점 시 spanish30 인덱스를 basic30 영어 키워드로 매핑해서
+# coloring-book(영어) 결과와 비교 가능하게 유지한다.
+name: coloring-book-es
+keywords: spanish30
+seed: 0
+style: >-
+  bold monoline vector icon, every line exactly the same thickness,
+  pure flat color fill with hard edges, cell shading off, completely flat solid colors,
+  maximum 3 colors, no gradient anywhere, no soft shading, no highlights,
+  no glossy reflections, no cheek blush, simple geometric shapes,
+  thick even black outline of constant width, sticker style, kids coloring book
+negative: >-
+  gradient, color gradient, smooth shading, soft shading, cell shading, ambient occlusion,
+  glossy, shiny, reflection, highlight, specular, cheek blush, rosy cheeks, drop shadow,
+  cast shadow, 3d, realistic, volumetric, thin lines, thick and thin line variation,
+  sketchy lines, painterly, textured, detailed background

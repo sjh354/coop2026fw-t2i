@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# 새로 추가된 조합(교육용 flat 스타일 × basic30/spanish30)을 5모델에 대해 순차 실행한다.
+# 아직 안 돌린 조합만 실행한다: coloring-book/flat-illust의 영어(basic30) 버전은
+# sweep.sh가 이미 5모델에 대해 끝냈으므로 제외하고, 스페인어(spanish30) -es 3개 +
+# educational-flat(영어, 아직 안 돌림) 총 4개 실험 × 5모델을 돈다.
 #
 #   bash scripts/sweep2.sh
 #
-# sweep.sh와 동일한 구조 (모델 루프가 바깥, 디스크 회수 로직 동일) —
-# EXPS만 새 실험 2개(educational-flat, educational-flat-es)로 교체.
-# educational-flat-es가 spanish30 키워드셋을 쓰므로 이 스윕이 spanish30.yaml도
-# 함께 검증한다.
+# sweep.sh와 동일한 구조 (모델 루프가 바깥, 디스크 회수 로직 동일).
+# -es 실험들은 spanish30 키워드셋을 쓰므로 이 스윕이 spanish30.yaml도 함께 검증한다.
 
 set -u
 
@@ -21,7 +21,12 @@ MODELS=(
   zimage-turbo
   sdxl
 )
-EXPS=(educational-flat educational-flat-es)
+EXPS=(
+  coloring-book-es
+  flat-illust-es
+  educational-flat
+  educational-flat-es
+)
 
 mkdir -p "$LOG_DIR"
 SUMMARY="$LOG_DIR/summary.tsv"

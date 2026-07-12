@@ -1,0 +1,16 @@
+# flat-illust와 동일한 style/negative, keywords만 spanish30.
+# score.py는 vqascore 채점 시 spanish30 인덱스를 basic30 영어 키워드로 매핑해서
+# flat-illust(영어) 결과와 비교 가능하게 유지한다.
+name: flat-illust-es
+keywords: spanish30
+seed: 0
+style: >-
+  flat vector illustration, clean geometric shapes, soft rounded forms,
+  muted pastel color palette, subtle two-tone shading only, no outline or very thin outline,
+  gentle depth through color blocking, plenty of negative space,
+  friendly and approachable, modern editorial illustration,
+  centered single subject on plain light background, presentation slide artwork
+negative: >-
+  photorealistic, 3d render, photograph, heavy black outline, thick ink lines,
+  comic book, harsh contrast, neon colors, saturated, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy, sketchy

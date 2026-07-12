@@ -141,16 +141,19 @@ def _mean(values):
     return round(sum(vals) / len(vals), 4) if vals else None
 
 
-def score_version(vdir, ref_name, clip=None):
-    """버전 하나(image-prompts/v00N_<model>/)의 모든 이미지를 채점해 노트에 기록."""
+def score_version(vdir, ref_name=None, clip=None):
+    """버전 하나(image-prompts/v00N_<model>/)의 모든 이미지를 채점해 노트에 기록.
+
+    ref_name이 None이면 golden set 없이 vqascore/flatness/harmonic만 계산한다
+    (csd는 None으로 남는다) — golden set을 아직 안 만들었어도 바로 쓸 수 있다.
+    """
     note_path = vdir / f"{vdir.name}.md"
     post = frontmatter.load(str(note_path))
     img_dir = vdir / "images"
     img_paths = sorted(img_dir.glob("*.png"))
 
     clip = clip or load_clip()
-    ref_dir = REFS / ref_name
-    ref_embeds = load_refs(ref_dir, clip)
+    ref_embeds = load_refs(REFS / ref_name, clip) if ref_name else None
 
     scores = {}
     for i, img_path in enumerate(img_paths):
@@ -169,7 +172,8 @@ def score_version(vdir, ref_name, clip=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--version", required=True, help="image-prompts/<version>/")
-    ap.add_argument("--refs", required=True, help="refs/<name>/")
+    ap.add_argument("--refs", default=None,
+                     help="refs/<name>/ (생략하면 csd 없이 vqascore/flatness/harmonic만 계산)")
     args = ap.parse_args()
 
     vdir = IMAGE_PROMPTS / args.version
