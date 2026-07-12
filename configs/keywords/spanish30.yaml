@@ -1,0 +1,34 @@
+# basic30과 동일한 순서/개수로 스페인어 번역. 인덱스가 basic30과 정렬되어 있어야
+# score.py가 spanish30 이미지를 basic30의 영어 키워드로 채점할 수 있다.
+name: spanish30
+keywords:
+  - una manzana
+  - un sol
+  - un gato
+  - un perro
+  - un árbol
+  - una casa
+  - un coche
+  - una flor
+  - un pez
+  - un pájaro
+  - una estrella
+  - una luna
+  - una pelota
+  - un libro
+  - una taza
+  - un sombrero
+  - un zapato
+  - un barco
+  - una nube
+  - un paraguas
+  - un plátano
+  - un globo
+  - una mariposa
+  - un elefante
+  - un conejo
+  - un pato
+  - una rana
+  - un oso
+  - una zanahoria
+  - un pastel

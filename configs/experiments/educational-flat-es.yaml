@@ -1,0 +1,15 @@
+# educational-flat과 동일한 스타일, keywords만 spanish30. score.py는 vqascore를
+# 채점할 때 spanish30 인덱스를 basic30 영어 키워드로 매핑해서 두 실험이
+# 서로 비교 가능하게 유지한다.
+name: educational-flat-es
+keywords: spanish30
+seed: 0
+style: >-
+  flat educational vector illustration, textbook infographic style,
+  limited flat color palette, crisp geometric shapes, thin clean outline,
+  clear readable silhouette, centered single subject on plain light background,
+  no gradient, no shading, no photorealism
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
