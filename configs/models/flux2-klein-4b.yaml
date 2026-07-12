@@ -1,0 +1,10 @@
+name: flux2-klein-4b
+adapter: flux2
+env: t2i-flux2
+repo: black-forest-labs/FLUX.2-klein-4B
+dtype: bfloat16
+steps: 4                 # 4-step 증류판
+guidance: 1.0            # CFG 없음
+supports_negative: false
+quantization: null
+notes: ~13GB bf16, Apache 2.0. LoRA 학습은 아래 base 변형으로.

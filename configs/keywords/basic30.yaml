@@ -1,0 +1,34 @@
+# 고정 벤치마크 키워드셋. 모델/스타일 비교의 기준이므로 함부로 바꾸지 말 것.
+# 새 키워드가 필요하면 이 파일을 수정하지 말고 별도 파일(예: korean20.yaml)로 추가.
+name: basic30
+keywords:
+  - an apple
+  - a sun
+  - a cat
+  - a dog
+  - a tree
+  - a house
+  - a car
+  - a flower
+  - a fish
+  - a bird
+  - a star
+  - a moon
+  - a ball
+  - a book
+  - a cup
+  - a hat
+  - a shoe
+  - a boat
+  - a cloud
+  - an umbrella
+  - a banana
+  - a balloon
+  - a butterfly
+  - an elephant
+  - a rabbit
+  - a duck
+  - a frog
+  - a bear
+  - a carrot
+  - a cake

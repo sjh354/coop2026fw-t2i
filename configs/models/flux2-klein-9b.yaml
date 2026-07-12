@@ -1,0 +1,10 @@
+name: flux2-klein-9b
+adapter: flux2
+env: t2i-flux2
+repo: black-forest-labs/FLUX.2-klein-9B
+dtype: bfloat16
+steps: 4
+guidance: 1.0
+supports_negative: false
+quantization: fp8        # bf16 ~29GB -> 16GB엔 fp8 필수
+notes: 비상업 라이선스. R&D 비교용으로만.

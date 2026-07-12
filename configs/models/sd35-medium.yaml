@@ -1,0 +1,10 @@
+name: sd35-medium
+adapter: generic
+env: t2i-sd35
+repo: stabilityai/stable-diffusion-3.5-medium
+dtype: bfloat16
+steps: 28
+guidance: 4.5
+supports_negative: true
+quantization: null
+notes: 2.5B. Stability Community License(매출 $1M 미만 무료).

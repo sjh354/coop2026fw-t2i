@@ -1,0 +1,9 @@
+# 모든 env 공통. diffusers/transformers는 모델별로 버전이 갈리므로 여기 넣지 않는다.
+pyyaml
+python-frontmatter
+pillow
+streamlit
+accelerate
+safetensors
+sentencepiece
+protobuf

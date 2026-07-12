@@ -1,0 +1,10 @@
+name: lumina2
+adapter: generic
+env: t2i-lumina
+repo: Alpha-VLLM/Lumina-Image-2.0
+dtype: bfloat16
+steps: 30
+guidance: 4.0
+supports_negative: true
+quantization: null
+notes: 2.6B, Apache 2.0. 커뮤니티 작음.

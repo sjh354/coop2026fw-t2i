@@ -1,0 +1,10 @@
+name: sana-1600m
+adapter: generic
+env: t2i-sana
+repo: Efficient-Large-Model/Sana_1600M_1024px_diffusers
+dtype: bfloat16
+steps: 20
+guidance: 4.5
+supports_negative: true
+quantization: null
+notes: 코드는 Apache, 가중치는 체크포인트별 라이선스 상이(CC-BY-NC 포함). 확인 필요.

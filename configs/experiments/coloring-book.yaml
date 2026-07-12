@@ -1,0 +1,16 @@
+# 스타일 프리셋 실험 1개 = 이 파일 1개.
+# 새 스타일을 시도할 땐 이 파일을 복사해서 새 이름으로.
+name: coloring-book
+keywords: basic30          # configs/keywords/<name>.yaml 참조
+seed: 0
+style: >-
+  bold monoline vector icon, every line exactly the same thickness,
+  pure flat color fill with hard edges, cell shading off, completely flat solid colors,
+  maximum 3 colors, no gradient anywhere, no soft shading, no highlights,
+  no glossy reflections, no cheek blush, simple geometric shapes,
+  thick even black outline of constant width, sticker style, kids coloring book
+negative: >-
+  gradient, color gradient, smooth shading, soft shading, cell shading, ambient occlusion,
+  glossy, shiny, reflection, highlight, specular, cheek blush, rosy cheeks, drop shadow,
+  cast shadow, 3d, realistic, volumetric, thin lines, thick and thin line variation,
+  sketchy lines, painterly, textured, detailed background

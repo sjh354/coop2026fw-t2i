@@ -1,0 +1,10 @@
+name: sdxl
+adapter: sdxl
+env: t2i-sdxl
+repo: stabilityai/stable-diffusion-xl-base-1.0
+dtype: float16
+steps: 30
+guidance: 7.0
+supports_negative: true
+quantization: null
+notes: 3.5B UNet. LoRA 생태계 표준(kohya). 서빙 여유 최대.

@@ -1,0 +1,10 @@
+name: zimage-turbo
+adapter: zimage
+env: t2i-zimage
+repo: Tongyi-MAI/Z-Image-Turbo
+dtype: bfloat16
+steps: 8
+guidance: 1.0
+supports_negative: false
+quantization: null
+notes: 6B, DMD 증류판. LoRA 학습은 ostris training adapter 경유.

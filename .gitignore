@@ -1,0 +1,47 @@
+# --- 생성물 (용량 큼, 재현 가능) ---
+image-prompts/*/images/
+# 노트(frontmatter)는 추적한다 — 실험 기록이 여기 남음
+!image-prompts/*/*.md
+
+# --- 모델 캐시 (HF_HOME을 리포 안으로 잡았을 경우 대비) ---
+hf/
+.cache/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.gguf
+
+# --- 학습 산출물 ---
+output/
+outputs/
+checkpoints/
+runs/
+wandb/
+*.lora
+*.log
+
+# --- 데이터셋 ---
+datasets/
+data/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.python-version
+
+# --- conda env freeze는 추적한다 (성공 조합 기록이 자산) ---
+!envs/*.txt
+
+# --- 도구 ---
+.ipynb_checkpoints/
+.pytest_cache/
+.streamlit/secrets.toml
+.DS_Store
+.idea/
+.vscode/

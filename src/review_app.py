@@ -1,0 +1,129 @@
+"""버전을 훑어보고, 평가하고, 비교한다.
+
+기존 streamlit.py에서 바뀐 것:
+  - 모델별 필터 (사이드바)
+  - vram_peak_gb / sec_per_image 표시 — 지금 단계에선 이게 평가의 절반
+  - Compare 모드에서 같은 키워드를 모델별로 가로 정렬 (모델 비교가 주 목적이므로)
+
+Run:
+    streamlit run src/review_app.py
+"""
+import pathlib
+
+import frontmatter
+import streamlit as st
+
+ROOT = pathlib.Path(__file__).parent.parent / "image-prompts"
+
+
+def list_versions():
+    return sorted(d for d in ROOT.iterdir()
+                  if d.is_dir() and (d / f"{d.name}.md").exists())
+
+
+def load(vdir):
+    return frontmatter.load(str(vdir / f"{vdir.name}.md"))
+
+
+def images(vdir):
+    return sorted((vdir / "images").glob("*.png"))
+
+
+def save(vdir, post):
+    (vdir / f"{vdir.name}.md").write_text(frontmatter.dumps(post), encoding="utf-8")
+
+
+def labels_for(post, imgs):
+    kw = post.get("keywords", [])
+    return {p.name: (kw[i] if i < len(kw) else p.name) for i, p in enumerate(imgs)}
+
+
+def stat_line(post):
+    return (f"model={post.get('model')} · vram={post.get('vram_peak_gb')}GB · "
+            f"{post.get('sec_per_image')}s/img · steps={post.get('steps')} · "
+            f"guidance={post.get('guidance_scale')} · seed={post.get('seed')} · "
+            f"quant={post.get('quantization')} · {post.get('created')}")
+
+
+st.set_page_config(layout="wide", page_title="T2I Lab")
+
+if not ROOT.exists() or not list_versions():
+    st.error("image-prompts/ 가 비어있다. 먼저 src/generate.py 를 돌릴 것.")
+    st.stop()
+
+versions = list_versions()
+posts = {v.name: load(v) for v in versions}
+vmap = {v.name: v for v in versions}
+
+models = sorted({p.get("model", "?") for p in posts.values()})
+picked_models = st.sidebar.multiselect("Model filter", models, default=models)
+names = [n for n in vmap if posts[n].get("model") in picked_models]
+
+mode = st.sidebar.radio("Mode", ["Browse / Rate", "Compare"])
+
+if mode == "Browse / Rate":
+    name = st.sidebar.selectbox("Version", names)
+    vdir, post = vmap[name], posts[name]
+    imgs = images(vdir)
+    labels = labels_for(post, imgs)
+
+    st.title(name)
+    if post.get("status") != "done":
+        st.warning(f"status={post.get('status')} — 생성이 끝나지 않았을 수 있음 (OOM?)")
+    st.markdown("**Style prompt**")
+    st.code(post.get("style", ""), language=None, wrap_lines=True)
+    if post.get("negative_prompt"):
+        st.markdown("**Negative prompt**")
+        st.code(post["negative_prompt"], language=None, wrap_lines=True)
+    st.caption(stat_line(post))
+
+    st.subheader("Evaluation")
+    c1, c2 = st.columns([1, 3])
+    rating = c1.slider("Rating (0 = unrated)", 0, 5, int(post.get("rating") or 0))
+    tags = c2.text_input("Tags (comma-separated)", ", ".join(post.get("tags", [])))
+    issues = st.text_area("Issues / notes", post.get("issues", ""), height=80)
+    best = st.multiselect("Best picks", [p.name for p in imgs],
+                          default=post.get("best", []),
+                          format_func=lambda n: labels.get(n, n))
+
+    if st.button("Save", type="primary"):
+        post["rating"] = rating or None
+        post["tags"] = [t.strip() for t in tags.split(",") if t.strip()]
+        post["issues"] = issues
+        post["best"] = best
+        save(vdir, post)
+        st.success("Saved to note.")
+
+    st.subheader("Images")
+    cols = st.columns(5)
+    for i, p in enumerate(imgs):
+        with cols[i % 5]:
+            star = "⭐ " if p.name in best else ""
+            st.image(str(p), caption=f"{star}{labels[p.name]}", width="stretch")
+
+else:  # Compare — 같은 키워드를 모델별로 가로 비교
+    picks = st.sidebar.multiselect("Versions", names, default=names[:3])
+    n_rows = st.sidebar.slider("Keywords to show", 1, 30, 6)
+    if not picks:
+        st.info("비교할 버전을 고를 것.")
+        st.stop()
+
+    st.subheader("Resources")
+    st.table([{"version": n, "model": posts[n].get("model"),
+               "vram_gb": posts[n].get("vram_peak_gb"),
+               "sec/img": posts[n].get("sec_per_image"),
+               "rating": posts[n].get("rating")} for n in picks])
+
+    grids = {n: images(vmap[n]) for n in picks}
+    kws = posts[picks[0]].get("keywords", [])
+
+    for row in range(min(n_rows, len(kws))):
+        st.markdown(f"**{kws[row]}**")
+        cols = st.columns(len(picks))
+        for col, n in zip(cols, picks):
+            with col:
+                st.caption(posts[n].get("model", n))
+                if row < len(grids[n]):
+                    st.image(str(grids[n][row]), width="stretch")
+                else:
+                    st.write("—")

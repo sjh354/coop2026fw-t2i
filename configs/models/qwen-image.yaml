@@ -1,0 +1,10 @@
+name: qwen-image
+adapter: generic
+env: t2i-qwen
+repo: Qwen/Qwen-Image
+dtype: bfloat16
+steps: 30
+guidance: 4.0
+supports_negative: true
+quantization: nf4        # 20B. 16GB는 물론 24GB도 양자화 필요
+notes: 서빙 조건 탈락 후보지만 품질 상한 확인용. 2.0(7B)도 확인해볼 것.

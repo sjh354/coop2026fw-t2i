@@ -1,0 +1,10 @@
+name: pixart-sigma
+adapter: pixart              # src/adapters/pixart.py
+env: t2i-pixart              # conda env 이름 (envs/pixart.yml)
+repo: PixArt-alpha/PixArt-Sigma-XL-2-1024-MS
+dtype: float16
+steps: 20
+guidance: 4.5
+supports_negative: true      # CFG 사용 모델만 true
+quantization: null
+notes: 0.6B DiT. T5 인코더가 무거워 필요시 cpu offload.

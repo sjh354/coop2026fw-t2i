@@ -1,0 +1,10 @@
+name: flux2-klein-4b-base
+adapter: flux2
+env: t2i-flux2
+repo: black-forest-labs/FLUX.2-klein-base-4B
+dtype: bfloat16
+steps: 50                # 미증류판
+guidance: 4.0
+supports_negative: false
+quantization: null
+notes: 파인튜닝/LoRA 대상은 이쪽. 증류판에 LoRA 붙이면 품질 깨짐.

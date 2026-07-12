@@ -1,0 +1,10 @@
+name: ideogram-4
+adapter: generic
+env: t2i-ideogram
+repo: ideogram-ai/ideogram-4.0     # 실제 repo id는 HF에서 확인 필요
+dtype: bfloat16
+steps: 30
+guidance: 4.0
+supports_negative: true
+quantization: fp8        # 9.3B, bf16 ~19GB
+notes: 라이선스 조항 미확인. 텍스트/레이아웃 강점 확인용.
