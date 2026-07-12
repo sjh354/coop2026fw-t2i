@@ -9,11 +9,13 @@ Run:
     streamlit run src/review_app.py
 """
 import pathlib
+import shutil
 
 import frontmatter
 import streamlit as st
 
 ROOT = pathlib.Path(__file__).parent.parent / "image-prompts"
+REFS_ROOT = pathlib.Path(__file__).parent.parent / "refs"
 
 
 def list_versions():
@@ -94,12 +96,37 @@ if mode == "Browse / Rate":
         save(vdir, post)
         st.success("Saved to note.")
 
+    st.subheader("Scoring")
+    ref_name = st.text_input("Ref set (refs/<name>/)", post.get("experiment", ""))
+    sc1, sc2 = st.columns(2)
+    if sc1.button("➕ Add best picks to golden set"):
+        if not best:
+            st.warning("먼저 Best picks를 골라야 golden set에 추가할 수 있다.")
+        else:
+            ref_dir = REFS_ROOT / ref_name
+            ref_dir.mkdir(parents=True, exist_ok=True)
+            for n in best:
+                shutil.copy(vdir / "images" / n, ref_dir / n)
+            st.success(f"{len(best)}장을 refs/{ref_name}/ 에 추가했다.")
+    if sc2.button("Compute scores"):
+        import score  # heavy (torch/CLIP) — 버튼을 눌렀을 때만 로드
+        with st.spinner("CLIP으로 채점 중..."):
+            post = score.score_version(vdir, ref_name)
+        posts[name] = post
+        st.success(f"harmonic_mean={post.get('harmonic_mean')}")
+    if post.get("harmonic_mean") is not None:
+        st.caption(f"vqascore={post.get('vqascore_mean')} · csd={post.get('csd_mean')} · "
+                   f"flatness={post.get('flatness_mean')} · harmonic={post.get('harmonic_mean')}")
+
+    golden_files = {p.name for p in (REFS_ROOT / ref_name).glob("*.png")} if ref_name else set()
+
     st.subheader("Images")
     cols = st.columns(5)
     for i, p in enumerate(imgs):
         with cols[i % 5]:
             star = "⭐ " if p.name in best else ""
-            st.image(str(p), caption=f"{star}{labels[p.name]}", width="stretch")
+            golden = "🏆 " if p.name in golden_files else ""
+            st.image(str(p), caption=f"{golden}{star}{labels[p.name]}", width="stretch")
 
 else:  # Compare — 같은 키워드를 모델별로 가로 비교
     picks = st.sidebar.multiselect("Versions", names, default=names[:3])
@@ -112,7 +139,8 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
     st.table([{"version": n, "model": posts[n].get("model"),
                "vram_gb": posts[n].get("vram_peak_gb"),
                "sec/img": posts[n].get("sec_per_image"),
-               "rating": posts[n].get("rating")} for n in picks])
+               "rating": posts[n].get("rating"),
+               "harmonic": posts[n].get("harmonic_mean")} for n in picks])
 
     grids = {n: images(vmap[n]) for n in picks}
     kws = posts[picks[0]].get("keywords", [])
