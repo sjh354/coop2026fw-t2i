@@ -75,7 +75,13 @@ def build_payload(task, ok, message, username, avatar_url):
 def send(webhook_url, payload):
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
-        webhook_url, data=data, headers={"Content-Type": "application/json"}
+        webhook_url,
+        data=data,
+        headers={
+            "Content-Type": "application/json",
+            # User-Agent 없으면 Cloudflare가 봇으로 보고 403 1010으로 막는다.
+            "User-Agent": "Mozilla/5.0 (compatible; t2i-lab-alert/1.0)",
+        },
     )
     try:
         urllib.request.urlopen(req, timeout=10)
