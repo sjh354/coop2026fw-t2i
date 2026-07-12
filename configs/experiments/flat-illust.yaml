@@ -1,0 +1,13 @@
+name: flat-illust
+keywords: basic30          # coloring-book과 동일한 키워드셋 -> 스타일 간 비교 가능
+seed: 0
+style: >-
+  flat vector illustration, clean geometric shapes, soft rounded forms,
+  muted pastel color palette, subtle two-tone shading only, no outline or very thin outline,
+  gentle depth through color blocking, plenty of negative space,
+  friendly and approachable, modern editorial illustration,
+  centered single subject on plain light background, presentation slide artwork
+negative: >-
+  photorealistic, 3d render, photograph, heavy black outline, thick ink lines,
+  comic book, harsh contrast, neon colors, saturated, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy, sketchy
