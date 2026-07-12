@@ -41,6 +41,14 @@ cache_dir_of() {
   echo "$HF_HUB/models--${repo//\//--}"
 }
 
+# 이미 다운로드돼 있는 모델인지 확인 (snapshots/에 뭔가 있으면 캐시됨).
+# 캐시된 모델은 추가 다운로드가 없으므로 MIN_FREE_GB 게이트를 적용할 필요가 없다.
+is_cached() {
+  local d
+  d=$(cache_dir_of "$1")
+  [ -d "$d/snapshots" ] && [ -n "$(ls -A "$d/snapshots" 2>/dev/null)" ]
+}
+
 DONE_MODELS=()
 
 # 여유공간이 부족하면 이미 끝난 모델 캐시를 오래된 순으로 지운다.
@@ -49,7 +57,11 @@ reclaim() {
   avail=$(free_gb)
   [ -z "$avail" ] && return 0
   echo ">>> free: ${avail}GB (need ${MIN_FREE_GB}GB)"
-  for m in "${DONE_MODELS[@]:-}"; do
+  if [ "${#DONE_MODELS[@]}" -eq 0 ]; then
+    echo ">>> free after reclaim: $(free_gb)GB"
+    return 0
+  fi
+  for m in "${DONE_MODELS[@]}"; do
     [ "$(free_gb)" -ge "$MIN_FREE_GB" ] && break
     local d
     d=$(cache_dir_of "$m")
@@ -63,11 +75,12 @@ reclaim() {
 
 for model in "${MODELS[@]}"; do
   reclaim
-  if [ "$(free_gb)" -lt "$MIN_FREE_GB" ]; then
-    echo "!!! 여유공간 부족 ($(free_gb)GB). $model 건너뜀."
+  if [ "$(free_gb)" -lt "$MIN_FREE_GB" ] && ! is_cached "$model"; then
+    echo "!!! 여유공간 부족 ($(free_gb)GB) 하고 캐시도 없음. $model 건너뜀."
     printf "%s\t-\tSKIP_DISK\t-\t-\n" "$model" >> "$SUMMARY"
     continue
   fi
+  is_cached "$model" && echo ">>> $model 은 이미 캐시됨 — 디스크 게이트 건너뜀"
 
   model_ok=0
   for exp in "${EXPS[@]}"; do
