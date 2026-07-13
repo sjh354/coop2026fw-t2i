@@ -1,0 +1,15 @@
+# educational-flat 파생. 역사 소재용으로 시대 고증/품위 관련 항목 추가.
+name: history-flat
+keywords: history30
+seed: 0
+style: >-
+  flat vector historical illustration, history textbook infographic style,
+  dignified and respectful portrayal, period-accurate clothing and architecture,
+  limited earthy muted color palette, crisp geometric shapes, thin clean outline,
+  clear readable silhouette, centered single subject on plain light background,
+  no gradient, no photorealism
+negative: >-
+  photorealistic, photograph, 3d render, gradient, soft shading, drop shadow,
+  modern clothing, anachronism, caricature, exaggerated features, distorted face,
+  extra fingers, deformed hands, busy background, cluttered,
+  text, letters, watermark, signature, gore, blood, violence

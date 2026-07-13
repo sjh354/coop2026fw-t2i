@@ -1,0 +1,14 @@
+# 수식 렌더링 스타일 1: 활자 인쇄체. 문자 정확도 측정이 목적이므로 장식 요소 전부 배제.
+# 프롬프트 조립 시 수식은 따옴표로 감싸 verbatim 전달 권장: the equation "E = mc^2"
+name: formula-print
+keywords: formula30
+seed: 0
+style: >-
+  a mathematical equation typeset in a clean serif font,
+  textbook print style, crisp sharp black text, perfectly legible notation,
+  large centered text on a pure white background, high contrast,
+  no decoration, nothing else in the image
+negative: >-
+  handwritten, cursive, blurry text, garbled letters, misspelled, gibberish,
+  distorted symbols, duplicated characters, decorative background, illustration,
+  objects, people, hands, colors, shadows, gradient, watermark, signature

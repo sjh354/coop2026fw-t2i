@@ -1,0 +1,37 @@
+# 역사 삽화 벤치마크 키워드셋. 실명 인물 8개 + 익명 장면/유물 22개.
+# 실명 인물은 초상 재현 정확도가 낮을 수 있음 -> 리뷰 시 "인물 유사도" 항목 별도 체크 권장.
+name: history30
+keywords:
+  # --- 실명 인물 (8) ---
+  - King Sejong the Great
+  - Admiral Yi Sun-sin
+  - Queen Seondeok of Silla
+  - Napoleon Bonaparte
+  - Abraham Lincoln
+  - Leonardo da Vinci
+  - Albert Einstein
+  - Mahatma Gandhi
+  # --- 한국사 장면/유물 (7) ---
+  - a Korean turtle ship (geobukseon) at sea
+  - a Joseon dynasty scholar writing with a brush
+  - Gyeongbokgung palace
+  - a Silla golden crown
+  - a Goryeo celadon vase
+  - a Goguryeo horseback archer
+  - a traditional Korean village with thatched-roof houses
+  # --- 세계사 장면/유물 (15) ---
+  - an ancient Egyptian pyramid
+  - the Great Wall of China
+  - the Parthenon in Athens
+  - a Roman gladiator in the Colosseum
+  - an ancient Roman aqueduct
+  - an ancient Greek philosopher in a toga
+  - a medieval European knight in armor
+  - a medieval castle on a hill
+  - a Viking longship
+  - a caravan of camels on the Silk Road
+  - an early wooden printing press
+  - a 15th century sailing ship on the ocean
+  - a steam locomotive from the industrial revolution
+  - the Wright brothers' first airplane
+  - an astronaut planting a flag on the moon

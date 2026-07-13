@@ -1,0 +1,15 @@
+# educational-flat 파생. 비율/정렬 정확도 강조. 텍스트 라벨은 억제 (garbled text 방지,
+# 라벨은 교사가 슬라이드에서 직접 추가하는 워크플로 가정).
+name: diagram-clean
+keywords: diagram30
+seed: 0
+style: >-
+  clean flat educational diagram, precise geometric proportions,
+  mathematically accurate shapes, straight uniform thin lines, exact alignment,
+  evenly spaced elements, minimal flat color palette, high contrast,
+  textbook figure style, centered on pure white background, no labels
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  distorted proportions, skewed perspective, wobbly lines, uneven spacing,
+  tilted axes, decorative clutter, busy background, painterly, sketchy,
+  text, letters, numbers, labels, garbled text, watermark, signature

@@ -1,0 +1,13 @@
+# 수식 렌더링 스타일 2: 칠판 손글씨. formula-print와 비교해
+# "활자 vs 손글씨" 조건에서 텍스트 정확도 차이를 측정.
+name: formula-chalkboard
+keywords: formula30
+seed: 0
+style: >-
+  a mathematical equation written in white chalk on a dark green chalkboard,
+  neat legible handwriting, large centered writing, classroom blackboard style,
+  subtle chalk texture, nothing else on the board
+negative: >-
+  garbled illegible text, misspelled, gibberish, duplicated characters,
+  smudged, blurry, faint, messy scribbles, eraser marks, classroom furniture,
+  people, hands, photorealistic room, cluttered, watermark, signature

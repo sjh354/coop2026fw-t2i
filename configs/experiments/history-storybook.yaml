@@ -1,0 +1,15 @@
+# history-flat과 대조되는 회화적 스타일. 역사 장면의 분위기/서사 전달력 비교용.
+name: history-storybook
+keywords: history30
+seed: 0
+style: >-
+  soft watercolor storybook illustration, gentle painterly texture,
+  warm muted color palette, children's history book artwork,
+  period-accurate clothing and architecture, respectful character depiction,
+  soft natural lighting, simple background with minimal historical context,
+  centered composition
+negative: >-
+  photorealistic, photograph, 3d render, harsh black outline, neon colors,
+  caricature, distorted face, extra fingers, deformed anatomy,
+  dark horror atmosphere, gore, blood, violence, cluttered background,
+  text, letters, watermark, signature

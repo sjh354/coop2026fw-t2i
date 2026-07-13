@@ -1,0 +1,37 @@
+# 수학/과학 도표 벤치마크 키워드셋. 비율/정렬 정확도가 핵심 평가 포인트.
+# 키워드에 명시된 수량(등분 수, 개수, 비율)이 실제 출력과 일치하는지 리뷰 시 카운트할 것.
+name: diagram30
+keywords:
+  # --- 차트/그래프 (8) ---
+  - a bar chart with three bars of different heights
+  - a pie chart divided into four equal parts
+  - a line graph showing a steady increase
+  - a Venn diagram with two overlapping circles
+  - a pictograph with rows of apple icons
+  - a coordinate plane with x and y axes
+  - a number line from zero to ten with evenly spaced marks
+  - a balance scale with equal weights on both sides
+  # --- 수학 도형 (8) ---
+  - a right triangle
+  - a circle divided into six equal sectors
+  - a fraction diagram with three of four parts shaded
+  - a pentagon and a hexagon side by side
+  - a cube in isometric view
+  - a cylinder and a cone side by side
+  - a symmetrical figure with a dotted line of symmetry
+  - a clock face showing three o'clock
+  # --- 과학 다이어그램 (14) ---
+  - the water cycle diagram
+  - a plant cell diagram
+  - the solar system with eight planets in order
+  - a food chain from grass to eagle
+  - a simple electric circuit with a battery and a light bulb
+  - a DNA double helix
+  - the eight phases of the moon in a row
+  - a volcano cross section
+  - the layers of the Earth cross section
+  - a photosynthesis diagram of a green leaf
+  - a lever with a fulcrum and a load
+  - a simple pulley system
+  - a prism splitting white light into a rainbow
+  - a thermometer showing a mid-scale reading

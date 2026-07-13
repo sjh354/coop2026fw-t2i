@@ -1,0 +1,14 @@
+# diagram-clean과 대조: 손그림 판서 느낌 + 텍스트 라벨 허용.
+# 두 스타일 비교로 "라벨 억제 vs 허용" 시 도표 품질/텍스트 붕괴 정도를 함께 측정.
+name: diagram-whiteboard
+keywords: diagram30
+seed: 0
+style: >-
+  hand-drawn whiteboard marker diagram, confident clean marker strokes,
+  teacher's board drawing style, two or three marker colors on white background,
+  clear accurate proportions, simple legible labels where appropriate,
+  friendly educational sketch, uncluttered layout
+negative: >-
+  photorealistic, photograph, 3d render, gradient, messy scribbles, smudges,
+  shaky broken lines, distorted proportions, garbled illegible text,
+  misspelled words, busy background, painterly, watermark, signature
