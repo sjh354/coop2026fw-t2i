@@ -1,5 +1,15 @@
 ---
-best: []
+best:
+- v002_00_an_apple.png
+- v002_01_a_sun.png
+- v002_04_a_tree.png
+- v002_08_a_fish.png
+- v002_09_a_bird.png
+- v002_26_a_frog.png
+- v002_25_a_duck.png
+- v002_27_a_bear.png
+- v002_28_a_carrot.png
+- v002_18_a_cloud.png
 created: '2026-07-12'
 dtype: float16
 experiment: coloring-book
