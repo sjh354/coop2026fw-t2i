@@ -47,17 +47,31 @@ is_cached() {
 
 DONE_MODELS=()
 
-# 여유공간이 부족하면 이미 끝난 모델 캐시를 오래된 순으로 지운다.
+# 이번 실행의 MODELS에 없는 다른 모델들의 캐시 (예전 sweep들이 남긴 것) 도 정리 대상에 넣는다.
+other_cached_models() {
+  for f in configs/models/*.yaml; do
+    local name
+    name=$(basename "$f" .yaml)
+    [[ " ${MODELS[*]} " == *" $name "* ]] && continue
+    is_cached "$name" && echo "$name"
+  done
+}
+
+# 여유공간이 부족하면 이미 끝난 모델 + 이번 실행에 없는 모델의 캐시를 지운다.
 reclaim() {
   local avail
   avail=$(free_gb)
   [ -z "$avail" ] && return 0
   echo ">>> free: ${avail}GB (need ${MIN_FREE_GB}GB)"
-  if [ "${#DONE_MODELS[@]}" -eq 0 ]; then
+  local candidates=("${DONE_MODELS[@]}")
+  while IFS= read -r m; do
+    [ -n "$m" ] && candidates+=("$m")
+  done < <(other_cached_models)
+  if [ "${#candidates[@]}" -eq 0 ]; then
     echo ">>> free after reclaim: $(free_gb)GB"
     return 0
   fi
-  for m in "${DONE_MODELS[@]}"; do
+  for m in "${candidates[@]}"; do
     [ "$(free_gb)" -ge "$MIN_FREE_GB" ] && break
     local d
     d=$(cache_dir_of "$m")
