@@ -11,7 +11,7 @@
     pip install -r ../requirements-common.txt
 
 그 다음 모델별로 diffusers 버전만 다르게 박는다. 여기가 충돌 지점이므로
-**성공한 조합은 반드시 envs/<name>.txt 로 `pip freeze` 해서 남길 것.**
+**성공한 조합은 envs/<name>.txt 로 `pip freeze` 해서 남길 것.**
 
     pip freeze > envs/<name>.txt
 
