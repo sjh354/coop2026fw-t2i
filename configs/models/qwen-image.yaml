@@ -1,10 +1,13 @@
 name: qwen-image
 adapter: generic
-env: t2i-ideogram
+env: t2i-qwen           # ideogram4가 요구하는 torch/transformers/bitsandbytes 버전과 충돌 방지 위해 t2i-ideogram과 분리
 repo: Qwen/Qwen-Image
 dtype: bfloat16
 steps: 30
 guidance: 4.0
 supports_negative: true
-quantization: nf4        # 20B. 16GB는 물론 24GB도 양자화 필요
+quantization: gguf-q5_k_m  # bf16 transformer(~40GB) 다운로드 회피 위해 GGUF 사전양자화본 사용
+gguf_repo: city96/Qwen-Image-gguf
+gguf_file: qwen-image-Q5_K_M.gguf
+gguf_transformer_class: QwenImageTransformer2DModel
 notes: 서빙 조건 탈락 후보지만 품질 상한 확인용. 2.0(7B)도 확인해볼 것.

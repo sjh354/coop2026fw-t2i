@@ -3,7 +3,7 @@
 
 set -u
 
-MIN_FREE_GB=20          # 다음 모델을 받기 전 확보돼야 할 최소 여유
+MIN_FREE_GB=35          # 다음 모델을 받기 전 확보돼야 할 최소 여유 (qwen-image gguf: text_encoder+vae+gguf transformer 합쳐 ~30GB대)
 LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)_sweep7"
 HF_HUB="${HF_HOME:-$HOME/.cache/huggingface}/hub"
 
