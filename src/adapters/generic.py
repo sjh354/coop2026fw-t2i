@@ -21,6 +21,8 @@ def _load_gguf_transformer(cfg, dtype):
     return transformer_cls.from_single_file(
         gguf_path,
         quantization_config=GGUFQuantizationConfig(compute_dtype=dtype),
+        config=cfg["repo"],          # GGUF 체크포인트엔 아키텍처 config가 없어서 원본 repo에서 가져옴
+        subfolder="transformer",
         torch_dtype=dtype,
     )
 
