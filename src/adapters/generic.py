@@ -11,7 +11,7 @@ QUANT = {"nf4", "fp8"}
 def build(cfg):
     kwargs = {"torch_dtype": getattr(torch, cfg["dtype"])}
     q = cfg.get("quantization")
-    if q in QUANT:
+    if q in QUANT and not cfg.get("prequantized"):
         from diffusers import BitsAndBytesConfig
         kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True, bnb_4bit_quant_type="nf4",
