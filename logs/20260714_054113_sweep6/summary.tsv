@@ -1,0 +1,16 @@
+model	exp	status	vram_gb	sec_per_img
+flux2-klein-9b	coloring-book	OK	15.58	25.67
+flux2-klein-9b	flat-illust	OK	15.58	26.28
+flux2-klein-9b	educational-flat	OK	15.58	26.05
+sd35-medium	coloring-book	OK	17.59	13.77
+sd35-medium	flat-illust	OK	17.59	13.7
+sd35-medium	educational-flat	OK	17.59	13.72
+lumina2	coloring-book	OK	12.28	29.66
+lumina2	flat-illust	OK	12.28	29.8
+lumina2	educational-flat	OK	12.28	29.8
+qwen-image	coloring-book	FAIL	-	-
+qwen-image	flat-illust	FAIL	-	-
+qwen-image	educational-flat	FAIL	-	-
+ideogram-4	coloring-book	FAIL	-	-
+ideogram-4	flat-illust	FAIL	-	-
+ideogram-4	educational-flat	FAIL	-	-
