@@ -1,6 +1,6 @@
 name: qwen-image
 adapter: generic
-env: t2i-qwen
+env: t2i-ideogram
 repo: Qwen/Qwen-Image
 dtype: bfloat16
 steps: 30

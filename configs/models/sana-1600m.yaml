@@ -1,6 +1,6 @@
 name: sana-1600m
 adapter: generic
-env: t2i-sana
+env: t2i
 repo: Efficient-Large-Model/Sana_1600M_1024px_diffusers
 dtype: bfloat16
 steps: 20

@@ -1,6 +1,6 @@
 name: flux2-klein-9b
 adapter: flux2
-env: t2i-flux2
+env: t2i
 repo: black-forest-labs/FLUX.2-klein-9B
 dtype: bfloat16
 steps: 4

@@ -1,10 +1,11 @@
 name: ideogram-4
 adapter: generic
 env: t2i-ideogram
-repo: ideogram-ai/ideogram-4.0     # 실제 repo id는 HF에서 확인 필요
+repo: ideogram-ai/ideogram-4-nf4
 dtype: bfloat16
 steps: 30
 guidance: 4.0
 supports_negative: true
-quantization: fp8        # 9.3B, bf16 ~19GB
+quantization: nf4        # 9.3B, bf16 ~19GB → nf4 사전양자화 repo
+prequantized: true       # repo 자체가 nf4로 이미 양자화됨 → BitsAndBytesConfig 재적용 안 함
 notes: 라이선스 조항 미확인. 텍스트/레이아웃 강점 확인용.

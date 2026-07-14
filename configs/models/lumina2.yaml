@@ -1,6 +1,6 @@
 name: lumina2
 adapter: generic
-env: t2i-lumina
+env: t2i
 repo: Alpha-VLLM/Lumina-Image-2.0
 dtype: bfloat16
 steps: 30

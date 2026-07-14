@@ -1,6 +1,6 @@
 name: flux2-klein-4b-base
 adapter: flux2
-env: t2i-flux2
+env: t2i
 repo: black-forest-labs/FLUX.2-klein-base-4B
 dtype: bfloat16
 steps: 50                # 미증류판

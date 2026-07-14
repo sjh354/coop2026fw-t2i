@@ -1,6 +1,6 @@
 name: sd35-medium
 adapter: generic
-env: t2i-sd35
+env: t2i
 repo: stabilityai/stable-diffusion-3.5-medium
 dtype: bfloat16
 steps: 28

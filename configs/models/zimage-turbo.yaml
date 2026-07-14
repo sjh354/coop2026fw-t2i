@@ -1,6 +1,6 @@
 name: zimage-turbo
 adapter: zimage
-env: t2i-zimage
+env: t2i
 repo: Tongyi-MAI/Z-Image-Turbo
 dtype: bfloat16
 steps: 8

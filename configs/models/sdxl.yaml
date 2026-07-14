@@ -1,6 +1,6 @@
 name: sdxl
 adapter: sdxl
-env: t2i-sdxl
+env: t2i
 repo: stabilityai/stable-diffusion-xl-base-1.0
 dtype: float16
 steps: 30

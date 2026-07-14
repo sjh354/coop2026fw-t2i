@@ -1,6 +1,6 @@
 name: pixart-sigma
 adapter: pixart              # src/adapters/pixart.py
-env: t2i-pixart              # conda env 이름 (envs/pixart.yml)
+env: t2i              # conda env 이름 (envs/pixart.yml)
 repo: PixArt-alpha/PixArt-Sigma-XL-2-1024-MS
 dtype: float16
 steps: 20
