@@ -12,9 +12,9 @@
 set -u
 
 MIN_FREE_GB=35          # qwen-image gguf: text_encoder+vae+transformer 합쳐 ~30GB대
-LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)_sweep9_2"
+LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)_sweep8_2"
 HF_HUB="${HF_HOME:-$HOME/.cache/huggingface}/hub"
-TASK="sweep9_2.sh"
+TASK="sweep8_2.sh"
 
 MODELS=(
   qwen-image
