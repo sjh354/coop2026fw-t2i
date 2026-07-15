@@ -8,9 +8,9 @@ sd35-medium	educational-flat	OK	17.59	13.72
 lumina2	coloring-book	OK	12.28	29.66
 lumina2	flat-illust	OK	12.28	29.8
 lumina2	educational-flat	OK	12.28	29.8
-qwen-image	coloring-book	FAIL	-	-
-qwen-image	flat-illust	FAIL	-	-
-qwen-image	educational-flat	FAIL	-	-
-ideogram-4	coloring-book	FAIL	-	-
-ideogram-4	flat-illust	FAIL	-	-
+qwen-image	coloring-book	OK	15.57	156.91
+qwen-image	flat-illust	OK	15.56	155.1
+qwen-image	educational-flat	OK	15.55	153.05
+ideogram-4	coloring-book	OK	19.05	163.49
+ideogram-4	flat-illust	OK	19.05	161.11
 ideogram-4	educational-flat	FAIL	-	-
