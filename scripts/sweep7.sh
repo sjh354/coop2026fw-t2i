@@ -8,7 +8,6 @@ LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)_sweep7"
 HF_HUB="${HF_HOME:-$HOME/.cache/huggingface}/hub"
 
 MODELS=(
-  qwen-image
   ideogram-4
 )
 EXPS=(
