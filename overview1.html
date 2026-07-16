@@ -55,12 +55,13 @@ const PAD = { l: 60, r: 20, t: 20, b: 50 };
 const W = 900, H = 640;
 let manifest = [];
 let selected = null;
+let allModels = [];
 
 const COLORS = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b",
                 "#e377c2","#7f7f7f","#bcbd22","#17becf","#aec7e8","#ffbb78"];
 
-function colorFor(key, keys) {
-  const idx = keys.indexOf(key);
+function colorFor(key) {
+  const idx = allModels.indexOf(key);
   return COLORS[idx % COLORS.length];
 }
 
@@ -80,6 +81,7 @@ async function load() {
   }
   statusEl.textContent = `${manifest.length}개 실행 (run) 로드됨`;
 
+  allModels = [...new Set(manifest.map(e => e.model))].sort();
   const tasks = [...new Set(manifest.map(e => e.experiment))].sort();
   const sel = document.getElementById('task-select');
   sel.innerHTML = tasks.map(t => `<option value="${t}">${t}</option>`).join('');
@@ -151,7 +153,7 @@ function render(task) {
   data.forEach((e, i) => {
     const c = el('circle', {
       cx: sx(e.vram_peak_gb), cy: sy(e.sec_per_image), r: 7,
-      fill: colorFor(e.model, models), 'fill-opacity': 0.85, class: 'pt'
+      fill: colorFor(e.model), 'fill-opacity': 0.85, class: 'pt'
     });
     c.addEventListener('mouseenter', (ev) => {
       tooltip.style.display = 'block';
@@ -175,7 +177,7 @@ function render(task) {
   let ly = PAD.t;
   models.forEach((m) => {
     const g = el('g', {});
-    const dot = el('circle', { cx: W - 150, cy: ly, r: 5, fill: colorFor(m, models) });
+    const dot = el('circle', { cx: W - 150, cy: ly, r: 5, fill: colorFor(m) });
     const label = el('text', { x: W - 140, y: ly + 4, class: 'tick-label' });
     label.textContent = m;
     g.appendChild(dot); g.appendChild(label);
