@@ -72,3 +72,7 @@ First PixArt run downloads ~12GB (T5-XXL text encoder) — point `HF_HOME` at a 
 ## Bench notes (`bench/results.md`)
 
 Holds conclusions and troubleshooting notes only — vram/latency numbers are auto-recorded in note frontmatter and shown in the Streamlit Compare tab, so don't hand-copy numbers into this file.
+
+## Keep README.md current
+
+`README.md` is the living research plan (pipeline stages, model/prompt/metric status, the ordered checklist). Whenever you do research or work that changes the plan — a decision made, a checklist item resolved, a new finding about prompting/models/metrics, a change in what to try next — update the relevant section of `README.md` in the same session, not just this CLAUDE.md or bench notes.
