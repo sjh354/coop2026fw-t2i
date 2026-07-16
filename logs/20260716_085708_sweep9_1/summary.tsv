@@ -1,0 +1,7 @@
+model	exp	status	vram_gb	sec_per_img
+ideogram-4	formula-print	OK	19.04	159.33
+ideogram-4	history-storybook	OK	19.04	158.94
+sana-1600m	formula-print	OK	10.16	3.75
+sana-1600m	history-storybook	OK	10.16	3.68
+sd35-medium	formula-print	OK	17.59	13.75
+sd35-medium	history-storybook	OK	17.59	13.74

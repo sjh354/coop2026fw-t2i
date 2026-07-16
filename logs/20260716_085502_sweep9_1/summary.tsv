@@ -1,0 +1,5 @@
+model	exp	status	vram_gb	sec_per_img
+ideogram-4	-	SKIP_DISK	-	-
+sana-1600m	-	SKIP_DISK	-	-
+sd35-medium	formula-print	FAIL	-	-
+sd35-medium	history-storybook	FAIL	-	-
