@@ -1,0 +1,10 @@
+model	exp	status	vram_gb	sec_per_img
+qwen-image	formula-print	OK	15.56	148.35
+qwen-image	history-storybook	OK	15.56	148.11
+flux2-klein-9b	formula-print	OK	15.58	25.1
+flux2-klein-9b	history-storybook	OK	15.58	23.33
+lumina2	diagram-clean	OK	12.28	28.64
+lumina2	diagram-whiteboard	OK	12.28	28.6
+lumina2	formula-chalkboard	OK	12.28	29.11
+lumina2	formula-print	OK	12.28	28.76
+lumina2	history-storybook	OK	12.28	29.03
