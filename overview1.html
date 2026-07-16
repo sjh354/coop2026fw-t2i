@@ -39,7 +39,7 @@
 <body>
   <h1>t2i-lab — VRAM vs 생성 시간</h1>
   <div id="top">
-    <label>Model: <select id="model-select"></select></label>
+    <label>Task: <select id="task-select"></select></label>
     <span id="status"></span>
   </div>
   <div id="main">
@@ -80,15 +80,15 @@ async function load() {
   }
   statusEl.textContent = `${manifest.length}개 실행 (run) 로드됨`;
 
-  const models = [...new Set(manifest.map(e => e.model))].sort();
-  const sel = document.getElementById('model-select');
-  sel.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
+  const tasks = [...new Set(manifest.map(e => e.experiment))].sort();
+  const sel = document.getElementById('task-select');
+  sel.innerHTML = tasks.map(t => `<option value="${t}">${t}</option>`).join('');
   sel.addEventListener('change', () => { selected = null; render(sel.value); });
-  render(models[0]);
+  render(tasks[0]);
 }
 
-function render(model) {
-  const data = manifest.filter(e => e.model === model);
+function render(task) {
+  const data = manifest.filter(e => e.experiment === task);
   const svg = document.getElementById('chart');
   svg.innerHTML = '';
   clearPanel();
@@ -145,17 +145,17 @@ function render(model) {
   ylabel.textContent = 'sec / image';
   svg.appendChild(ylabel);
 
-  const exps = [...new Set(data.map(e => e.experiment))].sort();
+  const models = [...new Set(data.map(e => e.model))].sort();
   const tooltip = document.getElementById('tooltip');
 
   data.forEach((e, i) => {
     const c = el('circle', {
       cx: sx(e.vram_peak_gb), cy: sy(e.sec_per_image), r: 7,
-      fill: colorFor(e.experiment, exps), 'fill-opacity': 0.85, class: 'pt'
+      fill: colorFor(e.model, models), 'fill-opacity': 0.85, class: 'pt'
     });
     c.addEventListener('mouseenter', (ev) => {
       tooltip.style.display = 'block';
-      tooltip.innerHTML = `<b>${e.version}</b> — ${e.experiment}<br>vram ${e.vram_peak_gb}GB · ${e.sec_per_image}s/img · ${e.num_images}장`;
+      tooltip.innerHTML = `<b>${e.version}</b> — ${e.model}<br>vram ${e.vram_peak_gb}GB · ${e.sec_per_image}s/img · ${e.num_images}장`;
     });
     c.addEventListener('mousemove', (ev) => {
       tooltip.style.left = (ev.clientX + 14) + 'px';
@@ -173,11 +173,11 @@ function render(model) {
 
   // legend
   let ly = PAD.t;
-  exps.forEach((exp) => {
+  models.forEach((m) => {
     const g = el('g', {});
-    const dot = el('circle', { cx: W - 150, cy: ly, r: 5, fill: colorFor(exp, exps) });
+    const dot = el('circle', { cx: W - 150, cy: ly, r: 5, fill: colorFor(m, models) });
     const label = el('text', { x: W - 140, y: ly + 4, class: 'tick-label' });
-    label.textContent = exp;
+    label.textContent = m;
     g.appendChild(dot); g.appendChild(label);
     svg.appendChild(g);
     ly += 16;
