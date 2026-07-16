@@ -1,0 +1,14 @@
+model	exp	status	vram_gb	sec_per_img
+ideogram-4	educational-flat	SKIP_DONE	-	-
+ideogram-4	diagram-clean	OK	19.04	159.36
+ideogram-4	diagram-whiteboard	OK	19.04	159.55
+ideogram-4	formula-chalkboard	OK	19.04	159.14
+ideogram-4	history-flat	OK	19.05	159.76
+sana-1600m	diagram-clean	OK	10.16	3.76
+sana-1600m	diagram-whiteboard	OK	10.16	3.69
+sana-1600m	formula-chalkboard	OK	10.16	3.74
+sana-1600m	history-flat	OK	10.16	3.79
+sd35-medium	diagram-clean	OK	17.59	13.48
+sd35-medium	diagram-whiteboard	OK	17.59	13.61
+sd35-medium	formula-chalkboard	OK	17.59	13.94
+sd35-medium	history-flat	OK	17.59	13.62
