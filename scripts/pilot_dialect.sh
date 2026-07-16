@@ -5,7 +5,12 @@
 # dialect(edu-<model>) 두 조건을 순차 생성한다. sweep*.sh의 has_done는
 # model+experiment로만 키잉해서 shared/dialect가 서로 skip되므로 여기선 쓰지 않고,
 # condition까지 포함한 자체 idempotency 체크(has_done_pilot)를 쓴다.
-# 디스크 게이팅(free_gb/reclaim)은 sweep9_1.sh 패턴 재사용.
+#
+# 서버 디스크가 작아서 sweep*.sh의 "여유 없을 때만 지우기" 방식 대신, 모델 하나가
+# shared+dialect 두 조건을 다 끝내면 여유 공간과 무관하게 그 모델 캐시를 즉시
+# 삭제한다(cleanup_model). 캐시 재사용 이득은 포기하고 디스크 확보를 우선한다 —
+# 재실행하면 그 모델은 처음부터 다시 다운로드된다.
+#
 # ideogram-4 safety filter block은 재시도 없이 기록만 하고 계속 진행한다.
 # 주의: ideogram4는 raise_on_caption_issues=False라 block이 나도 exit 0으로
 # 끝날 수 있다 — 아래 BLOCK 판정은 exit!=0 + 로그 문자열 매칭에 의존하므로
@@ -14,7 +19,7 @@
 
 set -u
 
-MIN_FREE_GB=35
+MIN_FREE_GB=35          # 모델 하나(가장 큰 건 qwen-image/ideogram-4 ~30GB대)가 들어갈 최소 여유
 LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)_pilot_dialect"
 HF_HUB="${HF_HOME:-$HOME/.cache/huggingface}/hub"
 TASK="pilot_dialect.sh"
@@ -68,40 +73,15 @@ has_done_pilot() {
   return 1
 }
 
-DONE_MODELS=()
-
-other_cached_models() {
-  for f in configs/models/*.yaml; do
-    local name
-    name=$(basename "$f" .yaml)
-    [[ " ${MODELS[*]} " == *" $name "* ]] && continue
-    is_cached "$name" && echo "$name"
-  done
-}
-
-reclaim() {
-  local avail
-  avail=$(free_gb)
-  [ -z "$avail" ] && return 0
-  echo ">>> free: ${avail}GB (need ${MIN_FREE_GB}GB)"
-  local candidates=("${DONE_MODELS[@]}")
-  while IFS= read -r m; do
-    [ -n "$m" ] && candidates+=("$m")
-  done < <(other_cached_models)
-  if [ "${#candidates[@]}" -eq 0 ]; then
-    echo ">>> free after reclaim: $(free_gb)GB"
-    return 0
+# shared+dialect 두 조건이 다 끝난 모델의 캐시를 여유 공간과 무관하게 바로 지운다.
+cleanup_model() {
+  local model="$1" d
+  d=$(cache_dir_of "$model")
+  if [ -d "$d" ]; then
+    echo ">>> cleanup: rm $d ($(du -sh "$d" 2>/dev/null | cut -f1))"
+    rm -rf "$d"
   fi
-  for m in "${candidates[@]}"; do
-    [ "$(free_gb)" -ge "$MIN_FREE_GB" ] && break
-    local d
-    d=$(cache_dir_of "$m")
-    if [ -d "$d" ]; then
-      echo ">>> reclaim: rm $d ($(du -sh "$d" | cut -f1))"
-      rm -rf "$d"
-    fi
-  done
-  echo ">>> free after reclaim: $(free_gb)GB"
+  echo ">>> free after cleanup: $(free_gb)GB"
 }
 
 notify_attempt() {
@@ -138,13 +118,12 @@ run_one() {
 }
 
 for model in "${MODELS[@]}"; do
-  reclaim
-  if [ "$(free_gb)" -lt "$MIN_FREE_GB" ] && ! is_cached "$model"; then
-    echo "!!! 여유공간 부족 ($(free_gb)GB) 하고 캐시도 없음. $model 건너뜀."
+  avail=$(free_gb)
+  if [ -n "$avail" ] && [ "$avail" -lt "$MIN_FREE_GB" ] && ! is_cached "$model"; then
+    echo "!!! 여유공간 부족 (${avail}GB) 하고 캐시도 없음. $model 건너뜀."
     printf "%s\t-\tSKIP_DISK\t-\t-\n" "$model" >> "$SUMMARY"
     continue
   fi
-  is_cached "$model" && echo ">>> $model 은 이미 캐시됨 — 디스크 게이트 건너뜀"
 
   env=$(env_of "$model")
   if [ -z "$env" ]; then
@@ -153,25 +132,22 @@ for model in "${MODELS[@]}"; do
     continue
   fi
 
-  model_ok=0
-
   if has_done_pilot "$model" "shared"; then
     echo "--- $model × shared: 이미 done — 스킵"
     printf "%s\tshared\tSKIP_DONE\t-\t-\n" "$model" >> "$SUMMARY"
-    model_ok=1
   else
-    run_one "$model" "shared" "" && model_ok=1
+    run_one "$model" "shared" ""
   fi
 
   if has_done_pilot "$model" "dialect"; then
     echo "--- $model × dialect: 이미 done — 스킵"
     printf "%s\tdialect\tSKIP_DONE\t-\t-\n" "$model" >> "$SUMMARY"
-    model_ok=1
   else
-    run_one "$model" "dialect" "--dialect edu-${model}" && model_ok=1
+    run_one "$model" "dialect" "--dialect edu-${model}"
   fi
 
-  [ "$model_ok" -eq 1 ] && DONE_MODELS+=("$model")
+  # 이 모델의 두 조건이 다 끝났으니(성공/실패/스킵 무관) 캐시를 바로 지운다.
+  cleanup_model "$model"
 done
 
 echo
