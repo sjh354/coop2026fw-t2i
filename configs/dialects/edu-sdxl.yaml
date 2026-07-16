@@ -1,0 +1,18 @@
+# dialect 방언: sdxl (CLIP 인코더, 77토큰 제한, bag-of-words 취급)
+# base_experiment의 의미 내용을 태그 나열로 분해. negative는 별도 필드 유지(원문 그대로,
+# 이미 태그 형태라 재작성 불필요). 상세 규칙: configs/dialects/README.md
+base_experiment: educational-flat
+model: sdxl
+template: >-
+  {keyword}, flat educational vector illustration, textbook infographic style,
+  limited flat color palette, crisp geometric shapes, thin clean outline,
+  clear readable silhouette, single subject, centered, plain light background,
+  no gradient, no shading, no photorealism
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
+transform_notes: >-
+  문장형 구를 짧은 태그로 분해(문법적 연결어 제거), 77토큰 예산 안에 들어가도록
+  압축. negative 필드는 shared와 동일(이미 태그 나열이라 재작성 불필요) — 두 조건 모두
+  positive∪negative 합집합 보존.

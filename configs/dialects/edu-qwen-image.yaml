@@ -1,0 +1,16 @@
+# dialect 방언: qwen-image (Qwen 텍스트 인코더, 유연한 자연어, negative 필드 지원)
+# negative 필드 지원 모델 -> baseline = positive ∪ negative. 상세 규칙: README.md
+base_experiment: educational-flat
+model: qwen-image
+template: >-
+  A flat educational vector illustration of {keyword}, textbook infographic
+  style, limited flat color palette, crisp geometric shapes, thin clean
+  outline, clear readable silhouette, single subject centered on a plain light background,
+  no gradient, no shading, no photorealism.
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
+transform_notes: >-
+  태그 나열을 자연스러운 서술 문장으로 통합. negative 필드는 shared와 동일하게 유지
+  (합집합 보존).

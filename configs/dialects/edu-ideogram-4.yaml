@@ -1,0 +1,17 @@
+# dialect 방언: ideogram-4 (자체 ideogram4 패키지가 template을 JSON 캡션으로 감쌈,
+# adapters/ideogram.py::_to_caption_json 참조 — 여기서는 순수 자연어 서술문만 작성.
+# negative_prompt 미지원(CFG schedule이 preset에 내장) -> baseline = positive만.
+# 상세 규칙: README.md
+base_experiment: educational-flat
+model: ideogram-4
+template: >-
+  A flat educational vector illustration of {keyword}, textbook infographic
+  style, limited flat color palette, crisp geometric shapes, thin clean
+  outline, clear readable silhouette, a single subject centered on a plain light
+  background, no gradient, no shading, no photorealism.
+negative: ""
+transform_notes: >-
+  중괄호는 {keyword} 하나만 사용(어댑터가 JSON 캡션 스키마로 감싸므로 template
+  자체는 고수준 자연어 description). negative는 이 모델이 CFG 없이 preset 스케줄만
+  쓰므로 shared에서도 드롭되는 것과 동일하게 빈 문자열 유지. safety filter block 시
+  재시도 없이 기록만 남긴다.

@@ -1,0 +1,17 @@
+# dialect 방언: flux2-klein-4b (guidance-distilled, CFG 없음 -> negative 무시)
+# 주제 선행 계층적 자연어 문장. ((...)) 가중치 문법 지양.
+# negative는 무시되는 모델이므로 baseline = positive 스타일 내용만. 상세 규칙: README.md
+base_experiment: educational-flat
+model: flux2-klein-4b
+template: >-
+  {keyword}, rendered as a flat educational vector illustration in a
+  textbook infographic style. The illustration uses a limited flat color
+  palette with crisp geometric shapes, a thin clean outline, and a clear
+  readable silhouette. It shows a single subject centered on a plain light
+  background, with no gradient, no shading, and no photorealism.
+negative: ""
+transform_notes: >-
+  주제({keyword})를 문장 맨 앞에 두고 스타일 서술을 계층적으로 뒤에 붙임. 가중치
+  문법 미사용. negative 필드는 이 모델이 CFG를 안 써서 shared에서도 어차피 드롭되므로
+  빈 문자열로 둠 — negative 필드의 금지어 태그를 positive로 접어 넣지 않는다
+  (접으면 shared 대비 내용이 늘어나 confound 재도입).

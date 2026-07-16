@@ -1,0 +1,18 @@
+# dialect 방언: pixart-sigma (T5 인코더, max_seq 300, 긴 서술형에 강함)
+# negative 필드 지원 모델 -> baseline = positive ∪ negative. 상세 규칙: README.md
+base_experiment: educational-flat
+model: pixart-sigma
+template: >-
+  A flat educational vector illustration of {keyword}, drawn in a textbook
+  infographic style with a limited flat color palette, crisp geometric
+  shapes, a thin clean outline, and a clear, readable silhouette. The
+  illustration shows a single subject, sitting centered on a plain light background, rendered with no
+  gradient, no shading, and no photorealistic detail — a clean, flat,
+  infographic-style illustration suitable for an educational textbook.
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
+transform_notes: >-
+  단문 태그 나열을 하나의 긴 서술형 문장으로 재구성(등위/관계절로 연결), T5의 긴
+  문맥 처리 능력 활용. negative 필드는 shared와 동일하게 유지(합집합 보존).

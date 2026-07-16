@@ -1,0 +1,14 @@
+# dialect 방언: zimage-turbo (Qwen3-4B 인코더, 유연한 자연어; guidance=1.0/CFG 없음 -> negative 무시)
+# negative는 무시되는 모델이므로 baseline = positive 스타일 내용만. 상세 규칙: README.md
+base_experiment: educational-flat
+model: zimage-turbo
+template: >-
+  A flat educational vector illustration of {keyword}, textbook infographic
+  style, limited flat color palette, crisp geometric shapes, thin clean
+  outline, clear readable silhouette, single subject centered on a plain light background,
+  no gradient, no shading, no photorealism.
+negative: ""
+transform_notes: >-
+  태그 나열을 자연스러운 서술 문장으로 통합. negative 필드는 이 모델이 CFG를 안 써서
+  shared에서도 어차피 드롭되므로 빈 문자열로 둠 — negative 필드의 금지어 태그를
+  positive로 접어 넣지 않는다(접으면 shared 대비 내용이 늘어나 confound 재도입).

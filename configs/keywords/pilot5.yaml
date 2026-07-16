@@ -1,0 +1,15 @@
+# 방언(dialect) 파일럿 실험용 subset. basic30에서 카테고리 다양성 기준 5개 선정.
+# (basic30.yaml은 읽기 전용 고정 벤치마크셋이라 여기 별도 파일로 뺌)
+# 선정 사유는 .claude/plans/task-snoopy-star.md 참조:
+#   an apple  - 단순 단일 사물 (대조군)
+#   a cat     - 얼굴 있는 생물 (눈/얼굴 붕괴 판별력)
+#   a house   - 구조물/약한 복합 (파트 구성 스트레스)
+#   a butterfly - 대칭+미세 패턴 (좌우대칭/디테일 스트레스)
+#   a car     - 다부품 인공물 (수량/구조 스트레스)
+name: pilot5
+keywords:
+  - an apple
+  - a cat
+  - a house
+  - a butterfly
+  - a car

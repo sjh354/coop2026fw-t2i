@@ -1,0 +1,17 @@
+# dialect 방언: sana-1600m (Gemma LLM 인코더, 지시문형 서술에 반응)
+# negative 필드 지원 모델 -> baseline = positive ∪ negative. 상세 규칙: README.md
+base_experiment: educational-flat
+model: sana-1600m
+template: >-
+  Create a flat educational vector illustration of {keyword} in a
+  textbook infographic style. Use a limited flat color palette, crisp
+  geometric shapes, and a thin clean outline. Give it a clear readable
+  silhouette. Show a single subject, centered on a plain light background. Do not add
+  any gradient, shading, or photorealistic detail.
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
+transform_notes: >-
+  명령문(Create/Use/Give/Center/Do not) 시퀀스로 재구성. 각 명령이 shared style 구절
+  하나씩과 1:1 대응. negative 필드는 shared와 동일하게 유지(합집합 보존).

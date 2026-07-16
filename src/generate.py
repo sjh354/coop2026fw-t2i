@@ -48,17 +48,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True, help="configs/models/<name>.yaml")
     ap.add_argument("--exp", required=True, help="configs/experiments/<name>.yaml")
+    ap.add_argument("--dialect", default=None, help="configs/dialects/<name>.yaml")
     args = ap.parse_args()
 
     model = load_yaml(CONFIGS / "models" / f"{args.model}.yaml")
     exp = load_yaml(CONFIGS / "experiments" / f"{args.exp}.yaml")
     keywords = load_yaml(CONFIGS / "keywords" / f"{exp['keywords']}.yaml")["keywords"]
+    dialect = (load_yaml(CONFIGS / "dialects" / f"{args.dialect}.yaml")
+               if args.dialect else None)
 
-    if not model.get("supports_negative") and exp.get("negative"):
+    active_negative = dialect.get("negative", "") if dialect else exp.get("negative", "")
+    if not model.get("supports_negative") and active_negative:
         print(f"[warn] {model['name']}는 CFG를 안 써서 negative prompt가 무시된다.")
 
     version = next_version()
-    vdir = OUT / f"{version}_{model['name']}"
+    suffix = model["name"] + ("-dialect" if dialect else "")
+    vdir = OUT / f"{version}_{suffix}"
     img_dir = vdir / "images"
     img_dir.mkdir(parents=True)
 
@@ -70,7 +75,9 @@ def main():
         "model_repo": model["repo"],
         "experiment": exp["name"],
         "style": exp["style"],
-        "negative_prompt": exp.get("negative", ""),
+        "negative_prompt": active_negative,
+        "condition": "dialect" if dialect else "shared",
+        "dialect": args.dialect,
         "keyword_set": exp["keywords"],
         "keywords": keywords,
         "seed": exp["seed"],
@@ -103,12 +110,15 @@ def main():
 
     t0 = time.time()
     for i, keyword in enumerate(keywords):
-        prompt = f"{keyword}, {exp['style']}"
-        image = generate(prompt, exp.get("negative", ""), exp["seed"])
+        if dialect:
+            prompt = dialect["template"].format(keyword=keyword)
+        else:
+            prompt = f"{keyword}, {exp['style']}"
+        image = generate(prompt, active_negative, exp["seed"])
 
         info = PngImagePlugin.PngInfo()
         for k, v in [("prompt", prompt), ("keyword", keyword),
-                     ("negative_prompt", exp.get("negative", "")),
+                     ("negative_prompt", active_negative),
                      ("seed", exp["seed"]), ("model", model["repo"]),
                      ("guidance_scale", model["guidance"]), ("steps", model["steps"])]:
             info.add_text(k, str(v))

@@ -1,0 +1,16 @@
+# 방언(dialect) 파일럿의 shared(공용) 조건. educational-flat.yaml의 style/negative를
+# 한 글자도 바꾸지 않고 그대로 사용, keywords만 pilot5로 축소.
+# dialect 조건은 configs/dialects/edu-<model>.yaml 에서 이 style의 의미 내용을
+# 모델별 방언으로 재표현한다 (--dialect 플래그로 적용).
+name: educational-flat-pilot
+keywords: pilot5
+seed: 0
+style: >-
+  flat educational vector illustration, textbook infographic style,
+  limited flat color palette, crisp geometric shapes, thin clean outline,
+  clear readable silhouette, centered single subject on plain light background,
+  no gradient, no shading, no photorealism
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
