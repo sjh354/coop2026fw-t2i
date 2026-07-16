@@ -1,0 +1,8 @@
+model	exp	status	vram_gb	sec_per_img
+qwen-image	diagram-clean	OK	15.56	150.74
+qwen-image	diagram-whiteboard	OK	15.56	152.8
+qwen-image	formula-chalkboard	OK	15.56	151.4
+qwen-image	history-flat	OK	15.57	151.35
+flux2-klein-9b	diagram-clean	OK	15.58	25.78
+flux2-klein-9b	diagram-whiteboard	OK	15.58	26.26
+flux2-klein-9b	formula-chalkboard	OK	15.58	25.38
