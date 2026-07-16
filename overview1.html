@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>t2i-lab overview</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 16px 24px; }
+  h1 { font-size: 18px; margin: 0 0 12px; }
+  #top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  select, input[type=text] { font-size: 14px; padding: 4px 8px; }
+  #status { color: #888; font-size: 13px; }
+  #main { display: flex; gap: 20px; align-items: flex-start; }
+  #chart-wrap { flex: 1 1 auto; min-width: 0; }
+  svg { width: 100%; height: 640px; border: 1px solid #8884; border-radius: 6px; }
+  .pt { cursor: pointer; }
+  .pt:hover, .pt.selected { stroke: #ff5722; stroke-width: 2px; }
+  .axis-label { font-size: 13px; fill: currentColor; }
+  .tick-label { font-size: 11px; fill: currentColor; opacity: 0.7; }
+  #tooltip {
+    position: fixed; pointer-events: none; background: #222; color: #fff;
+    padding: 6px 10px; border-radius: 4px; font-size: 12px; display: none; z-index: 10;
+    max-width: 260px;
+  }
+  #panel {
+    flex: 0 0 380px; border: 1px solid #8884; border-radius: 6px; padding: 12px;
+    max-height: 640px; overflow-y: auto;
+  }
+  #panel h3 { margin: 0 0 8px; font-size: 14px; }
+  #panel .meta { font-size: 12px; color: #888; margin-bottom: 10px; line-height: 1.5; }
+  #panel .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  #panel .grid figure { margin: 0; }
+  #panel .grid img { width: 100%; border-radius: 4px; display: block; }
+  #panel .grid figcaption { font-size: 10px; text-align: center; opacity: 0.7; margin-top: 2px; }
+  #placeholder { color: #888; font-size: 13px; }
+  legend#exp-legend { font-size: 11px; }
+</style>
+</head>
+<body>
+  <h1>t2i-lab — VRAM vs 생성 시간</h1>
+  <div id="top">
+    <label>Model: <select id="model-select"></select></label>
+    <span id="status"></span>
+  </div>
+  <div id="main">
+    <div id="chart-wrap">
+      <svg id="chart" viewBox="0 0 900 640"></svg>
+    </div>
+    <div id="panel"><div id="placeholder">점을 클릭하거나 마우스를 올리면 해당 실험의 이미지가 여기 표시됩니다.</div></div>
+  </div>
+  <div id="tooltip"></div>
+
+<script>
+const PAD = { l: 60, r: 20, t: 20, b: 50 };
+const W = 900, H = 640;
+let manifest = [];
+let selected = null;
+
+const COLORS = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b",
+                "#e377c2","#7f7f7f","#bcbd22","#17becf","#aec7e8","#ffbb78"];
+
+function colorFor(key, keys) {
+  const idx = keys.indexOf(key);
+  return COLORS[idx % COLORS.length];
+}
+
+async function load() {
+  const statusEl = document.getElementById('status');
+  try {
+    const res = await fetch('manifest.json');
+    if (!res.ok) throw new Error(res.status);
+    manifest = await res.json();
+  } catch (e) {
+    statusEl.textContent = 'manifest.json을 불러올 수 없습니다. scripts/build_manifest.py를 먼저 실행하세요.';
+    return;
+  }
+  if (!manifest.length) {
+    statusEl.textContent = '성공한 실험이 없습니다 (manifest.json이 비어있음).';
+    return;
+  }
+  statusEl.textContent = `${manifest.length}개 실행 (run) 로드됨`;
+
+  const models = [...new Set(manifest.map(e => e.model))].sort();
+  const sel = document.getElementById('model-select');
+  sel.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
+  sel.addEventListener('change', () => { selected = null; render(sel.value); });
+  render(models[0]);
+}
+
+function render(model) {
+  const data = manifest.filter(e => e.model === model);
+  const svg = document.getElementById('chart');
+  svg.innerHTML = '';
+  clearPanel();
+
+  if (!data.length) return;
+
+  const xs = data.map(e => e.vram_peak_gb);
+  const ys = data.map(e => e.sec_per_image);
+  const xMax = Math.max(...xs) * 1.1;
+  const yMax = Math.max(...ys) * 1.1;
+  const xMin = 0, yMin = 0;
+
+  const sx = v => PAD.l + (v - xMin) / (xMax - xMin) * (W - PAD.l - PAD.r);
+  const sy = v => H - PAD.b - (v - yMin) / (yMax - yMin) * (H - PAD.t - PAD.b);
+
+  const ns = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // axes
+  svg.appendChild(el('line', { x1: PAD.l, y1: H - PAD.b, x2: W - PAD.r, y2: H - PAD.b, stroke: 'currentColor', 'stroke-opacity': 0.4 }));
+  svg.appendChild(el('line', { x1: PAD.l, y1: PAD.t, x2: PAD.l, y2: H - PAD.b, stroke: 'currentColor', 'stroke-opacity': 0.4 }));
+
+  // 16GB VRAM budget guide line
+  if (xMax > 16) {
+    const gx = sx(16);
+    const guide = el('line', { x1: gx, y1: PAD.t, x2: gx, y2: H - PAD.b, stroke: '#e74c3c', 'stroke-dasharray': '4 4', 'stroke-opacity': 0.6 });
+    svg.appendChild(guide);
+    const glabel = el('text', { x: gx + 4, y: PAD.t + 12, class: 'tick-label', fill: '#e74c3c' });
+    glabel.textContent = '16GB';
+    svg.appendChild(glabel);
+  }
+
+  // ticks
+  for (let i = 0; i <= 5; i++) {
+    const xv = xMin + (xMax - xMin) * i / 5;
+    const yv = yMin + (yMax - yMin) * i / 5;
+    const tx = el('text', { x: sx(xv), y: H - PAD.b + 18, class: 'tick-label', 'text-anchor': 'middle' });
+    tx.textContent = xv.toFixed(1);
+    svg.appendChild(tx);
+    const ty = el('text', { x: PAD.l - 8, y: sy(yv) + 4, class: 'tick-label', 'text-anchor': 'end' });
+    ty.textContent = yv.toFixed(1);
+    svg.appendChild(ty);
+  }
+
+  const xlabel = el('text', { x: (PAD.l + W - PAD.r) / 2, y: H - 10, class: 'axis-label', 'text-anchor': 'middle' });
+  xlabel.textContent = 'VRAM peak (GB)';
+  svg.appendChild(xlabel);
+  const ylabel = el('text', { x: 16, y: (PAD.t + H - PAD.b) / 2, class: 'axis-label', 'text-anchor': 'middle',
+                              transform: `rotate(-90 16 ${(PAD.t + H - PAD.b) / 2})` });
+  ylabel.textContent = 'sec / image';
+  svg.appendChild(ylabel);
+
+  const exps = [...new Set(data.map(e => e.experiment))].sort();
+  const tooltip = document.getElementById('tooltip');
+
+  data.forEach((e, i) => {
+    const c = el('circle', {
+      cx: sx(e.vram_peak_gb), cy: sy(e.sec_per_image), r: 7,
+      fill: colorFor(e.experiment, exps), 'fill-opacity': 0.85, class: 'pt'
+    });
+    c.addEventListener('mouseenter', (ev) => {
+      tooltip.style.display = 'block';
+      tooltip.innerHTML = `<b>${e.version}</b> — ${e.experiment}<br>vram ${e.vram_peak_gb}GB · ${e.sec_per_image}s/img · ${e.num_images}장`;
+    });
+    c.addEventListener('mousemove', (ev) => {
+      tooltip.style.left = (ev.clientX + 14) + 'px';
+      tooltip.style.top = (ev.clientY + 14) + 'px';
+    });
+    c.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.pt.selected').forEach(p => p.classList.remove('selected'));
+      c.classList.add('selected');
+      selected = e;
+      showPanel(e);
+    });
+    svg.appendChild(c);
+  });
+
+  // legend
+  let ly = PAD.t;
+  exps.forEach((exp) => {
+    const g = el('g', {});
+    const dot = el('circle', { cx: W - 150, cy: ly, r: 5, fill: colorFor(exp, exps) });
+    const label = el('text', { x: W - 140, y: ly + 4, class: 'tick-label' });
+    label.textContent = exp;
+    g.appendChild(dot); g.appendChild(label);
+    svg.appendChild(g);
+    ly += 16;
+  });
+}
+
+function clearPanel() {
+  document.getElementById('panel').innerHTML =
+    '<div id="placeholder">점을 클릭하거나 마우스를 올리면 해당 실험의 이미지가 여기 표시됩니다.</div>';
+}
+
+function showPanel(e) {
+  const panel = document.getElementById('panel');
+  const imgs = e.images.map(img =>
+    `<figure><img src="${img.path}" loading="lazy"><figcaption>${img.keyword}</figcaption></figure>`
+  ).join('');
+  panel.innerHTML = `
+    <h3>${e.version} — ${e.model} / ${e.experiment}</h3>
+    <div class="meta">
+      vram_peak: ${e.vram_peak_gb} GB<br>
+      sec/image: ${e.sec_per_image}s<br>
+      keyword_set: ${e.keyword_set} (${e.num_images}장)
+      ${e.rating != null ? `<br>rating: ${e.rating}` : ''}
+    </div>
+    <div class="grid">${imgs}</div>
+  `;
+}
+
+load();
+</script>
+</body>
+</html>
