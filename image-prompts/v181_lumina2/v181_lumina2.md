@@ -46,9 +46,9 @@ negative_prompt: photorealistic, photograph, 3d render, gradient, soft shading, 
 num_images: 30
 quantization: null
 rating: null
-sec_per_image: null
+sec_per_image: 28.79
 seed: 0
-status: running
+status: done
 steps: 30
 style: flat vector historical illustration, history textbook infographic style, dignified
   and respectful portrayal, period-accurate clothing and architecture, limited earthy
@@ -56,7 +56,7 @@ style: flat vector historical illustration, history textbook infographic style, 
   silhouette, centered single subject on plain light background, no gradient, no photorealism
 tags: []
 version: v181
-vram_peak_gb: null
+vram_peak_gb: 12.28
 ---
 
 ## Images
