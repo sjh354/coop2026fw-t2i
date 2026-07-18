@@ -25,16 +25,18 @@ def check_sample(sample, opts):
     """샘플 하나를 rewrite()에 태우고 체크 결과 딕셔너리를 반환한다."""
     result = rewrite(sample["prompt_ko"], opts)
     prompt_en = result["prompt_en"]
+    output_ok = bool(prompt_en.strip())
     quantity_ok = (not has_quantity_ko(sample["prompt_ko"])) or has_number_output(prompt_en)
     style_hits = find_style_words(prompt_en, STYLE_FORBIDDEN_WORDS)
     length_ok = token_count(prompt_en) <= opts.max_words
     return {
         "sample": sample,
         "prompt_en": prompt_en,
+        "output_ok": output_ok,
         "quantity_ok": quantity_ok,
         "style_hits": style_hits,
         "length_ok": length_ok,
-        "passed": quantity_ok and not style_hits and length_ok,
+        "passed": output_ok and quantity_ok and not style_hits and length_ok,
     }
 
 
@@ -46,14 +48,16 @@ def build_report(rows):
         "",
         f"통과: {passed}/{len(rows)}",
         "",
-        "| # | 과목 | 입력 | 출력 | 수량 | 스타일오염 | 길이 | 결과 |",
-        "|---|------|------|------|------|-----------|------|------|",
+        "| # | 과목 | 입력 | 출력 | 출력존재 | 수량 | 스타일오염 | 길이 | 결과 |",
+        "|---|------|------|------|---------|------|-----------|------|------|",
     ]
     for i, row in enumerate(rows, 1):
         sample = row["sample"]
         style = ", ".join(row["style_hits"]) if row["style_hits"] else "-"
+        output_display = row["prompt_en"] if row["output_ok"] else "(empty)"
         lines.append(
-            f"| {i} | {sample['subject']} | {sample['prompt_ko']} | {row['prompt_en']} | "
+            f"| {i} | {sample['subject']} | {sample['prompt_ko']} | {output_display} | "
+            f"{'OK' if row['output_ok'] else 'FAIL'} | "
             f"{'OK' if row['quantity_ok'] else 'FAIL'} | {style} | "
             f"{'OK' if row['length_ok'] else 'FAIL'} | {'PASS' if row['passed'] else 'FAIL'} |"
         )

@@ -42,6 +42,8 @@ def _load_system_prompt(max_words):
 def _check_violations(prompt_ko, prompt_en, max_words):
     """자동 체크(수량/금지어/길이) 위반 사유 문자열 리스트를 반환한다."""
     violations = []
+    if not prompt_en:
+        violations.append("출력이 비어 있습니다. 프롬프트를 영어로 다시 작성하세요.")
     if has_quantity_ko(prompt_ko) and not has_number_output(prompt_en):
         violations.append("입력에 수량 표현이 있으나 출력에 숫자가 없습니다. 개수를 명시적 숫자로 쓰세요.")
     style_hits = find_style_words(prompt_en, STYLE_FORBIDDEN_WORDS)
