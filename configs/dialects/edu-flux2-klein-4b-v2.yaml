@@ -1,0 +1,16 @@
+# dialect 방언 v2: flux2-klein-4b. edu-flux2-klein-4b.yaml(1라운드, base=educational-flat)의
+# v2 파생 — "textbook infographic style" -> "clean infographic-style rendering"만 교체,
+# 나머지 표현/구조는 1라운드와 동일(스타일 누출 수정과 동일한 치환, educational-flat-v2 대응).
+# guidance-distilled, CFG 없음 -> negative 무시. baseline = positive 스타일 내용만.
+base_experiment: educational-flat-v2
+model: flux2-klein-4b
+template: >-
+  {keyword}, rendered as a flat educational vector illustration in a
+  clean infographic-style rendering. The illustration uses a limited flat color
+  palette with crisp geometric shapes, a thin clean outline, and a clear
+  readable silhouette. It shows a single subject centered on a plain light
+  background, with no gradient, no shading, and no photorealism.
+negative: ""
+transform_notes: >-
+  1라운드 edu-flux2-klein-4b.yaml과 구조 동일, "textbook infographic style"만
+  educational-flat-v2의 표현으로 교체. 그 외 변경 없음.

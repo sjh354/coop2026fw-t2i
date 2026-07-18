@@ -1,0 +1,5 @@
+# Step3 최소 재검증용. 1라운드에서 책 오브젝트 누출이 나왔던 키워드 2개만.
+name: pilot-check2
+keywords:
+  - an apple
+  - a cat

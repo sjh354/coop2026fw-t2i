@@ -1,0 +1,15 @@
+# dialect 방언 v2: zimage-turbo. edu-zimage-turbo.yaml(1라운드, base=educational-flat)의
+# v2 파생 — "textbook infographic style" -> "clean infographic-style rendering"만 교체,
+# 나머지 동일. negative는 무시되는 모델이므로 baseline = positive 스타일 내용만.
+base_experiment: educational-flat-v2
+model: zimage-turbo
+template: >-
+  A flat educational vector illustration of {keyword}, clean infographic-style
+  rendering, limited flat color palette, crisp geometric shapes, thin clean
+  outline, clear readable silhouette, single subject centered on a plain light background,
+  no gradient, no shading, no photorealism.
+negative: ""
+transform_notes: >-
+  1라운드 edu-zimage-turbo.yaml과 구조 동일, "textbook infographic style"만
+  educational-flat-v2 표현으로 교체. negative 필드는 이 모델이 CFG를 안 써서
+  shared에서도 어차피 드롭되므로 빈 문자열 유지.

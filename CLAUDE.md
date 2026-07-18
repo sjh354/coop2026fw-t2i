@@ -63,6 +63,36 @@ Swapping just `--model` reruns the same experiment prompts against a different m
 
 Streamlit app with two modes: **Browse/Rate** (single version, rate/tag/annotate, saved back into the note's frontmatter) and **Compare** (same keyword shown side-by-side across chosen versions/models, plus a resource table of vram/sec-per-image/rating). Reads/writes directly against the `image-prompts/*/*.md` frontmatter — there is no separate database.
 
+## Shell scripts: Discord notifications
+
+Any shell script that performs **model inference, training, benchmarking, evaluation, or long-running batch experiments** must integrate the Discord notification helper at `scripts/alert.py`.
+
+Notification policy:
+
+- **Always** use `scripts/alert.py`; do not implement separate Discord webhook logic.
+- Send a notification **once per model × task (or model × experiment) completion**, whether it succeeds or fails. This is the preferred granularity—avoid spamming notifications for every image, batch, or intermediate step.
+- Send a final summary notification when the entire script finishes.
+- Failure notifications should include a short excerpt from the log when possible.
+- Success notifications should include useful metrics when available (e.g. VRAM usage, seconds per image, training loss, elapsed time, etc.).
+- Long-running scripts should continue running after an individual model/task failure whenever practical, while still notifying the failure.
+
+Preferred usage pattern:
+
+```bash
+python "$(dirname "$0")/alert.py" \
+  --task "$TASK" \
+  --status ok|fail \
+  --message "MODEL/TASK ..."
+
+# Final summary
+python "$(dirname "$0")/alert.py" \
+  --task "$TASK" \
+  --status ok|fail \
+  --log "$SUMMARY"
+```
+
+The notification frequency used in `pilot_dialect.sh` (one notification per completed model × task combination, plus one final summary) is considered the project standard and should be followed unless there is a strong reason to do otherwise.
+
 ## Conda envs (`envs/`)
 
 One env per model or model family, matching the `env:` field in `configs/models/*.yaml`. `requirements-common.txt` holds only cross-model deps (pyyaml, frontmatter, pillow, streamlit, accelerate, safetensors, sentencepiece, protobuf) — `diffusers`/`torch` are installed per-env since versions conflict across models. **After getting a model working, freeze the env** (`pip freeze > envs/<name>.txt`) — these snapshots are tracked in git specifically to preserve known-good combinations, since diffusers version pinning is the main source of breakage here.

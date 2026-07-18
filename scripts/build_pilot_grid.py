@@ -9,6 +9,7 @@ image-prompts/pilot-dialect-report.md 를 생성한다.
 모델별 판정(방언으로 개선됨/개선 안 됨/block)은 육안 비교가 필요해 이 스크립트가
 자동 채우지 않는다 — "## 판정" 섹션에 빈 표만 만들어두고 리뷰 후 수동 기입.
 """
+import argparse
 import pathlib
 import re
 import sys
@@ -17,14 +18,13 @@ import frontmatter
 
 ROOT = pathlib.Path(__file__).parent.parent
 OUT = ROOT / "image-prompts"
-EXP = "educational-flat-pilot"
 
 
 def slug(text):
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
-def load_pilot_notes():
+def load_pilot_notes(exp):
     notes = []
     for vdir in sorted(OUT.iterdir()):
         if not vdir.is_dir():
@@ -34,7 +34,7 @@ def load_pilot_notes():
             continue
         post = frontmatter.load(str(note_path))
         meta = post.metadata
-        if meta.get("experiment") != EXP:
+        if meta.get("experiment") != exp:
             continue
         notes.append((vdir, meta))
     return notes
@@ -72,23 +72,28 @@ def build_grid_section(notes, models, keywords):
 
 
 def build_resource_table(notes):
+    # 재시도로 같은 model+condition에 여러 run이 있을 수 있으니(실패/running 잔여분),
+    # 그리드와 동일하게 버전 오름차순에서 마지막(가장 최근) run만 남긴다.
+    by_model_cond = {(m["model"], m["condition"]): (v, m) for v, m in notes}
     lines = ["## 리소스 표\n", "| 모델 | 조건 | vram_peak_gb | sec_per_image | status |", "|---|---|---|---|---|"]
-    for vdir, meta in notes:
+    for (model, cond), (vdir, meta) in sorted(by_model_cond.items()):
         lines.append(
-            f"| {meta.get('model')} | {meta.get('condition')} | "
+            f"| {model} | {cond} | "
             f"{meta.get('vram_peak_gb')} | {meta.get('sec_per_image')} | {meta.get('status')} |"
         )
     return "\n".join(lines)
 
 
 def build_block_rate(notes, models):
-    lines = [
-        "## Block rate (모델별)\n",
-        "> ⚠ ideogram-4는 `raise_on_caption_issues=False`라 safety filter block이 "
-        "exit 0으로 끝날 수 있다. 아래 status는 pilot_dialect.sh의 exit code/로그 매칭 "
-        "기반이라 block을 놓칠 수 있음 — ideogram-4 결과 이미지는 육안으로 빈/차단된 "
-        "프레임이 있는지 확인할 것.\n",
-        "| 모델 | shared | dialect |", "|---|---|---|"]
+    lines = ["## Block rate (모델별)\n"]
+    if "ideogram-4" in models:
+        lines.append(
+            "> ⚠ ideogram-4는 `raise_on_caption_issues=False`라 safety filter block이 "
+            "exit 0으로 끝날 수 있다. 아래 status는 러너의 exit code/로그 매칭 "
+            "기반이라 block을 놓칠 수 있음 — ideogram-4 결과 이미지는 육안으로 빈/차단된 "
+            "프레임이 있는지 확인할 것.\n"
+        )
+    lines += ["| 모델 | shared | dialect |", "|---|---|---|"]
     by_model_cond = {(m["model"], m["condition"]): m for _, m in notes}
     for m in models:
         s = by_model_cond.get((m, "shared"))
@@ -116,7 +121,31 @@ KEYWORD_RATIONALE = {
     "a house": "구조물/약한 복합 (파트 구성 스트레스)",
     "a butterfly": "대칭+미세 패턴 (좌우대칭/디테일 스트레스)",
     "a car": "다부품 인공물 (수량/구조 스트레스)",
+    "three apples in a basket": "수량(counting) 축 — 사과 정확히 3개 / 바구니 안에 위치",
+    "a tree to the left of a house": "공간 관계(spatial) 축 — 나무가 집의 왼쪽에 위치 / 둘 다 온전한 형태",
+    "a cat wearing a blue hat": "속성 결합(attribute binding) 축 — 모자가 파란색 / 고양이에게만 씌워짐(색 전이 없음)",
 }
+
+KEYWORD_AXIS = {
+    "three apples in a basket": "수량",
+    "a tree to the left of a house": "공간",
+    "a cat wearing a blue hat": "속성",
+}
+
+
+def build_axis_verdict_table(models, keywords):
+    axes = [KEYWORD_AXIS[kw] for kw in keywords if kw in KEYWORD_AXIS]
+    if not axes:
+        return None
+    lines = [
+        "## 축별 판정 (수량/공간/속성 — 육안 비교 후 수동 기입)\n",
+        "판정값: 방언으로 개선 / 차이 없음 / 둘 다 실패\n",
+        "| 모델 | " + " | ".join(axes) + " | 종합 소견 |",
+        "|---|" + "---|" * len(axes) + "---|",
+    ]
+    for m in models:
+        lines.append(f"| {m} | " + " | ".join(["TODO"] * len(axes)) + " | TODO |")
+    return "\n".join(lines)
 
 
 def build_keyword_rationale_section(keywords):
@@ -127,25 +156,34 @@ def build_keyword_rationale_section(keywords):
 
 
 def main():
-    notes = load_pilot_notes()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--exp", default="educational-flat-pilot")
+    ap.add_argument("--out", default=str(OUT / "pilot-dialect-report.md"))
+    args = ap.parse_args()
+
+    notes = load_pilot_notes(args.exp)
     if not notes:
-        print(f"'{EXP}' 실험 노트가 없다. pilot_dialect.sh를 먼저 실행할 것.", file=sys.stderr)
+        print(f"'{args.exp}' 실험 노트가 없다. 러너를 먼저 실행할 것.", file=sys.stderr)
         sys.exit(1)
 
     models = sorted({m["model"] for _, m in notes})
     keywords = notes[0][1].get("keywords", [])
 
     sections = [
-        f"# 방언 파일럿 결과 ({EXP})\n",
+        f"# 방언 파일럿 결과 ({args.exp})\n",
         f"모델 {len(models)}개, 키워드 {len(keywords)}개, run {len(notes)}개.\n",
         build_keyword_rationale_section(keywords),
         build_grid_section(notes, models, keywords),
         build_resource_table(notes),
         build_block_rate(notes, models),
-        build_verdict_table(models),
     ]
+    axis_table = build_axis_verdict_table(models, keywords)
+    if axis_table:
+        sections.append(axis_table)
+    else:
+        sections.append(build_verdict_table(models))
 
-    report_path = OUT / "pilot-dialect-report.md"
+    report_path = pathlib.Path(args.out)
     report_path.write_text("\n\n".join(sections) + "\n", encoding="utf-8")
     print(f"report: {report_path}")
 

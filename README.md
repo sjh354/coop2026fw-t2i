@@ -38,6 +38,8 @@
 - 후보: PixArt-Sigma, SDXL, Flux2-Klein, Z-Image, SD3.5, Sana, Lumina2, Qwen-Image, Ideogram-4
 - 모델마다 프롬프트 "방언"이 다르다는 점만 유의: CLIP 기반(SDXL)은 키워드 나열 + negative prompt, T5/LLM 기반(PixArt/Sana/Qwen/Z-Image)은 서술형 자연어, guidance-distilled(Flux2-Klein 등)는 negative prompt 자체가 안 먹히므로 금지 요소를 positive 문장 안에 "no ..."로 유지.
 - 모델별 VRAM/latency는 각 run의 note frontmatter(`vram_peak_gb`, `sec_per_image`)에 자동 기록되므로 bench 문서에 손으로 옮기지 않는다.
+- **방언(dialect) 효과 파일럿 결론** (`bench/results.md` 상세): 단순 프롬프트("an apple" 수준)에서는 모델별 방언 재표현이 출력을 거의 바꾸지 않는다 — 어려운 출력은 대부분 프롬프트 문제가 아니라 모델 능력 한계. 수량/공간/속성 결합 같은 복합 프롬프트에서도 방언으로 실제 개선된 사례는 flux2-klein-4b의 수량 정확도 하나뿐이었고, 나머지 실패(sd35-medium의 좌우 반전 고정, zimage-turbo의 개수 오류, pixart-sigma의 속성 색 전이)는 조건과 무관하게 동일하게 재현돼 능력 한계로 판단. **lumina2가 복합 프롬프트 전 축(수량/공간/속성)에서 가장 안정적** — ②에서 후보 압축 시 우선 고려.
+- **스타일 프리셋 작성 규칙**: LLM/T5 인코더 모델은 스타일 프롬프트 속 구체 명사(그릴 수 있는 사물, 예: "textbook")를 오브젝트로 그대로 렌더링할 수 있다("textbook infographic style" → 책이 그림에 등장). 배경/매체로 의도한 게 아니면 스타일 프롬프트에 구체 명사를 넣지 않는다. 상세 감사 결과는 `bench/results.md` 참고.
 
 ### ③ 메트릭 채점
 
@@ -49,12 +51,38 @@
 - **종합 랭킹**: 두 축을 합치지 않고 개발 중엔 2D 산점도로 트레이드오프를 보되(스타일은 좋은데 프롬프트 무시 vs 프롬프트는 맞는데 밋밋함), 버전 랭킹용 단일 숫자가 필요하면 조화평균 사용.
 - 자세한 조사 내용은 git 히스토리의 `claude-metric.md` 참고(README 통합 후 삭제됨).
 
+### 채점 모듈 (`src/scoring.py`)
+
+`src/score.py`(CLIP 프록시, `review_app.py`가 아직 씀)와 별도로, 실제 VQAScore/CSD 모델을
+쓰는 1차 구현. `python -m src.scoring --dir <PNG 디렉토리> --out <csv 경로>`로 배치 채점 →
+`<csv 경로>` + 같은 이름의 `.md` 요약 생성. `--refs`로 스타일 레퍼런스 이미지 경로들을,
+`--vlm`으로 VLM-as-judge 열을 추가할 수 있다.
+
+- **env**: `t2i-score` (T2I 생성 env와 분리, 동시 로드 안 함 — `envs/README.md` 참고).
+- **VQAScore**: `t2v_metrics` 패키지, `clip-flant5-xl`. 가중치는 `HF_HOME`(기본 `~/.cache/huggingface`)에
+  자동 다운로드됨. VRAM: **3090에서 측정 필요, 아직 미측정**.
+- **CSD**: 공개 구현([github.com/learn2phoenix/CSD](https://github.com/learn2phoenix/CSD))의
+  ViT-L 체크포인트를 `weights/scoring/csd_vit-l.pth`에 받아둘 것(`weights/`는 `.gitignore`의
+  `*.pth` 규칙으로 자동 제외됨). `ref_set`이 비어있으면(golden set 미확보) `csd`는 `None`.
+  VRAM: **3090에서 측정 필요, 아직 미측정**.
+- **custom_cv**: OpenCV만 사용, 모델 불필요. line flatness(색 영역 내부 LAB 채널별 분산,
+  픽셀 수 가중 평균) + edge uniformity(Canny 엣지 dilate 후 거리변환 폭의 변동계수)를 각각
+  0~1로 정규화해 평균. 저장소의 실제 파일럿 PNG 6장(v205/v207/v211/v214, `pilot-complex3-report.md`
+  축별 판정표 기준)으로 로컬 검증함 — 값이 0.77~0.82 범위에서 이미지별로 갈리는 것 확인.
+- **VLM-as-judge**: `score_image_vlm`, provider는 `provider_fn` 인자로 교체 가능(기본
+  Anthropic vision, `rewriter/providers.py`의 텍스트 전용 함수와 별도). 프롬프트에 수량/공간/속성
+  3축을 명시적으로 판단하도록 지시.
+- **스모크 테스트**: `scripts/smoke_test_scoring.py` — 정합 성공 3장(lumina2, `pilot-complex3-report.md`
+  판정상 3축 모두 성공) vs 실패 3장(sd35-medium 공간 반전 / zimage-turbo 수량 오류 / pixart-sigma
+  속성 색 전이)에서 `vqascore(성공군) > vqascore(실패군)`을 assert. **3090의 `t2i-score` env에서
+  실행해야 함 — GPU 없는 개발 샌드박스에서는 미실행.**
+
 ## 앞으로 확인해야 할 것 (순서대로)
 
 - [ ] **삽화 유형 + 벤치마크 프롬프트셋 정의**: 실제 수업에서 필요한 삽화 카테고리(과학 다이어그램/인물·장면/사물/개념 도식 등) 정리 → 난이도 분포 포함한 고정 벤치마크 프롬프트셋(v1) 확정. 이후 모든 비교는 이 셋 기준으로 고정.
 - [ ] **스타일 프리셋 확정**: 목적별 프리셋 개수와 각각의 시각 언어 문서화(레퍼런스 이미지 포함).
-- [ ] **rewriter 1차 구현 + 검증**: 한국어/스페인어 입력 → 영어 확장 프롬프트가 의도대로 나오는지 과목별 샘플로 테스트.
-- [ ] **채점 모듈 1차 구현**: `score_image(image, prompt, ref_set) → {vqascore, csd, custom_cv, harmonic}` 형태로 하나의 함수/모듈로 묶기. VLM-as-judge 방식도 최소 1개 붙여서 비교 시작.
+- [x] **rewriter 1차 구현 + 검증 하네스**: `src/rewriter`(`rewrite(prompt_ko, opts) -> {prompt_en, meta}`, provider는 `opts.llm_fn`으로 교체 가능, lang="es"는 인터페이스만 두고 `NotImplementedError`), `scripts/verify_rewriter.py`(과목별 한국어 샘플 20개 → 수량/스타일오염/길이 자동 체크 → `bench/rewriter-verification-report.md`). `tests/`에 유닛 테스트 18개 통과. 기본 provider/모델은 OpenAI `gpt-5`(`src/rewriter/providers.py::call_openai`). **미완료**: 이 샌드박스에 `OPENAI_API_KEY`가 없어 실제 LLM 호출로 20개 리포트를 생성하는 건 아직 안 함 — 키 설정 후 `python -m scripts.verify_rewriter` 실행 필요. 스페인어는 다음 단계.
+- [x] **채점 모듈 1차 구현**: `src/scoring.py`(`score_image(image, prompt, ref_set) → {vqascore, csd, custom_cv, harmonic}`, `score_image_vlm(image, prompt) → {faithfulness, style, overall}`). 상세는 아래 "채점 모듈" 절. **미완료**: 이 개발 샌드박스가 GPU 없는 macOS라 VQAScore/CSD 실제 모델 검증(스모크 테스트 실행)은 아직 3090 서버에서 안 함 — `t2i-score` env 만든 뒤 `python scripts/smoke_test_scoring.py` 실행 필요. `custom_cv`(OpenCV, 모델 불필요)와 배치 CSV/마크다운 생성은 저장소의 실제 파일럿 PNG로 로컬 검증 완료.
 - [ ] **golden set 시드 확보**: 스타일 합격작 20장 이상 모으기 시작(초기엔 unDraw/Storyset 등 라이선스 깨끗한 소스로 부트스트랩 가능, 평가 전용).
 - [ ] **기존 모델 후보군 실측 비교**: 벤치마크 프롬프트셋 + 확정된 스타일 프리셋 + 채점 모듈로 지금까지 써본 모델들을 동일 조건에서 채점 → 1차 순위표.
 - [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.)

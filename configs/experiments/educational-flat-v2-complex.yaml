@@ -1,0 +1,15 @@
+# 2라운드(복합 프롬프트) shared 조건. educational-flat-v2.yaml의 style/negative를
+# 그대로 사용, keywords만 pilot-complex3로 축소. dialect 조건은
+# configs/dialects/edu-<model>-v2.yaml (--dialect 플래그)로 적용.
+name: educational-flat-v2-complex
+keywords: pilot-complex3
+seed: 0
+style: >-
+  flat educational vector illustration, clean infographic-style rendering,
+  limited flat color palette, crisp geometric shapes, thin clean outline,
+  clear readable silhouette, centered single subject on plain light background,
+  no gradient, no shading, no photorealism
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy

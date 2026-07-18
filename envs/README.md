@@ -30,3 +30,24 @@ ideogram-4만 별도 env가 필요했다(둘 다 요구하는 torch/transformers
 | lumina2 | t2i | |
 | qwen-image | t2i-qwen | bitsandbytes 필요 (nf4 GGUF), t2i-ideogram과 버전 충돌해서 분리 |
 | ideogram-4 | t2i-ideogram | ideogram4 패키지 자체 의존성 때문에 분리 |
+
+## 채점 전용 env: t2i-score
+
+`src/scoring.py`(VQAScore/CSD 실제 모델)는 T2I 생성 env와 별도 env에서 돌린다 —
+diffusers 스택과 무관하고, 생성 모델과 동시에 VRAM에 올리지 않는다는 전제(별도 패스로 실행)라서
+분리하는 게 자연스럽다.
+
+    conda create -n t2i-score python=3.11 -y
+    conda activate t2i-score
+    pip install torch --index-url https://download.pytorch.org/whl/cu121
+    pip install -r ./requirements-common.txt
+    pip install opencv-python-headless "t2v-metrics==3.0" anthropic
+    # t2v-metrics v3.1부터 clip-flant5 계열이 legacy 취급되어 빠졌음(README:
+    # "reproduce results from the original VQAScore paper → v3.0 release 사용").
+    # ==3.0으로 고정해야 model='clip-flant5-xl'이 존재한다.
+    # CSD는 pip 패키지가 없음 — https://github.com/learn2phoenix/CSD 를 vendor하거나
+    # PYTHONPATH에 추가할 것. 체크포인트 다운로드 경로는 README.md "채점 모듈" 절 참고.
+
+**미완료**: 이 저장소 개발 샌드박스(macOS, GPU 없음)에서는 t2v_metrics/CSD를 실제로
+설치·검증할 수 없었다. 3090 서버에서 위 명령으로 env를 만든 뒤 동작 확인되면
+`pip freeze > envs/t2i-score.txt`로 스냅샷을 남길 것.

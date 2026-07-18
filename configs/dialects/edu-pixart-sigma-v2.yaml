@@ -1,0 +1,20 @@
+# dialect 방언 v2: pixart-sigma. edu-pixart-sigma.yaml(1라운드, base=educational-flat)의
+# v2 파생 — "textbook infographic style" -> "clean infographic-style rendering",
+# 말미의 "suitable for an educational textbook" -> "suitable for educational materials"로
+# 교체(둘 다 "textbook" 명사 누출 제거). 나머지 표현/구조는 1라운드와 동일.
+base_experiment: educational-flat-v2
+model: pixart-sigma
+template: >-
+  A flat educational vector illustration of {keyword}, drawn in a clean
+  infographic-style rendering with a limited flat color palette, crisp geometric
+  shapes, a thin clean outline, and a clear, readable silhouette. The
+  illustration shows a single subject, sitting centered on a plain light background, rendered with no
+  gradient, no shading, and no photorealistic detail — a clean, flat,
+  infographic-style illustration suitable for educational materials.
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
+transform_notes: >-
+  1라운드 edu-pixart-sigma.yaml과 구조 동일, "textbook" 명사가 등장하는 두 지점만
+  educational-flat-v2 표현으로 교체. negative 필드는 shared(v2)와 동일하게 유지.

@@ -1,0 +1,17 @@
+# dialect 방언 v2: lumina2. edu-lumina2.yaml(1라운드, base=educational-flat)의
+# v2 파생 — "textbook infographic style" -> "clean infographic-style rendering"만 교체,
+# 나머지 동일. Step3에서 apple/cat 재검증으로 책 오브젝트 소멸 확인됨.
+base_experiment: educational-flat-v2
+model: lumina2
+template: >-
+  A flat educational vector illustration of {keyword}, clean infographic-style
+  rendering, limited flat color palette, crisp geometric shapes, thin clean
+  outline, clear readable silhouette, single subject centered on a plain light background,
+  no gradient, no shading, no photorealism.
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
+transform_notes: >-
+  1라운드 edu-lumina2.yaml과 구조 동일, "textbook infographic style"만
+  educational-flat-v2 표현으로 교체. negative 필드는 shared(v2)와 동일 유지.

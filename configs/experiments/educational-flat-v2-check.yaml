@@ -1,0 +1,14 @@
+# Step3 최소 재검증. educational-flat-v2의 style/negative를 그대로 쓰고
+# keywords만 pilot-check2(apple, cat)로 축소.
+name: educational-flat-v2-check
+keywords: pilot-check2
+seed: 0
+style: >-
+  flat educational vector illustration, clean infographic-style rendering,
+  limited flat color palette, crisp geometric shapes, thin clean outline,
+  clear readable silhouette, centered single subject on plain light background,
+  no gradient, no shading, no photorealism
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy

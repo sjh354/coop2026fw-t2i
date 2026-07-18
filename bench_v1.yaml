@@ -1,0 +1,378 @@
+# t2i-lab benchmark v1
+# 40 prompts / easy 16, medium 16, hard 8 (40/40/20)
+# categories: C1 사물단독(6) C2 역사문학(7) C3 자연과학(9) C4 생활사회(8) C5 감정관계(6) C6 개념은유(4)
+# axes coverage: counting 8, spatial 13, attribute 10
+# 제약: 텍스트 렌더링 요구 프롬프트 없음 (별도 트랙)
+
+meta:
+  version: v1
+  total: 40
+  difficulty_dist: {easy: 16, medium: 16, hard: 8}
+  replaces: [basic30, history30]
+
+prompts:
+  # ---------- C1 사물 단독/소품 ----------
+  - id: bench_v1_001
+    prompt_ko: "국어 낱말 카드에 쓸 사과 그림 하나 그려줘"
+    category: 사물단독
+    subject: 국어
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "사과 단일 객체가 화면 중앙에 명확하게 그려짐"
+
+  - id: bench_v1_002
+    prompt_ko: "수학 시간에 쓸 주사위 하나 그려줘"
+    category: 사물단독
+    subject: 수학
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "정육면체 주사위 1개가 형태 왜곡 없이 그려짐"
+
+  - id: bench_v1_003
+    prompt_ko: "영어 단어 학습용으로 우산 그림 하나 필요해"
+    category: 사물단독
+    subject: 영어
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "펼쳐진 우산 단일 객체가 명확하게 식별됨"
+
+  - id: bench_v1_004
+    prompt_ko: "옛날 물건 소개 자료에 쓸 갓(조선시대 전통 모자) 그림 하나"
+    category: 사물단독
+    subject: 사회
+    grade_band: 초고
+    difficulty: easy
+    axes: []
+    expected: "챙이 넓고 검은 조선시대 갓의 형태가 서양 모자와 혼동되지 않게 그려짐"
+
+  - id: bench_v1_005
+    prompt_ko: "음악 시간에 배울 리코더 그림 하나 그려줘"
+    category: 사물단독
+    subject: 음악
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "세로로 긴 리코더 1개가 플루트 등 다른 악기와 혼동되지 않게 그려짐"
+
+  - id: bench_v1_006
+    prompt_ko: "노란 리본이 달린 파란 선물 상자를 그려줘"
+    category: 사물단독
+    subject: 국어
+    grade_band: 초저
+    difficulty: medium
+    axes: [attribute]
+    expected: "상자가 파란색, 리본이 노란색으로 색이 서로 뒤바뀌지 않음"
+
+  # ---------- C2 인물/역사·문학 장면 ----------
+  - id: bench_v1_007
+    prompt_ko: "한복을 입은 조선시대 선비 한 명을 그려줘"
+    category: 역사문학
+    subject: 사회
+    grade_band: 초고
+    difficulty: easy
+    axes: []
+    expected: "전통 복식(도포·갓)을 갖춘 인물 1명이 그려짐"
+
+  - id: bench_v1_008
+    prompt_ko: "흥부전 수업에 쓸 제비 한 마리 그려줘"
+    category: 역사문학
+    subject: 국어
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "제비 특유의 갈라진 꼬리를 가진 새 1마리가 그려짐"
+
+  - id: bench_v1_009
+    prompt_ko: "빨간 곤룡포를 입은 왕과 파란 치마를 입은 왕비가 나란히 서 있는 그림"
+    category: 역사문학
+    subject: 사회
+    grade_band: 중
+    difficulty: medium
+    axes: [attribute]
+    expected: "왕의 옷이 빨간색, 왕비의 치마가 파란색으로 색 전이 없이 유지됨"
+
+  - id: bench_v1_010
+    prompt_ko: "거북선 한 척이 바다 위에 떠 있는 장면을 그려줘"
+    category: 역사문학
+    subject: 사회
+    grade_band: 초고
+    difficulty: medium
+    axes: []
+    expected: "거북 등딱지 형태의 지붕을 가진 배가 일반 범선과 구분되게 그려짐"
+
+  - id: bench_v1_011
+    prompt_ko: "초가집 앞에 서 있는 농부의 모습을 그려줘"
+    category: 역사문학
+    subject: 사회
+    grade_band: 초고
+    difficulty: medium
+    axes: [spatial]
+    expected: "농부가 초가집보다 앞(전경)에 위치하고 초가지붕이 식별됨"
+
+  - id: bench_v1_012
+    prompt_ko: "노란 저고리를 입은 아이 세 명이 강강술래를 하는 장면"
+    category: 역사문학
+    subject: 사회
+    grade_band: 초고
+    difficulty: hard
+    axes: [counting, attribute]
+    expected: "아이가 정확히 3명이고 셋 모두 노란 저고리를 입고 손을 잡고 있음"
+
+  - id: bench_v1_013
+    prompt_ko: "기와집 왼쪽에는 붉은 단풍나무, 오른쪽에는 소나무가 있는 가을 풍경"
+    category: 역사문학
+    subject: 국어
+    grade_band: 고
+    difficulty: hard
+    axes: [spatial, attribute]
+    expected: "단풍나무가 왼쪽(붉은색), 소나무가 오른쪽(초록색)으로 좌우와 색이 모두 정확함"
+
+  # ---------- C3 자연/과학 관찰 대상 ----------
+  - id: bench_v1_014
+    prompt_ko: "개구리 한 마리를 그려줘"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "개구리 1마리가 다리 4개 등 신체 구조 오류 없이 그려짐"
+
+  - id: bench_v1_015
+    prompt_ko: "해바라기 한 송이 그림이 필요해"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "해바라기 1송이가 노란 꽃잎과 갈색 중심부로 명확히 그려짐"
+
+  - id: bench_v1_016
+    prompt_ko: "보름달을 그려줘"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초고
+    difficulty: easy
+    axes: []
+    expected: "완전히 둥근 보름달이 초승달·반달이 아닌 형태로 그려짐"
+
+  - id: bench_v1_017
+    prompt_ko: "비 오는 날 하늘의 먹구름을 그려줘"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "어두운 구름과 내리는 비가 함께 표현됨"
+
+  - id: bench_v1_018
+    prompt_ko: "나뭇가지에 참새 네 마리가 앉아 있는 그림"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초저
+    difficulty: medium
+    axes: [counting, spatial]
+    expected: "참새가 정확히 4마리이고 모두 나뭇가지 위에 앉아 있음"
+
+  - id: bench_v1_019
+    prompt_ko: "주황색 몸에 흰 줄무늬가 있는 흰동가리 물고기를 그려줘"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초고
+    difficulty: medium
+    axes: [attribute]
+    expected: "몸통 주황색·줄무늬 흰색의 배색이 반전되지 않고 유지됨"
+
+  - id: bench_v1_020
+    prompt_ko: "태양 왼쪽에 지구, 오른쪽에 달이 나란히 있는 그림을 그려줘"
+    category: 자연과학
+    subject: 과학
+    grade_band: 중
+    difficulty: medium
+    axes: [spatial]
+    expected: "지구가 태양의 왼쪽, 달이 태양의 오른쪽에 배치됨"
+
+  - id: bench_v1_021
+    prompt_ko: "연못 위에 연잎 다섯 장이 떠 있고 그중 하나에 개구리가 앉아 있는 그림"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초저
+    difficulty: hard
+    axes: [counting, spatial]
+    expected: "연잎이 정확히 5장이고 개구리 1마리가 연잎 위에 앉아 있음"
+
+  - id: bench_v1_022
+    prompt_ko: "빨간 튤립 두 송이와 노란 튤립 세 송이가 함께 핀 화단"
+    category: 자연과학
+    subject: 과학
+    grade_band: 초저
+    difficulty: hard
+    axes: [counting, attribute]
+    expected: "빨간 튤립 2송이·노란 튤립 3송이로 색별 수량이 정확함"
+
+  # ---------- C4 생활/사회 상황 ----------
+  - id: bench_v1_023
+    prompt_ko: "횡단보도 앞에 서 있는 초등학생을 그려줘"
+    category: 생활사회
+    subject: 사회
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "횡단보도와 그 앞에 서서 기다리는 어린이 1명이 그려짐"
+
+  - id: bench_v1_024
+    prompt_ko: "지진 대피 훈련 자료로, 책상 아래에 들어가 몸을 웅크린 학생 그림"
+    category: 생활사회
+    subject: 사회
+    grade_band: 초저
+    difficulty: medium
+    axes: [spatial]
+    expected: "학생이 책상 위나 옆이 아니라 책상 아래 공간에 들어가 있음"
+
+  - id: bench_v1_025
+    prompt_ko: "버스 정류장에서 차례로 줄을 선 사람 세 명을 그려줘"
+    category: 생활사회
+    subject: 사회
+    grade_band: 초저
+    difficulty: medium
+    axes: [counting]
+    expected: "사람이 정확히 3명이고 한 줄로 서 있음"
+
+  - id: bench_v1_026
+    prompt_ko: "소방관이 호스로 불을 끄는 모습을 그려줘"
+    category: 생활사회
+    subject: 사회
+    grade_band: 초저
+    difficulty: medium
+    axes: []
+    expected: "소방관 복장의 인물이 호스를 들고 물이 불을 향함"
+
+  - id: bench_v1_027
+    prompt_ko: "밥그릇 오른쪽에 국그릇이 놓인 올바른 상차림 그림"
+    category: 생활사회
+    subject: 실과
+    grade_band: 초고
+    difficulty: medium
+    axes: [spatial]
+    expected: "보는 방향 기준 국그릇이 밥그릇의 오른쪽에 놓임"
+
+  - id: bench_v1_028
+    prompt_ko: "교실에서 두 명은 앉아서 책을 읽고 한 명은 창가에 서서 밖을 보는 장면"
+    category: 생활사회
+    subject: 국어
+    grade_band: 중
+    difficulty: hard
+    axes: [counting, spatial]
+    expected: "인물이 총 3명이며 앉아 읽는 2명과 창가에 선 1명이 구분됨"
+
+  - id: bench_v1_029
+    prompt_ko: "빨간 앞치마를 입은 요리사가 접시 세 개를 들고 있고 뒤에 오븐이 보이는 주방"
+    category: 생활사회
+    subject: 사회
+    grade_band: 초고
+    difficulty: hard
+    axes: [counting, spatial, attribute]
+    expected: "앞치마가 빨간색, 접시가 정확히 3개, 오븐이 요리사 뒤 배경에 위치함"
+
+  - id: bench_v1_030
+    prompt_ko: "노란 우비를 입은 아이가 파란 우산을 쓰고 물웅덩이 옆을 걷는 모습"
+    category: 생활사회
+    subject: 국어
+    grade_band: 초저
+    difficulty: hard
+    axes: [spatial, attribute]
+    expected: "우비가 노란색·우산이 파란색으로 색이 교차되지 않고, 아이가 웅덩이 옆을 걸음"
+
+  # ---------- C5 감정/관계 묘사 ----------
+  - id: bench_v1_031
+    prompt_ko: "활짝 웃는 아이의 얼굴을 그려줘"
+    category: 감정관계
+    subject: 도덕
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "웃는 표정이 명확한 아이 얼굴 1명이 그려짐"
+
+  - id: bench_v1_032
+    prompt_ko: "슬퍼서 눈물을 흘리는 아이를 그려줘"
+    category: 감정관계
+    subject: 국어
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "눈물과 슬픈 표정이 웃는 얼굴로 오인되지 않게 표현됨"
+
+  - id: bench_v1_033
+    prompt_ko: "한 명은 기뻐하고 다른 한 명은 화가 난 두 아이를 그려줘"
+    category: 감정관계
+    subject: 도덕
+    grade_band: 초고
+    difficulty: medium
+    axes: [attribute]
+    expected: "두 인물의 표정이 기쁨/분노로 뚜렷이 구분되고 같은 감정으로 통일되지 않음"
+
+  - id: bench_v1_034
+    prompt_ko: "넘어진 친구에게 손을 내밀어 일으켜 주는 아이의 모습"
+    category: 감정관계
+    subject: 도덕
+    grade_band: 초저
+    difficulty: medium
+    axes: [spatial]
+    expected: "한 명은 바닥에 넘어져 있고 다른 한 명이 서서 손을 내밀고 있음"
+
+  - id: bench_v1_035
+    prompt_ko: "발표하는 친구를 부러운 표정으로 바라보는 학생의 모습"
+    category: 감정관계
+    subject: 도덕
+    grade_band: 중
+    difficulty: medium
+    axes: []
+    expected: "발표자와 바라보는 학생의 역할이 구분되고 시선 방향이 발표자를 향함"
+
+  - id: bench_v1_036
+    prompt_ko: "세 명의 아이 중 가운데 아이만 시무룩하고 양옆 아이들은 웃고 있는 모습"
+    category: 감정관계
+    subject: 도덕
+    grade_band: 초고
+    difficulty: hard
+    axes: [counting, spatial, attribute]
+    expected: "아이가 정확히 3명이고 가운데만 시무룩, 양옆은 웃는 표정으로 위치-감정 결합이 정확함"
+
+  # ---------- C6 개념 은유/추상 상황 ----------
+  - id: bench_v1_037
+    prompt_ko: "흙에서 새싹이 돋아나는 모습을 그려줘 (성장을 상징하는 그림)"
+    category: 개념은유
+    subject: 도덕
+    grade_band: 초저
+    difficulty: easy
+    axes: []
+    expected: "흙과 그 위로 돋은 새싹이 성장의 이미지로 읽힘"
+
+  - id: bench_v1_038
+    prompt_ko: "여러 색깔의 퍼즐 조각들이 하나로 맞춰지는 모습 (협동을 상징)"
+    category: 개념은유
+    subject: 도덕
+    grade_band: 초고
+    difficulty: easy
+    axes: []
+    expected: "서로 다른 색의 퍼즐 조각들이 맞물리는 형태로 그려짐"
+
+  - id: bench_v1_039
+    prompt_ko: "바다에서 물이 증발해 구름이 되고 비로 내리는 물의 순환을 한 장면에 담은 그림"
+    category: 개념은유
+    subject: 과학
+    grade_band: 초고
+    difficulty: medium
+    axes: []
+    expected: "바다·구름·비 세 요소가 한 장면에 공존하며 순환의 흐름이 읽힘 (화살표·글자 없이)"
+
+  - id: bench_v1_040
+    prompt_ko: "큰 나무가 그늘을 만들어 작은 새싹을 지켜 주는 모습 (배려를 상징)"
+    category: 개념은유
+    subject: 도덕
+    grade_band: 중
+    difficulty: medium
+    axes: [spatial]
+    expected: "새싹이 큰 나무의 그늘 아래에 위치함"

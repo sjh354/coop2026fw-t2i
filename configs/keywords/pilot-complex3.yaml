@@ -1,0 +1,11 @@
+# 2라운드 방언 파일럿용 복합 키워드 3개. 각 키워드는 방언 차이가 갈리는 축을
+# 하나씩 겨냥한다(수량/공간 관계/속성 결합). 정답 체크리스트는 육안 판정 기준.
+#
+# - counting: "three apples in a basket" -> 체크리스트: 사과 정확히 3개 / 바구니 안에 위치
+# - spatial: "a tree to the left of a house" -> 체크리스트: 나무가 집의 왼쪽에 위치 / 둘 다 온전한 형태
+# - attribute_binding: "a cat wearing a blue hat" -> 체크리스트: 모자가 파란색 / 모자가 고양이(만)에게 씌워짐, 다른 오브젝트에 색이 전이되지 않음
+name: pilot-complex3
+keywords:
+  - three apples in a basket
+  - a tree to the left of a house
+  - a cat wearing a blue hat
