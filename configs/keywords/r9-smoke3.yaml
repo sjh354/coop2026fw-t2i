@@ -1,0 +1,7 @@
+# style-presets-v2.md R9 스모크 테스트 전용 3키워드.
+# "a book"은 1라운드에서 책 오브젝트 누출이 나왔던 키워드라 일부러 포함.
+name: r9-smoke3
+keywords:
+  - an apple
+  - a cat
+  - a book
