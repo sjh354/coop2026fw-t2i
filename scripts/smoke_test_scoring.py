@@ -47,6 +47,10 @@ def _score_group(entries):
 
 
 def main():
+    import torch
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()
+
     print("성공군 (수량/공간/속성 모두 정확):")
     success_scores = _score_group(SUCCESS)
     print("실패군 (해당 축에서 오판정):")
@@ -55,6 +59,10 @@ def main():
     success_mean = sum(success_scores) / len(success_scores)
     failure_mean = sum(failure_scores) / len(failure_scores)
     print(f"\nsuccess_mean={success_mean:.4f} failure_mean={failure_mean:.4f}")
+
+    if torch.cuda.is_available():
+        vram_peak_gb = round(torch.cuda.max_memory_allocated() / 1024**3, 2)
+        print(f"vram_peak={vram_peak_gb}GB")
 
     assert success_mean > failure_mean, (
         "vqascore가 성공군을 실패군보다 높게 채점하지 못했다. 코드 버그일 수도 있지만, "
