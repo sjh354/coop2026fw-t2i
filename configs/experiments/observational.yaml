@@ -1,0 +1,17 @@
+# v2 스타일 프리셋. 설계 근거·S/L 티어·authoring rules: bench/style-presets-v2.md
+# status: pending-validation — R9 스모크 테스트(lumina2, basic30 3키워드) 통과 후 validated로 변경.
+name: observational
+status: pending-validation
+keywords: basic30
+seed: 0
+style: >-
+  accurate naturalistic illustration for science learning,
+  anatomically correct proportions and structure,
+  precise fine linework with clear structural boundaries,
+  natural muted color palette true to the subject,
+  subtle soft shading for gentle volume,
+  single subject on a plain light neutral background
+negative: >-
+  cartoon, anime, cute, chibi, anthropomorphic, exaggerated features,
+  heavy outline, flat sticker look, dramatic lighting, dark background,
+  scene, landscape, text, letters, watermark, signature, grainy, noisy

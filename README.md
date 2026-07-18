@@ -79,8 +79,8 @@
 
 ## 앞으로 확인해야 할 것 (순서대로)
 
-- [ ] **삽화 유형 + 벤치마크 프롬프트셋 정의**: 실제 수업에서 필요한 삽화 카테고리(과학 다이어그램/인물·장면/사물/개념 도식 등) 정리 → 난이도 분포 포함한 고정 벤치마크 프롬프트셋(v1) 확정. 이후 모든 비교는 이 셋 기준으로 고정.
-- [ ] **스타일 프리셋 확정**: 목적별 프리셋 개수와 각각의 시각 언어 문서화(레퍼런스 이미지 포함).
+- [x] **삽화 유형 + 벤치마크 프롬프트셋 정의**: 6개 카테고리(사물단독/역사문학/자연과학/생활사회/감정관계/개념은유) × 난이도(easy16/medium16/hard8) × 축(counting/spatial/attribute)으로 40개 벤치마크 프롬프트셋(v1) 확정 → `configs/benchmarks/bench_v1.yaml`. 이후 모든 비교는 이 셋 기준으로 고정.
+- [x] **스타일 프리셋 확정**: 12개 → 4개(`edu-flat-v2`/`playful-soft`/`storybook-scene`/`observational`) + 보류 1개(`mono-minimal`)로 통합. 설계 근거·시각 언어·leakage 방지 authoring rules(R1~R9): `bench/style-presets-v2.md`. 신규 4개 프리셋은 `configs/experiments/*.yaml`에 `status: pending-validation`으로 반영, R9 스모크 테스트 통과 후 validated 전환 예정. 구 12개 프리셋 yaml은 `configs/experiments/archive/presets-v1/`로 보존(과거 실험 노트가 참조).
 - [x] **rewriter 1차 구현 + 검증 하네스**: `src/rewriter`(`rewrite(prompt_ko, opts) -> {prompt_en, meta}`, provider는 `opts.llm_fn`으로 교체 가능, lang="es"는 인터페이스만 두고 `NotImplementedError`), `scripts/verify_rewriter.py`(과목별 한국어 샘플 20개 → 수량/스타일오염/길이 자동 체크 → `bench/rewriter-verification-report.md`). 자동 체크 실패 시 위반 사유를 피드백으로 넣어 최대 1회 재생성(`meta["retried"]`에 기록). 기본 provider/모델은 OpenAI `gpt-5`(`src/rewriter/providers.py::call_openai`, `.env`의 `OPENAI_API_KEY` 사용). `tests/`에 유닛 테스트 21개 통과. **실행 완료**: `python -m scripts.verify_rewriter` 결과 20/20 통과. 스페인어는 다음 단계.
 - [x] **채점 모듈 1차 구현**: `src/scoring.py`(`score_image(image, prompt, ref_set) → {vqascore, csd, custom_cv, harmonic}`, `score_image_vlm(image, prompt) → {faithfulness, style, overall}`). 상세는 아래 "채점 모듈" 절. **미완료**: 이 개발 샌드박스가 GPU 없는 macOS라 VQAScore/CSD 실제 모델 검증(스모크 테스트 실행)은 아직 3090 서버에서 안 함 — `t2i-score` env 만든 뒤 `python scripts/smoke_test_scoring.py` 실행 필요. `custom_cv`(OpenCV, 모델 불필요)와 배치 CSV/마크다운 생성은 저장소의 실제 파일럿 PNG로 로컬 검증 완료.
 - [ ] **golden set 시드 확보**: 스타일 합격작 20장 이상 모으기 시작(초기엔 unDraw/Storyset 등 라이선스 깨끗한 소스로 부트스트랩 가능, 평가 전용).
@@ -99,7 +99,9 @@
     configs/
       models/       모델 1개 = 파일 1개 (repo, adapter, env, dtype, steps, quant)
       experiments/  스타일 1개 = 파일 1개 (style/negative prompt, seed, 참조할 키워드셋)
+                    archive/presets-v1/ 폐기된 구 프리셋 — 과거 실험 노트가 참조하므로 보존만
       keywords/     고정 벤치마크 키워드셋 — 모델 비교의 기준이므로 함부로 안 바꾼다
+      benchmarks/   3단계 파이프라인 전체용 rubric 프롬프트셋(v1, 40개) — bench_v1.yaml
     src/
       generate.py   모델 × 실험 조합 하나를 생성. 공통 엔트리포인트.
       adapters/     모델별 pipeline 로딩. lazy import (env가 다르므로 필수).

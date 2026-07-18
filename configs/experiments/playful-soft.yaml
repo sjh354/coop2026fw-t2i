@@ -1,0 +1,15 @@
+# v2 스타일 프리셋. 설계 근거·S/L 티어·authoring rules: bench/style-presets-v2.md
+# status: pending-validation — R9 스모크 테스트(lumina2, basic30 3키워드) 통과 후 validated로 변경.
+name: playful-soft
+status: pending-validation
+keywords: basic30
+seed: 0
+style: >-
+  soft flat vector illustration, muted pastel color palette,
+  rounded organic forms with no sharp corners, no outline,
+  gentle two-tone color blocking, warm and friendly mood,
+  centered single subject on plain light background
+negative: >-
+  photorealistic, 3d render, photograph, heavy black outline, thick ink lines,
+  harsh contrast, neon colors, saturated, continuous gradient, busy background,
+  cluttered, text, letters, watermark, signature, grainy, noisy, sketchy

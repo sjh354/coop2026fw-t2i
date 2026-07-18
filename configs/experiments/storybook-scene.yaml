@@ -1,0 +1,15 @@
+# v2 스타일 프리셋. 설계 근거·S/L 티어·authoring rules: bench/style-presets-v2.md
+# status: pending-validation — R9 스모크 테스트(lumina2, basic30 3키워드) 통과 후 validated로 변경.
+name: storybook-scene
+status: pending-validation
+keywords: basic30
+seed: 0
+style: >-
+  warm narrative illustration, soft harmonious color palette,
+  simplified characters with friendly features, full scene composition
+  with a softly rendered background, gentle color washes,
+  delicate thin linework, cozy and inviting mood
+negative: >-
+  photorealistic, 3d render, photograph, harsh shadows, dark moody lighting,
+  high contrast, realistic human faces, cluttered composition,
+  text, letters, watermark, signature, grainy, noisy

@@ -1,0 +1,16 @@
+# v2 스타일 프리셋. 설계 근거·S/L 티어·authoring rules: bench/style-presets-v2.md
+# status: pending-validation — R9 스모크 테스트(lumina2, basic30 3키워드) 통과 후 validated로 변경.
+# 구 v1(educational-flat) 및 별도 파일럿 계열(educational-flat-v2*)과는 분리된 파일 — 덮어쓰지 않음.
+name: edu-flat-v2
+status: pending-validation
+keywords: basic30
+seed: 0
+style: >-
+  flat educational vector illustration, limited flat color palette,
+  crisp geometric shapes, thin clean outline of even width,
+  clear readable silhouette, completely flat color fill,
+  centered single subject on plain light background
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
