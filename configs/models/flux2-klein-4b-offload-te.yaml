@@ -1,0 +1,11 @@
+name: flux2-klein-4b-offload-te
+adapter: flux2
+env: t2i
+repo: black-forest-labs/FLUX.2-klein-4B
+dtype: bfloat16
+steps: 4
+guidance: 1.0
+supports_negative: false
+quantization: null
+offload: text_encoder      # text encoder(Qwen3)만 GPU/CPU 왕복, transformer/vae는 GPU 상주
+notes: 16GB 진입 시도 ②. flux2-klein-4b.yaml과 동일 모델, offload만 다름.

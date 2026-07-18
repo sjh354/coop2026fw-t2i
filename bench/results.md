@@ -7,7 +7,7 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
 |---|---|---|---|---|
 | pixart-sigma | ✅ | | | |
 | sdxl | | | | |
-| flux2-klein-4b | | | | |
+| flux2-klein-4b | ✅ | ✅ (NF4+offload 조건만) | 기본(양자화 없음, cpu offload 없음)은 16GB 초과 — NF4 양자화 + `enable_model_cpu_offload()` 조합으로 진입 성공, 품질 저하는 경미 | 아래 "flux2-klein-4b 16GB 진입 시도" 참고 |
 | flux2-klein-4b-base | | | | |
 | flux2-klein-9b | | | | |
 | zimage-turbo | | | | |
@@ -59,3 +59,15 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
 | lumina2 | 차이 없음(둘 다 성공) | 차이 없음 | 차이 없음 | 3축 모두 baseline에서 이미 완벽 — 5개 중 복합 프롬프트 최고 성능, 방언 불필요 |
 
 **결론:** 방언(프롬프트 재표현)으로 실제로 고쳐진 사례는 flux2-klein-4b의 수량 축 하나뿐. 나머지 실패는 조건과 무관하게 동일하게 재현되므로 프롬프트 문제가 아니라 모델 자체의 능력 한계로 판단. lumina2가 복합 프롬프트 전 축에서 가장 안정적.
+
+## flux2-klein-4b 16GB 진입 시도
+
+기본 조건(양자화 없음, `pipe.to("cuda")`만)은 24GB 3090에서도 실측 peak(nvidia-smi 기준, torch `max_memory_allocated()`보다 2~3GB 더 높게 나옴)이 16GB를 넘어 그대로는 탈락. 세 가지 완화책을 순서대로 실측(`educational-flat-pilot`, pilot5 5키워드):
+
+1. **`enable_model_cpu_offload()`만 (양자화 없음)** — 16GB 진입 성공. 다만 이미지당 시간이 기본 대비 약 5.6배로 증가. 출력은 기본 조건과 바이트 단위로 동일(가중치/연산 자체는 안 바뀌므로 당연).
+2. **text encoder만 offload (transformer/vae는 GPU 상주, text_encoder만 인코딩 시점에 GPU⇄CPU 왕복)** — **실패.** `encode_prompt()` 호출 시점에 text_encoder+transformer+vae가 동시에 GPU에 올라가 있어 peak이 기본 조건보다 오히려 더 높게 나옴(왕복에 따른 할당 파편화까지 겹침). 속도도 기본 대비 약 3.4배 느려짐. "텍스트 인코더만 내리면 된다"는 가정 자체가 이 파이프라인 구조(단일 컴포넌트만 왕복시켜도 인코딩 순간엔 전부 상주)에서는 성립하지 않음 — 진짜로 절감하려면 인코딩 중엔 transformer도 같이 내려야 하는데, 그러면 결국 ①(전체 offload)과 같아짐. 구현은 `src/adapters/flux2.py`에 남겨뒀지만(`offload: text_encoder`) 채택하지 않음.
+3. **transformer NF4 양자화(bitsandbytes) + `enable_model_cpu_offload()`** — 16GB 진입 성공, **①보다 VRAM/속도 둘 다 더 좋음**(양자화로 스왑 대상 자체가 작아졌기 때문). 품질 스팟체크(pilot5 중 "a cat", "a butterfly"): 구조/구도/색상 유지, 다만 그라디언트 음영이 다소 밋밋해지고 윤곽선이 살짝 거칠어지는 경미한 저하 관찰. 리키지·붕괴 등 치명적 결함 없음.
+
+**결론: flux2-klein-4b는 탈락하지 않는다.** NF4 양자화 + cpu offload 조합(`configs/models/flux2-klein-4b-nf4.yaml`)으로 16GB 예산에 안정적으로 진입, 품질 저하도 실사용 가능한 수준. lumina2(품질)+pixart-sigma(속도) 2모델 체제로의 축소는 **발동하지 않음** — flux2-klein-4b는 "NF4 양자화 조건"으로 후보 목록에 유지.
+
+**남은 삽질:** `flux2.py`의 fp8 분기(`quantization: fp8`)는 실제로는 `quant_backend="bitsandbytes_4bit"` + `bnb_4bit_quant_type: "nf4"`를 그대로 재사용하는 스텁이라 값과 무관하게 NF4가 적용됨 — 이번 라운드는 NF4가 더 강한 압축이라 fp8을 별도 구현하지 않고 보류. fp8이 필요해지면 torchao 설치 + `PipelineQuantizationConfig(quant_backend="torchao", ...)` 경로를 새로 붙여야 함.

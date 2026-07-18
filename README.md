@@ -40,6 +40,7 @@
 - 모델별 VRAM/latency는 각 run의 note frontmatter(`vram_peak_gb`, `sec_per_image`)에 자동 기록되므로 bench 문서에 손으로 옮기지 않는다.
 - **방언(dialect) 효과 파일럿 결론** (`bench/results.md` 상세): 단순 프롬프트("an apple" 수준)에서는 모델별 방언 재표현이 출력을 거의 바꾸지 않는다 — 어려운 출력은 대부분 프롬프트 문제가 아니라 모델 능력 한계. 수량/공간/속성 결합 같은 복합 프롬프트에서도 방언으로 실제 개선된 사례는 flux2-klein-4b의 수량 정확도 하나뿐이었고, 나머지 실패(sd35-medium의 좌우 반전 고정, zimage-turbo의 개수 오류, pixart-sigma의 속성 색 전이)는 조건과 무관하게 동일하게 재현돼 능력 한계로 판단. **lumina2가 복합 프롬프트 전 축(수량/공간/속성)에서 가장 안정적** — ②에서 후보 압축 시 우선 고려.
 - **스타일 프리셋 작성 규칙**: LLM/T5 인코더 모델은 스타일 프롬프트 속 구체 명사(그릴 수 있는 사물, 예: "textbook")를 오브젝트로 그대로 렌더링할 수 있다("textbook infographic style" → 책이 그림에 등장). 배경/매체로 의도한 게 아니면 스타일 프롬프트에 구체 명사를 넣지 않는다. 상세 감사 결과는 `bench/results.md` 참고.
+- **flux2-klein-4b 16GB 진입 결론**: 기본 조건(양자화·offload 없음)은 실측 peak이 16GB를 넘어 탈락 대상이었으나, **transformer NF4 양자화 + `enable_model_cpu_offload()`**(`configs/models/flux2-klein-4b-nf4.yaml`) 조합으로 16GB 진입에 성공(전체 offload만 쓰는 것보다 VRAM/속도 둘 다 더 나음). 품질 저하는 경미(음영 그라디언트 다소 밋밋, 윤곽선 살짝 거칠어짐 — 구조적 결함 없음). "text encoder만 offload" 방식은 이 파이프라인 구조에서 실질적 절감 효과가 없어 폐기. **결과적으로 lumina2+pixart-sigma 2모델 체제로의 축소는 발동하지 않음** — flux2-klein-4b는 NF4 양자화 조건으로 후보 유지. 상세는 `bench/results.md` 참고.
 
 ### ③ 메트릭 채점
 

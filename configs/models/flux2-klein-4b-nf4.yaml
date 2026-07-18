@@ -1,0 +1,10 @@
+name: flux2-klein-4b-nf4
+adapter: flux2
+env: t2i
+repo: black-forest-labs/FLUX.2-klein-4B
+dtype: bfloat16
+steps: 4
+guidance: 1.0
+supports_negative: false
+quantization: nf4          # transformer만 bitsandbytes NF4, enable_model_cpu_offload() 동반
+notes: 16GB 진입 시도 ③. flux2-klein-4b.yaml과 동일 모델, transformer 양자화만 다름.
