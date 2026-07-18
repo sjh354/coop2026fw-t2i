@@ -45,9 +45,38 @@ diffusers 스택과 무관하고, 생성 모델과 동시에 VRAM에 올리지 �
     # t2v-metrics v3.1부터 clip-flant5 계열이 legacy 취급되어 빠졌음(README:
     # "reproduce results from the original VQAScore paper → v3.0 release 사용").
     # ==3.0으로 고정해야 model='clip-flant5-xl'이 존재한다.
+    conda install ffmpeg=6.1.2 -c conda-forge -y   # t2v_metrics가 import 시점에 요구
+    bash envs/fix_t2v_metrics.sh                   # 아래 "t2v-metrics 3.0 패키징 문제" 참고
     # CSD는 pip 패키지가 없음 — https://github.com/learn2phoenix/CSD 를 vendor하거나
     # PYTHONPATH에 추가할 것. 체크포인트 다운로드 경로는 README.md "채점 모듈" 절 참고.
 
-**미완료**: 이 저장소 개발 샌드박스(macOS, GPU 없음)에서는 t2v_metrics/CSD를 실제로
-설치·검증할 수 없었다. 3090 서버에서 위 명령으로 env를 만든 뒤 동작 확인되면
-`pip freeze > envs/t2i-score.txt`로 스냅샷을 남길 것.
+**완료 (2026-07-18, 3090 서버)**: `python scripts/smoke_test_scoring.py` PASS
+(success_mean=0.9133 > failure_mean=0.6767). 스냅샷: `envs/t2i-score.txt`.
+
+### t2v-metrics 3.0 패키징 문제 (`envs/fix_t2v_metrics.sh`)
+
+`t2v_metrics/__init__.py`가 import 시점에 자기가 지원하는 VLM 백엔드를 전부
+끌어온다 — 우리는 `VQAScore(model="clip-flant5-xl")` 하나만 쓰는데도 LLaVA-OneVision,
+LLaVA-Video, InternVideo2-CLIP 등 무관한 백엔드가 없는 의존성(`llava` 패키지,
+`flash_attn`) 때문에 import 자체가 죽는다. 추가로 pip가 설치하는 `torchaudio`가
+`torch`(cu121)와 다른 CUDA 빌드(cu124)로 잡혀서 그것도 따로 크래시.
+
+`envs/fix_t2v_metrics.sh`가 하는 일 (env 하나 새로 만들 때마다 1회 실행):
+
+1. `torchaudio`를 torch와 같은 cu121 인덱스로 강제 재설치
+2. `llava` 최소 stub 생성 — `LLaVAOneVisionModel`/`LLaVAVideoModel` 클래스 정의가
+   import는 되게 하되 실제로 호출하면 `NotImplementedError` (우리가 안 쓰는 모델이라
+   진짜 LLaVA-NeXT를 설치할 필요는 없음)
+3. site-packages의 `t2v_metrics/__init__.py`를 패치해서 `CLIPScore`/`ITMScore`
+   import를 `try/except ImportError`로 감쌈 — 이 두 클래스(InternVideo2-CLIP,
+   BLIP2-ITM)는 안 쓰고, InternVideo2-CLIP 쪽은 `flash_attn`(컴파일 필요한 CUDA
+   확장)까지 요구해서 스텁으로 우회하기보다 통째로 건너뛰는 게 맞음
+
+이 스크립트는 `pip freeze`로는 재현 안 되는 site-packages 직접 수정이라
+`envs/t2i-score.txt`만 보고 env를 새로 만들면 이 문제가 그대로 재발한다 —
+**반드시 `fix_t2v_metrics.sh`를 같이 실행할 것.**
+
+추가로: 서버에 캐시돼 있던 만료된 HF OAuth 토큰(`hf_oauth_...`) 때문에
+`google/flan-t5-xl` 다운로드가 401로 막혔던 적이 있음 — 이런 401이 뜨면
+`huggingface-cli logout`으로 만료 토큰부터 지울 것 (flan-t5-xl은 공개 모델이라
+토큰 자체가 필요 없음).
