@@ -52,6 +52,8 @@ diffusers 스택과 무관하고, 생성 모델과 동시에 VRAM에 올리지 �
 
 **완료 (2026-07-18, 3090 서버)**: `python scripts/smoke_test_scoring.py` PASS
 (success_mean=0.9133 > failure_mean=0.6767). 스냅샷: `envs/t2i-score.txt`.
+VRAM 실측(2026-07-19 추가): vram_peak=6.06GB (clip-flant5-xl 로드 기준, T2I 생성
+모델과 동시 로드하지 않는 별도 패스 전제이므로 생성 모델 VRAM과 합산하지 않음).
 
 ### t2v-metrics 3.0 패키징 문제 (`envs/fix_t2v_metrics.sh`)
 
