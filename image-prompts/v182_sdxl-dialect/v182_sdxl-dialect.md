@@ -1,8 +1,8 @@
 ---
 best: []
-condition: shared
+condition: dialect
 created: '2026-07-16'
-dialect: null
+dialect: edu-sdxl
 dtype: float16
 experiment: educational-flat-pilot
 guidance_scale: 7.0
@@ -22,7 +22,7 @@ negative_prompt: photorealistic, 3d render, photograph, gradient, soft shading, 
 num_images: 5
 quantization: null
 rating: null
-sec_per_image: 8.68
+sec_per_image: 8.57
 seed: 0
 status: done
 steps: 30
@@ -30,14 +30,14 @@ style: flat educational vector illustration, textbook infographic style, limited
   color palette, crisp geometric shapes, thin clean outline, clear readable silhouette,
   centered single subject on plain light background, no gradient, no shading, no photorealism
 tags: []
-version: v179
+version: v182
 vram_peak_gb: 10.73
 ---
 
 ## Images
 
-![[v179_00_an_apple.png]]
-![[v179_01_a_cat.png]]
-![[v179_02_a_house.png]]
-![[v179_03_a_butterfly.png]]
-![[v179_04_a_car.png]]
+![[v182_00_an_apple.png]]
+![[v182_01_a_cat.png]]
+![[v182_02_a_house.png]]
+![[v182_03_a_butterfly.png]]
+![[v182_04_a_car.png]]

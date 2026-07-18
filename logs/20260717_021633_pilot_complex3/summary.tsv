@@ -1,0 +1,11 @@
+model	condition	status	vram_gb	sec_per_img
+flux2-klein-4b	shared	OK	17.32	3.07
+flux2-klein-4b	dialect	OK	17.32	3.1
+pixart-sigma	shared	OK	14.46	6.19
+pixart-sigma	dialect	OK	14.46	6.0
+sd35-medium	shared	OK	17.59	13.17
+sd35-medium	dialect	OK	17.59	13.29
+zimage-turbo	shared	FAIL	-	-
+zimage-turbo	dialect	FAIL	-	-
+lumina2	shared	OK	12.28	28.34
+lumina2	dialect	OK	12.28	28.9

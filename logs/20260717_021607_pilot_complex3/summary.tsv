@@ -1,0 +1,11 @@
+model	condition	status	vram_gb	sec_per_img
+flux2-klein-4b	shared	FAIL	-	-
+flux2-klein-4b	dialect	FAIL	-	-
+pixart-sigma	shared	FAIL	-	-
+pixart-sigma	dialect	FAIL	-	-
+sd35-medium	shared	FAIL	-	-
+sd35-medium	dialect	FAIL	-	-
+zimage-turbo	shared	FAIL	-	-
+zimage-turbo	dialect	FAIL	-	-
+lumina2	shared	FAIL	-	-
+lumina2	dialect	FAIL	-	-
