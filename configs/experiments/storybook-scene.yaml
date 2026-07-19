@@ -1,7 +1,7 @@
 # v2 스타일 프리셋. 설계 근거·S/L 티어·authoring rules: bench/style-presets-v2.md
-# status: pending-validation — R9 스모크 테스트(lumina2, basic30 3키워드) 통과 후 validated로 변경.
+# status: validated — R9 스모크 테스트(lumina2, r9-smoke3: apple/cat/book) leakage 없음 확인 (2026-07-19). 스타일 고퀄리티 이슈는 별도 트랙.
 name: storybook-scene
-status: pending-validation
+status: validated
 keywords: basic30
 seed: 0
 style: >-

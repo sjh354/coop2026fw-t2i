@@ -71,3 +71,11 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
 **결론: flux2-klein-4b는 탈락하지 않는다.** NF4 양자화 + cpu offload 조합(`configs/models/flux2-klein-4b-nf4.yaml`)으로 16GB 예산에 안정적으로 진입, 품질 저하도 실사용 가능한 수준. lumina2(품질)+pixart-sigma(속도) 2모델 체제로의 축소는 **발동하지 않음** — flux2-klein-4b는 "NF4 양자화 조건"으로 후보 목록에 유지.
 
 **남은 삽질:** `flux2.py`의 fp8 분기(`quantization: fp8`)는 실제로는 `quant_backend="bitsandbytes_4bit"` + `bnb_4bit_quant_type: "nf4"`를 그대로 재사용하는 스텁이라 값과 무관하게 NF4가 적용됨 — 이번 라운드는 NF4가 더 강한 압축이라 fp8을 별도 구현하지 않고 보류. fp8이 필요해지면 torchao 설치 + `PipelineQuantizationConfig(quant_backend="torchao", ...)` 경로를 새로 붙여야 함.
+
+## v2 스타일 프리셋 R9 스모크 테스트 (2026-07-19)
+
+`scripts/preset_smoke_test.sh`로 4개 프리셋(edu-flat-v2/observational/playful-soft/storybook-scene)을
+lumina2 + r9-smoke3(apple/cat/book)로 생성, 육안 확인(`v223~v226_lumina2`).
+
+- **leakage**: 4개 전부 없음 — "a book" 케이스 포함, 스타일 문구 명사가 객체로 새어나오는 현상 미관찰. R9 통과로 4개 전부 `status: validated` 처리.
+- **별도 발견(R9 스코프 밖)**: `observational`, `storybook-scene` 두 프리셋은 교육용 프레젠테이션에 쓰기엔 스타일이 지나치게 고퀄리티/복잡하다는 지적. leakage 문제가 아니라 문구의 디테일/톤 설계 문제라 이번 스모크 테스트로는 막지 않고, 본 실험(VQAScore 등 채점)에 그대로 포함해서 결과로 판단하기로 함. 필요시 추후 문구 단순화 후 R9 재실행.
