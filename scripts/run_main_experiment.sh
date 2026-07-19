@@ -87,4 +87,4 @@ done
 echo
 echo "생성 로그: $LOG_DIR/"
 echo "채점 결과: bench/scores/*.csv, *.md"
-python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok --log "$LOG_DIR"
+python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok --message "본 실험 완료 — 로그: $LOG_DIR, 채점: bench/scores/"
