@@ -8,6 +8,7 @@
 #      (scripts/preset_smoke_test.sh 육안 확인 후 status 필드를 직접 바꿔둘 것)
 #
 #     bash scripts/run_main_experiment.sh
+#     SKIP_SCORE=1 bash scripts/run_main_experiment.sh   # 생성만 하고 채점은 나중에 따로
 set -euo pipefail
 
 # A트랙 결론(bench/results.md): lumina2(품질 최상)+pixart-sigma(속도)+flux2-klein-4b-nf4
@@ -65,6 +66,14 @@ for preset in "${PRESETS[@]}"; do
     fi
   done
 done
+
+if [ "${SKIP_SCORE:-0}" = "1" ]; then
+  echo
+  echo "SKIP_SCORE=1 — 채점 단계 건너뜀 (생성된 버전: ${VDIRS[*]})"
+  python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
+    --message "본 실험(생성만) 완료 — 로그: $LOG_DIR, 채점은 별도 진행 예정. 생성 버전: ${VDIRS[*]}"
+  exit 0
+fi
 
 echo
 echo "=== 채점 단계 (t2i-score env) ==="
