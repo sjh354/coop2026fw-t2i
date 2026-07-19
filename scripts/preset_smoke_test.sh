@@ -33,12 +33,12 @@ for preset in "${PRESETS[@]}"; do
   if conda run -n "$env" python -m src.generate --model "$MODEL" --exp "$tmp_exp" > "$log" 2>&1; then
     vdir=$(grep -o 'image-prompts/v[0-9_a-zA-Z-]*' "$log" | head -1)
     echo "    OK -> ${vdir}/images/ 육안 확인할 것"
-    python "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
+    python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
       --message "SUCCESS: ${preset} smoke -> ${vdir}"
   else
     status=fail
     echo "    FAIL — 로그: $log"
-    python "$(dirname "$0")/alert.py" --task "$TASK" --status fail \
+    python3 "$(dirname "$0")/alert.py" --task "$TASK" --status fail \
       --message "FAIL: ${preset} smoke ($(tail -3 "$log" | tr '\n' ' ' | cut -c1-200))"
   fi
   # rm 대신 scratch로 옮김 (실수로 커밋되는 것 방지, 삭제는 나중에 수동으로)
@@ -49,4 +49,4 @@ echo
 echo "각 preset 이미지 3장씩(an apple / a cat / a book) 육안 확인할 것 —"
 echo "특히 'a book' 결과에서 스타일 문구 명사가 오브젝트로 새는지 집중 확인."
 echo "통과 시 configs/experiments/<preset>.yaml status: pending-validation -> validated로 수동 변경."
-python "$(dirname "$0")/alert.py" --task "$TASK" --status "$status" --log "$LOG_DIR"
+python3 "$(dirname "$0")/alert.py" --task "$TASK" --status "$status" --log "$LOG_DIR"

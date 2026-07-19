@@ -56,11 +56,11 @@ for preset in "${PRESETS[@]}"; do
       tail=$(grep -o 'vram_peak=[0-9.]*GB  sec/img=[0-9.]*' "$log" | tail -1)
       echo "    OK -> $vdir ($tail)"
       VDIRS+=("$vdir")
-      python "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
+      python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
         --message "SUCCESS: ${model}/${preset} -> ${vdir} (${tail})"
     else
       echo "    FAIL — 로그: $log"
-      python "$(dirname "$0")/alert.py" --task "$TASK" --status fail \
+      python3 "$(dirname "$0")/alert.py" --task "$TASK" --status fail \
         --message "FAIL: ${model}/${preset} ($(tail -3 "$log" | tr '\n' ' ' | cut -c1-200))"
     fi
   done
@@ -75,11 +75,11 @@ for vdir in "${VDIRS[@]}"; do
   log="$LOG_DIR/score__${version}.log"
   if conda run -n t2i-score python -m src.scoring --dir "${vdir}/images" --out "$out" --vlm > "$log" 2>&1; then
     echo "    OK  $version -> $out"
-    python "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
+    python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok \
       --message "SCORE OK: ${version} -> ${out}"
   else
     echo "    FAIL 채점 — 로그: $log"
-    python "$(dirname "$0")/alert.py" --task "$TASK" --status fail \
+    python3 "$(dirname "$0")/alert.py" --task "$TASK" --status fail \
       --message "SCORE FAIL: ${version} ($(tail -3 "$log" | tr '\n' ' ' | cut -c1-200))"
   fi
 done
@@ -87,4 +87,4 @@ done
 echo
 echo "생성 로그: $LOG_DIR/"
 echo "채점 결과: bench/scores/*.csv, *.md"
-python "$(dirname "$0")/alert.py" --task "$TASK" --status ok --log "$LOG_DIR"
+python3 "$(dirname "$0")/alert.py" --task "$TASK" --status ok --log "$LOG_DIR"
