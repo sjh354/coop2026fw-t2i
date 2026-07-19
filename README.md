@@ -55,24 +55,30 @@
 ### 채점 모듈 (`src/scoring.py`)
 
 `src/score.py`(CLIP 프록시, `review_app.py`가 아직 씀)와 별도로, 실제 VQAScore/CSD 모델을
-쓰는 1차 구현. `python -m src.scoring --dir <PNG 디렉토리> --out <csv 경로>`로 배치 채점 →
-`<csv 경로>` + 같은 이름의 `.md` 요약 생성. `--refs`로 스타일 레퍼런스 이미지 경로들을,
-`--vlm`으로 VLM-as-judge 열을 추가할 수 있다.
+쓰는 1차 구현. `python -m src.scoring --dir <PNG 디렉토리> --out <csv 경로> --components <조합>`으로
+배치 채점 → `<csv 경로>` + 같은 이름의 `.md` 요약 생성. `--components`는 `vqascore,cv,csd` 중
+조합(csd는 `--ref-manifest`로 `configs/ref_sets/<preset>.yaml` 필요) — vqascore/cv 패스와 csd
+패스를 분리해서, csd는 정식 ref_set 수집 전엔 건너뛰고 나중에 그 패스만 재실행할 수 있다.
 
 - **env**: `t2i-score` (T2I 생성 env와 분리, 동시 로드 안 함 — `envs/README.md` 참고).
 - **VQAScore**: `t2v_metrics` 패키지, `clip-flant5-xl`. 가중치는 `HF_HOME`(기본 `~/.cache/huggingface`)에
   자동 다운로드됨. VRAM: **3090에서 측정 필요, 아직 미측정**.
 - **CSD**: 공개 구현([github.com/learn2phoenix/CSD](https://github.com/learn2phoenix/CSD))의
   ViT-L 체크포인트를 `weights/scoring/csd_vit-l.pth`에 받아둘 것(`weights/`는 `.gitignore`의
-  `*.pth` 규칙으로 자동 제외됨). `ref_set`이 비어있으면(golden set 미확보) `csd`는 `None`.
-  VRAM: **3090에서 측정 필요, 아직 미측정**.
+  `*.pth` 규칙으로 자동 제외됨). ref_set 검증/수집은 `scripts/validate_ref_set.py` +
+  `bench/style-presets-v2.md`의 "5. CSD ref_set 수집 기준" 참고. VRAM: **3090에서 측정 필요, 아직 미측정**.
 - **custom_cv**: OpenCV만 사용, 모델 불필요. line flatness(색 영역 내부 LAB 채널별 분산,
   픽셀 수 가중 평균) + edge uniformity(Canny 엣지 dilate 후 거리변환 폭의 변동계수)를 각각
   0~1로 정규화해 평균. 저장소의 실제 파일럿 PNG 6장(v205/v207/v211/v214, `pilot-complex3-report.md`
   축별 판정표 기준)으로 로컬 검증함 — 값이 0.77~0.82 범위에서 이미지별로 갈리는 것 확인.
-- **VLM-as-judge**: `score_image_vlm`, provider는 `provider_fn` 인자로 교체 가능(기본
-  Anthropic vision, `rewriter/providers.py`의 텍스트 전용 함수와 별도). 프롬프트에 수량/공간/속성
-  3축을 명시적으로 판단하도록 지시.
+- **VLM-as-judge**: `scoring.py`에서 완전히 분리된 별도 스크립트 `scripts/judge.py` —
+  **로컬 Qwen2.5-VL-7B-Instruct**(전용 `t2i-judge` env, 3090에서 직접 추론)로 API 키 없이
+  판정한다. 예전에 있던 Anthropic API 기반 `score_image_vlm`은 제거됨. bench_v1의
+  counting/spatial/attribute 축별로 pass/fail을 구조화 JSON으로 받는다. 실행 순서는
+  `docs/eval_runbook.md` 참고.
+- **최종 병합**: `scripts/merge_results.py` — pass1(vqascore/cv) + csd + judge CSV를
+  run×item_id 기준으로 합쳐 harmonic 집계 최종 CSV + 모델별 컴포넌트 평균/모델×축 pass율
+  리포트를 만든다. csd가 없어도(정식 ref_set 미수집) 나머지 컴포넌트만으로 동작한다.
 - **스모크 테스트**: `scripts/smoke_test_scoring.py` — 정합 성공 3장(lumina2, `pilot-complex3-report.md`
   판정상 3축 모두 성공) vs 실패 3장(sd35-medium 공간 반전 / zimage-turbo 수량 오류 / pixart-sigma
   속성 색 전이)에서 `vqascore(성공군) > vqascore(실패군)`을 assert. **3090의 `t2i-score` env에서

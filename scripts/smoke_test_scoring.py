@@ -40,7 +40,7 @@ def _score_group(entries):
         # PngInfo의 "keyword"(콘텐츠만)를 쓴다 — "prompt"는 6장이 거의 같은 스타일
         # 접미사를 공유해서 vqascore가 콘텐츠보다 그 공통 접미사를 채점하게 된다.
         keyword = Image.open(path).info["keyword"]
-        result = score_image(path, keyword, ref_set=[])
+        result = score_image(path, keyword, components={"vqascore"})
         print(f"  {filename} ({reason}) -> vqascore={result['vqascore']}")
         scores.append(result["vqascore"])
     return scores

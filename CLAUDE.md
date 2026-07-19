@@ -99,6 +99,43 @@ One env per model or model family, matching the `env:` field in `configs/models/
 
 First PixArt run downloads ~12GB (T5-XXL text encoder) — point `HF_HOME` at a large partition before running.
 
+## GPU servers & keeping everything in sync
+
+Two remote GPU servers are available for running experiments (each a single RTX 3090, 24GB VRAM),
+**each with a fixed, separate role** (2026-07-19 split, after both disks filled up from mixing
+generation + scoring model caches on the same 97GB disk):
+
+- `root@172.10.5.157` — repo at `/root/t2i` — **이미지 생성(T2I 추론) 전용.**
+  env는 `t2i` 하나만 유지 — 지금 확정된 3개 후보(lumina2, pixart-sigma, flux2-klein-4b-nf4)가
+  전부 이 env를 씀. `t2i-score`/`t2i-judge`/`t2i-qwen`/`t2i-ideogram` 같은 채점·비후보 모델 env는
+  여기 만들지 않는다 — 디스크(97GB)가 금방 찬다.
+- `ubuntu@172.10.5.23` — repo at `/home/ubuntu/t2i` — **채점(scoring) 전용.**
+  env는 `t2i-score`(VQAScore/CSD/custom_cv, `src/scoring.py`)와 `t2i-judge`(로컬 Qwen2.5-VL-7B-Instruct
+  VLM-judge, `scripts/judge.py`) 둘만 유지. T2I 생성 모델 env(`t2i` 등)나 그 가중치 캐시를
+  여기 두지 않는다.
+
+**두 서버 다 새 역할과 맞지 않는 env/모델 캐시를 발견하면 바로 지운다** (예: 157에 `t2i-score` env가
+생겼거나, 23에 T2I 생성 모델 가중치가 캐시돼 있으면) — 역할이 섞이기 시작하면 다시 디스크가 찬다.
+`df -h /`로 여유 공간을 수시로 확인할 것.
+
+본 실험 워크플로우상 생성은 157에서, 채점은 23에서 도니 **생성된 PNG를 23으로 옮기는 단계가
+필요하다** (`image-prompts/*/images/`는 gitignored라 git으로는 안 넘어감) — `scp`/`rsync`로 직접
+옮기거나, 로컬을 경유지로 쓸 것. `docs/eval_runbook.md`가 채점 실행 순서를 다룬다.
+
+Both accept `ssh -i /Users/sjh354/.ssh/id_ed25519 <user>@<host>`. Note the repo directory is named `t2i` on both servers, not `t2i-lab`.
+
+This repo lives in three places (local + two servers) and must never drift. Follow these sync rules:
+
+**After local code changes** (editing configs, adapters, scripts — anything not a model run):
+1. Commit and push from local.
+2. SSH into both servers and `git pull` so they pick up the change before any run uses it.
+
+**After a server-side run** (a model generation, sweep, or any long-running experiment executed via SSH on one of the two servers):
+1. On that server: commit the results (e.g. updated `image-prompts/*.md` notes, `bench/results.md`, frozen env files) and push.
+2. Pull the update back to local, and `git pull` it on the *other* server too, so all three checkouts stay current.
+
+The goal: local and both servers should always be pullable to the same latest commit before starting new work. Don't leave a server ahead of origin (uncommitted/unpushed run results) or behind origin (stale config) when handing off between machines.
+
 ## Bench notes (`bench/results.md`)
 
 Holds conclusions and troubleshooting notes only — vram/latency numbers are auto-recorded in note frontmatter and shown in the Streamlit Compare tab, so don't hand-copy numbers into this file.

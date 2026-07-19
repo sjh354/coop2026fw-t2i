@@ -3,6 +3,13 @@
 모델 하나(또는 같은 아키텍처 계열)당 env 하나. `configs/models/*.yaml`의 `env` 필드와
 이름을 맞춘다.
 
+**서버 역할 분리 (2026-07-19)**: 생성 env(`t2i`, `t2i-qwen`, `t2i-ideogram`)와 채점 env
+(`t2i-score`, `t2i-judge`)를 같은 디스크에 같이 두면 97GB가 금방 찬다(실제로 두 서버 다
+찬 적 있음). 그래서 서버별로 역할을 고정한다 — `root@172.10.5.157`은 생성 전용(env `t2i`만),
+`ubuntu@172.10.5.23`은 채점 전용(env `t2i-score`/`t2i-judge`만). 자세한 건 CLAUDE.md의
+"GPU servers & keeping everything in sync" 절 참고. 새 env를 만들기 전에 그 서버의 역할과
+맞는지 먼저 확인할 것.
+
 공통 베이스:
 
     conda create -n t2i-<name> python=3.11 -y
@@ -41,7 +48,7 @@ diffusers 스택과 무관하고, 생성 모델과 동시에 VRAM에 올리지 �
     conda activate t2i-score
     pip install torch --index-url https://download.pytorch.org/whl/cu121
     pip install -r ./requirements-common.txt
-    pip install opencv-python-headless "t2v-metrics==3.0" anthropic
+    pip install opencv-python-headless "t2v-metrics==3.0"
     # t2v-metrics v3.1부터 clip-flant5 계열이 legacy 취급되어 빠졌음(README:
     # "reproduce results from the original VQAScore paper → v3.0 release 사용").
     # ==3.0으로 고정해야 model='clip-flant5-xl'이 존재한다.
@@ -82,3 +89,20 @@ LLaVA-Video, InternVideo2-CLIP 등 무관한 백엔드가 없는 의존성(`llav
 `google/flan-t5-xl` 다운로드가 401로 막혔던 적이 있음 — 이런 401이 뜨면
 `huggingface-cli logout`으로 만료 토큰부터 지울 것 (flan-t5-xl은 공개 모델이라
 토큰 자체가 필요 없음).
+
+## VLM-judge 전용 env: t2i-judge
+
+`scripts/judge.py`(bench_v1 축별 pass/fail 판정)는 **로컬 Qwen2.5-VL-7B-Instruct**를
+쓴다 — 예전에는 Anthropic API(`score_image_vlm`, `t2i-score` env에 `anthropic` 패키지)로
+했었지만, API 키가 서버에 없어서 로컬 추론으로 전환했다. `t2i-qwen`(Qwen-Image T2I 생성
+모델용)과 이름이 비슷하지만 완전히 다른 모델·용도라 env를 분리한다.
+
+    conda create -n t2i-judge python=3.11 -y
+    conda activate t2i-judge
+    pip install torch --index-url https://download.pytorch.org/whl/cu121
+    pip install -r ./requirements-common.txt
+    pip install "transformers>=4.49.0" qwen-vl-utils[decord] accelerate
+    # transformers 4.49 미만은 Qwen2_5_VLForConditionalGeneration이 없음.
+
+가중치는 `HF_HOME`에 자동 다운로드(`Qwen/Qwen2.5-VL-7B-Instruct`, ~16GB). VRAM 실측치는
+`scripts/judge.py` 스모크 테스트 결과 참고(README.md "채점 모듈" 절).

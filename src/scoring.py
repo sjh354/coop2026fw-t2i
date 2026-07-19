@@ -1,33 +1,41 @@
-"""이미지 채점 모듈 1차 구현 (진짜 모델). `src/score.py`(CLIP 프록시)를 대체하지 않고
-별도로 둔다 — review_app.py는 아직 프록시를 쓰고, 이 모듈은 3090에서 검증 후 교체한다.
+"""이미지 채점 모듈 — vqascore/custom_cv/csd 패스 분리 실행.
 
-    score_image(image, prompt, ref_set) -> {vqascore, csd, custom_cv, harmonic}
-    score_image_vlm(image, prompt) -> {faithfulness, style, overall}
+    score_image(image, prompt, components, ref_set=None) -> {vqascore?, custom_cv?, csd?}
 
-무거운 모델(VQAScore, CSD)은 함수 인자로 받지 않고 모듈 레벨 캐시로 lazy-load한다
-(인터페이스를 3개 파라미터로 고정하기 위해).
+VLM-as-judge는 이 모듈에서 분리됐다 — 로컬 Qwen2.5-VL-7B-Instruct 기반
+`scripts/judge.py` 참고 (예전 Anthropic API 기반 score_image_vlm은 제거됨).
 
+무거운 모델(VQAScore, CSD)은 함수 인자로 받지 않고 모듈 레벨 캐시로 lazy-load한다.
 가중치 다운로드 경로 / VRAM은 README.md의 "채점 모듈" 절 참고. T2I 생성 모델과
 동시 로드하지 않는다는 전제 — 채점은 생성이 끝난 뒤 별도 패스로 돌린다.
 
-    python -m src.scoring --dir image-prompts/v211_lumina2/images --out bench/scores.csv
+패스를 분리하는 이유: csd는 정식 ref_set(골든셋) 수집 전까지 provisional 상태이므로,
+vqascore/cv는 먼저 채점하고 csd는 ref_set 확정 후(scripts/validate_ref_set.py) 별도로
+재실행할 수 있어야 한다. run/model/item_id 컬럼은 scripts/merge_results.py의 조인 키.
+
+    python -m src.scoring --dir image-prompts/v211_lumina2/images \\
+        --out bench/scores/v211_lumina2_pass1.csv --components vqascore,cv
+
+    python -m src.scoring --dir image-prompts/v211_lumina2/images \\
+        --out bench/scores/v211_lumina2_csd.csv --components csd \\
+        --ref-manifest configs/ref_sets/edu-flat-v2.yaml
 """
 import argparse
-import base64
 import csv
-import json
 import pathlib
 
 import cv2
+import frontmatter
 import numpy as np
+import yaml
 from PIL import Image
 
 ROOT = pathlib.Path(__file__).parent.parent
 WEIGHTS = ROOT / "weights" / "scoring"
+BENCH_V1 = ROOT / "configs" / "benchmarks" / "bench_v1.yaml"
 
 VQASCORE_MODEL = "clip-flant5-xl"
 CSD_CHECKPOINT = WEIGHTS / "csd_vit-l.pth"
-VLM_JUDGE_MODEL = "claude-sonnet-5"
 
 _vqascore_cache = {}
 _csd_cache = {}
@@ -46,11 +54,12 @@ def _load_vqascore():
     return _vqascore_cache["model"]
 
 
-def _load_csd():
+def load_csd_model():
     """CSD(Contrastive Style Descriptors) ViT-L 체크포인트를 lazy-load한다.
 
     공개 구현: https://github.com/learn2phoenix/CSD
     체크포인트를 WEIGHTS/csd_vit-l.pth 에 미리 받아둘 것 (README 참고).
+    scripts/validate_ref_set.py도 이 함수를 그대로 재사용한다.
 
     주의: 아래 CSD_CLIP 생성자 인자/forward 반환 형태(3-tuple)/state dict 키는
     공개 구현 문서 기준으로 작성했고 GPU 서버에서 직접 돌려 확인하지 못했다.
@@ -73,7 +82,7 @@ def _load_csd():
     return _csd_cache["model"]
 
 
-def _csd_style_embedding(model, image_path):
+def csd_style_embedding(model, image_path):
     import torch
     from torchvision import transforms
 
@@ -99,9 +108,9 @@ def _vqascore(image_path, prompt):
 def _csd(image_path, ref_set):
     if not ref_set:
         return None
-    model = _load_csd()
-    img_emb = _csd_style_embedding(model, image_path)
-    ref_embs = [_csd_style_embedding(model, r) for r in ref_set]
+    model = load_csd_model()
+    img_emb = csd_style_embedding(model, image_path)
+    ref_embs = [csd_style_embedding(model, r) for r in ref_set]
     sims = [float((img_emb @ r.T).item()) for r in ref_embs]
     return round(max(sum(sims) / len(sims), 0.0), 4)
 
@@ -152,74 +161,22 @@ def _custom_cv(image_path):
     return round((flat + edge) / 2, 4)
 
 
-def _harmonic_mean(values):
-    vals = [v for v in values if v is not None]
-    if not vals:
-        return None
-    if any(v <= 0 for v in vals):
-        return 0.0
-    return round(len(vals) / sum(1 / v for v in vals), 4)
-
-
-def score_image(image, prompt, ref_set):
-    """이미지 하나를 채점한다.
+def score_image(image, prompt, components, ref_set=None):
+    """이미지 하나를 채점한다. components에 담긴 것만 계산해서 돌려준다.
 
     image: 채점할 PNG 경로.
     prompt: 이미지 생성에 쓰인 전체 프롬프트(스타일 문구 포함).
-    ref_set: 스타일 레퍼런스 이미지 경로 리스트. 비어있으면 csd는 None.
+    components: {"vqascore", "cv", "csd"} 부분집합.
+    ref_set: csd용 스타일 레퍼런스 이미지 경로 리스트.
     """
-    vqascore = _vqascore(image, prompt)
-    csd = _csd(image, ref_set)
-    custom_cv = _custom_cv(image)
-    harmonic = _harmonic_mean([vqascore, csd, custom_cv])
-    return {"vqascore": vqascore, "csd": csd, "custom_cv": custom_cv, "harmonic": harmonic}
-
-
-VLM_JUDGE_SYSTEM = (
-    "너는 K-12 교육 삽화용 T2I 생성 이미지를 채점하는 심사위원이다. "
-    "아래 3축을 각각 독립적으로 판단해라: "
-    "(1) 수량 — 요청된 개수의 사물이 정확히 그려졌는가, "
-    "(2) 공간 관계 — 요청된 좌우/상하 배치가 맞는가, "
-    "(3) 속성 결합 — 색/재질 등 속성이 의도한 대상에만 붙었고 다른 대상으로 번지지 않았는가. "
-    "이 3축을 종합해 faithfulness(프롬프트 충실도)를 매기고, style(플랫 교육 삽화 스타일 준수도)을 "
-    "별도로 매긴 뒤, overall은 두 값의 단순 평균으로 계산해라. "
-    "각 항목은 0.0~1.0 사이 실수. 다른 설명 없이 JSON만 출력해라: "
-    '{"faithfulness": <float>, "style": <float>, "overall": <float>}'
-)
-
-
-def _call_anthropic_vision(image_path, prompt, *, model):
-    import anthropic
-
-    media_type = "image/png"
-    data = base64.standard_b64encode(pathlib.Path(image_path).read_bytes()).decode("utf-8")
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model=model,
-        max_tokens=300,
-        system=VLM_JUDGE_SYSTEM,
-        messages=[{
-            "role": "user",
-            "content": [
-                {"type": "image", "source": {"type": "base64", "media_type": media_type, "data": data}},
-                {"type": "text", "text": f"프롬프트: {prompt}"},
-            ],
-        }],
-    )
-    return response.content[0].text
-
-
-def _parse_judge_json(raw):
-    start, end = raw.find("{"), raw.rfind("}")
-    parsed = json.loads(raw[start:end + 1])
-    return {k: round(float(parsed[k]), 4) for k in ("faithfulness", "style", "overall")}
-
-
-def score_image_vlm(image, prompt, provider_fn=None):
-    """VLM-as-judge 채점. provider_fn(image_path, prompt, *, model) -> raw text로 교체 가능."""
-    provider_fn = provider_fn or _call_anthropic_vision
-    raw = provider_fn(image, prompt, model=VLM_JUDGE_MODEL)
-    return _parse_judge_json(raw)
+    result = {}
+    if "vqascore" in components:
+        result["vqascore"] = _vqascore(image, prompt)
+    if "cv" in components:
+        result["custom_cv"] = _custom_cv(image)
+    if "csd" in components:
+        result["csd"] = _csd(image, ref_set or [])
+    return result
 
 
 def _prompt_from_png(image_path):
@@ -229,24 +186,70 @@ def _prompt_from_png(image_path):
     return info["prompt"]
 
 
-def score_batch(image_dir, ref_set, out_csv, with_vlm=False):
+def _bench_v1_item_ids():
+    prompts = yaml.safe_load(BENCH_V1.read_text(encoding="utf-8"))["prompts"]
+    return [p["id"] for p in prompts]
+
+
+def _run_context(image_dir):
+    """image_dir(= .../vNNN_model/images)의 상위 note frontmatter에서 run 식별자,
+    모델명, item_id 리스트(순서 기반)를 얻는다.
+
+    item_id 매핑은 note의 keyword_set이 'bench_v1'일 때만 채워진다 — PNG/note
+    어디에도 bench_v1 item id 자체가 기록돼 있지 않아서, build_bench_v1_keywords.py가
+    configs/benchmarks/bench_v1.yaml의 prompts 순서를 그대로 보존해 keywords 리스트를
+    만든다는 사실에 기대어 '이미지 파일명 인덱스 == bench_v1 프롬프트 인덱스'로 역산한다.
+    """
+    image_dir = pathlib.Path(image_dir)
+    vdir = image_dir.parent
+    note_path = vdir / f"{vdir.name}.md"
+    post = frontmatter.load(str(note_path))
+    item_ids = _bench_v1_item_ids() if post.get("keyword_set") == "bench_v1" else None
+    return {"run": vdir.name, "model": post.get("model"), "item_ids": item_ids}
+
+
+def _load_ref_manifest(path):
+    manifest = yaml.safe_load(pathlib.Path(path).read_text(encoding="utf-8"))
+    if manifest["status"] not in ("validated", "provisional"):
+        raise ValueError(
+            f"{path}: status={manifest['status']} — validated 또는 provisional인 "
+            "manifest만 채점에 쓸 수 있습니다. scripts/validate_ref_set.py로 먼저 검증할 것."
+        )
+    return manifest
+
+
+def score_batch(image_dir, out_csv, components, ref_manifest_path=None):
     """디렉토리의 모든 PNG를 채점해 CSV + 마크다운 요약을 쓴다."""
+    components = set(components)
+    ctx = _run_context(image_dir)
+
+    ref_set, provisional = [], False
+    if "csd" in components:
+        if not ref_manifest_path:
+            raise ValueError("--components csd는 --ref-manifest가 필요합니다.")
+        manifest = _load_ref_manifest(ref_manifest_path)
+        ref_set = [img["path"] for img in manifest["images"]]
+        provisional = manifest["status"] == "provisional"
+
     paths = sorted(pathlib.Path(image_dir).glob("*.png"))
-    fieldnames = ["image", "vqascore", "csd", "custom_cv", "harmonic"]
-    if with_vlm:
-        fieldnames += ["vlm_faithfulness", "vlm_style", "vlm_overall"]
+    fieldnames = ["run", "model", "item_id", "image"]
+    fieldnames += [c for c in ("vqascore", "custom_cv", "csd") if
+                   (c if c != "custom_cv" else "cv") in components]
+    if "csd" in components:
+        fieldnames.append("csd_provisional")
 
     rows = []
-    for p in paths:
+    for i, p in enumerate(paths):
         prompt = _prompt_from_png(p)
-        row = {"image": p.name, **score_image(p, prompt, ref_set)}
-        if with_vlm:
-            vlm = score_image_vlm(p, prompt)
-            row.update({"vlm_faithfulness": vlm["faithfulness"], "vlm_style": vlm["style"],
-                        "vlm_overall": vlm["overall"]})
+        item_id = ctx["item_ids"][i] if ctx["item_ids"] else None
+        row = {"run": ctx["run"], "model": ctx["model"], "item_id": item_id, "image": p.name,
+               **score_image(p, prompt, components, ref_set)}
+        if "csd" in components:
+            row["csd_provisional"] = provisional
         rows.append(row)
 
     out_csv = pathlib.Path(out_csv)
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
     with out_csv.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -267,14 +270,16 @@ def _write_summary(summary_path, rows, fieldnames):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dir", required=True, help="채점할 PNG 디렉토리")
-    ap.add_argument("--refs", nargs="*", default=[], help="스타일 레퍼런스 이미지 경로들")
+    ap.add_argument("--dir", required=True, help="채점할 PNG 디렉토리 (image-prompts/vNNN_model/images)")
     ap.add_argument("--out", required=True, help="출력 CSV 경로 (같은 이름의 .md 요약도 생성)")
-    ap.add_argument("--vlm", action="store_true", help="VLM-as-judge도 같이 채점")
+    ap.add_argument("--components", required=True,
+                    help="콤마구분: vqascore,cv,csd 중 조합 (예: vqascore,cv 또는 csd)")
+    ap.add_argument("--ref-manifest", help="--components csd 사용 시 configs/ref_sets/<preset>.yaml 경로")
     args = ap.parse_args()
 
-    rows = score_batch(args.dir, args.refs, args.out, with_vlm=args.vlm)
-    print(f"{len(rows)}장 채점 완료 -> {args.out}")
+    components = {c.strip() for c in args.components.split(",") if c.strip()}
+    rows = score_batch(args.dir, args.out, components, ref_manifest_path=args.ref_manifest)
+    print(f"{len(rows)}장 채점 완료 ({','.join(sorted(components))}) -> {args.out}")
 
 
 if __name__ == "__main__":

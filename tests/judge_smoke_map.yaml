@@ -1,0 +1,27 @@
+# scripts/judge.py --smoke-map 전용 매핑 — 스모크 테스트에서만 쓴다.
+#
+# bench_v1 이전에 생성된 파일럿 PNG(image-prompts/pilot-complex3-report.md 축별
+# 판정표에서 그대로 가져옴, scripts/smoke_test_scoring.py와 동일한 6장)에는
+# note frontmatter에 bench_v1 item_id를 역산할 근거(keyword_set: bench_v1)가 없다.
+# 그래서 이 파일이 임시로 axes/expected를 부여한다 — 실제 채점 파이프라인에서는
+# 쓰이지 않고, judge.py의 코드 경로(축별 판정 + JSON 파싱 + 재시도)를 pilot의
+# 수동 판정 결과와 verdict 방향이 맞는지 확인하는 용도.
+images:
+  - path: image-prompts/v211_lumina2/images/v211_00_three_apples_in_a_basket.png
+    axes: [counting]
+    expected: "바구니 안에 사과가 정확히 3개 그려짐"
+  - path: image-prompts/v211_lumina2/images/v211_01_a_tree_to_the_left_of_a_house.png
+    axes: [spatial]
+    expected: "나무가 집의 왼쪽에 위치함"
+  - path: image-prompts/v211_lumina2/images/v211_02_a_cat_wearing_a_blue_hat.png
+    axes: [attribute]
+    expected: "고양이가 파란 모자를 쓰고 있고, 파란색이 다른 대상(다리/꼬리 등)으로 번지지 않음"
+  - path: image-prompts/v207_sd35-medium/images/v207_01_a_tree_to_the_left_of_a_house.png
+    axes: [spatial]
+    expected: "나무가 집의 왼쪽에 위치함"
+  - path: image-prompts/v214_zimage-turbo/images/v214_00_three_apples_in_a_basket.png
+    axes: [counting]
+    expected: "바구니 안에 사과가 정확히 3개 그려짐"
+  - path: image-prompts/v205_pixart-sigma/images/v205_02_a_cat_wearing_a_blue_hat.png
+    axes: [attribute]
+    expected: "고양이가 파란 모자를 쓰고 있고, 파란색이 다른 대상(다리/꼬리 등)으로 번지지 않음"
