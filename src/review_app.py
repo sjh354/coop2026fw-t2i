@@ -23,8 +23,14 @@ def list_versions():
                   if d.is_dir() and (d / f"{d.name}.md").exists())
 
 
+@st.cache_data(show_spinner=False)
+def _load_cached(note_path_str, mtime):
+    return frontmatter.load(note_path_str)
+
+
 def load(vdir):
-    return frontmatter.load(str(vdir / f"{vdir.name}.md"))
+    note_path = vdir / f"{vdir.name}.md"
+    return _load_cached(str(note_path), note_path.stat().st_mtime)
 
 
 def images(vdir):
