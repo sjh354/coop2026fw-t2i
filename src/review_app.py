@@ -146,6 +146,9 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
                "rating": posts[n].get("rating"),
                "harmonic": posts[n].get("harmonic_mean")} for n in picks])
 
+    default_ref = posts[picks[0]].get("experiment", "")
+    ref_name = st.sidebar.text_input("Ref set (refs/<name>/)", default_ref)
+
     grids = {n: images(vmap[n]) for n in picks}
     kws = posts[picks[0]].get("keywords", [])
 
@@ -156,6 +159,15 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
             with col:
                 st.caption(posts[n].get("model", n))
                 if row < len(grids[n]):
-                    st.image(str(grids[n][row]), width="stretch")
+                    img_path = grids[n][row]
+                    st.image(str(img_path), width="stretch")
+                    if st.button("➕ golden", key=f"golden_{n}_{row}"):
+                        if not ref_name:
+                            st.warning("Ref set 이름을 입력해야 한다.")
+                        else:
+                            ref_dir = REFS_ROOT / ref_name
+                            ref_dir.mkdir(parents=True, exist_ok=True)
+                            shutil.copy(img_path, ref_dir / img_path.name)
+                            st.success(f"refs/{ref_name}/{img_path.name} 추가됨")
                 else:
                     st.write("—")
