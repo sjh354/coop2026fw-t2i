@@ -63,10 +63,19 @@
 - **env**: `t2i-score` (T2I 생성 env와 분리, 동시 로드 안 함 — `envs/README.md` 참고).
 - **VQAScore**: `t2v_metrics` 패키지, `clip-flant5-xl`. 가중치는 `HF_HOME`(기본 `~/.cache/huggingface`)에
   자동 다운로드됨. VRAM: **3090에서 측정 필요, 아직 미측정**.
-- **CSD**: 공개 구현([github.com/learn2phoenix/CSD](https://github.com/learn2phoenix/CSD))의
-  ViT-L 체크포인트를 `weights/scoring/csd_vit-l.pth`에 받아둘 것(`weights/`는 `.gitignore`의
-  `*.pth` 규칙으로 자동 제외됨). ref_set 검증/수집은 `scripts/validate_ref_set.py` +
-  `bench/style-presets-v2.md`의 "5. CSD ref_set 수집 기준" 참고. VRAM: **3090에서 측정 필요, 아직 미측정**.
+- **CSD**: 공개 구현([github.com/learn2phoenix/CSD](https://github.com/learn2phoenix/CSD), MIT)의
+  `CSD/` 서브패키지를 `vendor/CSD`로 vendoring함(pip 패키지 없음) — 실행 시 `PYTHONPATH=vendor`
+  필요. 체크포인트(ViT-L)는 저자 공식 HF 미러 [tomg-group-umd/CSD-ViT-L](https://huggingface.co/tomg-group-umd/CSD-ViT-L)에서
+  받아 `weights/scoring/csd_vit-l.pth`에 둘 것(`weights/`는 `.gitignore`의 `*.pth` 규칙으로
+  자동 제외됨). 저자가 리포 상단에 논문 수치와의 미세한 불일치 가능성을 disclaimer로 밝혀뒀지만
+  provisional 용도로는 문제없음. **2026-07-20 ubuntu@172.10.5.23 `t2i-score` env에서 실제
+  체크포인트 로드+forward 검증 완료** — state dict 키에 `module.` 접두사가 있어
+  `CSD.utils.convert_state_dict`로 벗겨야 함(벗기지 않으면 `strict=False`가 조용히 0개 키
+  매치로 통과해 랜덤 초기화 상태로 채점하는 버그였음, `src/scoring.py::load_csd_model`에서 수정).
+  `validate_ref_set.py --provisional`도 파일럿 이미지 3장으로 실측 검증(mean=0.6175,
+  std=0.0481, `configs/ref_sets/_smoke_pilot.yaml`). ref_set 정식 검증/수집은
+  `scripts/validate_ref_set.py` + `bench/style-presets-v2.md`의 "5. CSD ref_set 수집 기준"
+  참고. VRAM: 실측 ~1.6GB(단일 이미지 forward 기준).
 - **custom_cv**: OpenCV만 사용, 모델 불필요. line flatness(색 영역 내부 LAB 채널별 분산,
   픽셀 수 가중 평균) + edge uniformity(Canny 엣지 dilate 후 거리변환 폭의 변동계수)를 각각
   0~1로 정규화해 평균. 저장소의 실제 파일럿 PNG 6장(v205/v207/v211/v214, `pilot-complex3-report.md`
@@ -89,7 +98,7 @@
 - [x] **삽화 유형 + 벤치마크 프롬프트셋 정의**: 6개 카테고리(사물단독/역사문학/자연과학/생활사회/감정관계/개념은유) × 난이도(easy16/medium16/hard8) × 축(counting/spatial/attribute)으로 40개 벤치마크 프롬프트셋(v1) 확정 → `configs/benchmarks/bench_v1.yaml`. 이후 모든 비교는 이 셋 기준으로 고정.
 - [x] **스타일 프리셋 확정**: 12개 → 4개(`edu-flat-v2`/`playful-soft`/`storybook-scene`/`observational`) + 보류 1개(`mono-minimal`)로 통합. 설계 근거·시각 언어·leakage 방지 authoring rules(R1~R9): `bench/style-presets-v2.md`. 구 12개 프리셋 yaml은 `configs/experiments/archive/presets-v1/`로 보존(과거 실험 노트가 참조). **R9 스모크 테스트 완료(2026-07-19)**: lumina2 + r9-smoke3(apple/cat/book)로 4개 전부 생성·육안 확인 — leakage 없음 확인되어 4개 전부 `status: validated`로 전환. `observational`/`storybook-scene`은 교육용치고 스타일이 과하게 고퀄리티/복잡하다는 별도 지적이 있었으나 leakage와 무관한 이슈라 일단 본 실험에 포함하고 채점 결과로 판단하기로 함 — 상세는 `bench/results.md`.
 - [x] **rewriter 1차 구현 + 검증 하네스**: `src/rewriter`(`rewrite(prompt_ko, opts) -> {prompt_en, meta}`, provider는 `opts.llm_fn`으로 교체 가능, lang="es"는 인터페이스만 두고 `NotImplementedError`), `scripts/verify_rewriter.py`(과목별 한국어 샘플 20개 → 수량/스타일오염/길이 자동 체크 → `bench/rewriter-verification-report.md`). 자동 체크 실패 시 위반 사유를 피드백으로 넣어 최대 1회 재생성(`meta["retried"]`에 기록). 기본 provider/모델은 OpenAI `gpt-5`(`src/rewriter/providers.py::call_openai`, `.env`의 `OPENAI_API_KEY` 사용). `tests/`에 유닛 테스트 21개 통과. **실행 완료(2026-07-19 재검증)**: `python -m scripts.verify_rewriter` 결과 20/20 실제 통과 — 빈 출력을 PASS로 잘못 기록하던 버그(#18) 수정 후 리포트 재생성 확인. 스페인어는 다음 단계.
-- [x] **채점 모듈 1차 구현**: `src/scoring.py`(`score_image(image, prompt, ref_set) → {vqascore, csd, custom_cv, harmonic}`, `score_image_vlm(image, prompt) → {faithfulness, style, overall}`). 상세는 아래 "채점 모듈" 절. `custom_cv`(OpenCV, 모델 불필요)와 배치 CSV/마크다운 생성은 저장소의 실제 파일럿 PNG로 로컬 검증 완료. **VQAScore 스모크테스트 완료(2026-07-19, 3090 서버)**: `python scripts/smoke_test_scoring.py` PASS — success_mean=0.9133 > failure_mean=0.6767, vram_peak=6.06GB(clip-flant5-xl 로드 기준, T2I 생성 모델과 동시 로드 안 함). `t2i-score` env 구성 시 `t2v-metrics==3.0` 자체 패키징 문제(무관한 VLM 백엔드를 import 시점에 전부 끌어옴) 우회가 필요했음 — `envs/README.md`의 "t2v-metrics 3.0 패키징 문제" 절과 `envs/fix_t2v_metrics.sh` 참고. CSD는 여전히 미검증(체크포인트 미다운로드, ref_set 없이는 스킵됨).
+- [x] **채점 모듈 1차 구현**: `src/scoring.py`(`score_image(image, prompt, components, ref_set=None) → {vqascore?, custom_cv?, csd?}`). VLM-as-judge는 `scripts/judge.py`로 분리(로컬 Qwen2.5-VL). 상세는 아래 "채점 모듈" 절. `custom_cv`(OpenCV, 모델 불필요)와 배치 CSV/마크다운 생성은 저장소의 실제 파일럿 PNG로 로컬 검증 완료. **VQAScore 스모크테스트 완료(2026-07-19, 3090 서버)**: `python scripts/smoke_test_scoring.py` PASS — success_mean=0.9133 > failure_mean=0.6767, vram_peak=6.06GB(clip-flant5-xl 로드 기준, T2I 생성 모델과 동시 로드 안 함). `t2i-score` env 구성 시 `t2v-metrics==3.0` 자체 패키징 문제(무관한 VLM 백엔드를 import 시점에 전부 끌어옴) 우회가 필요했음 — `envs/README.md`의 "t2v-metrics 3.0 패키징 문제" 절과 `envs/fix_t2v_metrics.sh` 참고. **CSD도 2026-07-20 실측 검증 완료**(체크포인트 로드+forward+`validate_ref_set.py --provisional` 전체 경로, 위 "채점 모듈" 절 참고).
 - [ ] **golden set 시드 확보**: 스타일 합격작 20장 이상 모으기 시작(초기엔 unDraw/Storyset 등 라이선스 깨끗한 소스로 부트스트랩 가능, 평가 전용).
 - [ ] **기존 모델 후보군 실측 비교**: 벤치마크 프롬프트셋 + 확정된 스타일 프리셋 + 채점 모듈로 지금까지 써본 모델들을 동일 조건에서 채점 → 1차 순위표.
 - [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.)

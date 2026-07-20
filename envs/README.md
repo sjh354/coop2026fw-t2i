@@ -54,8 +54,8 @@ diffusers 스택과 무관하고, 생성 모델과 동시에 VRAM에 올리지 �
     # ==3.0으로 고정해야 model='clip-flant5-xl'이 존재한다.
     conda install ffmpeg=6.1.2 -c conda-forge -y   # t2v_metrics가 import 시점에 요구
     bash envs/fix_t2v_metrics.sh                   # 아래 "t2v-metrics 3.0 패키징 문제" 참고
-    # CSD는 pip 패키지가 없음 — https://github.com/learn2phoenix/CSD 를 vendor하거나
-    # PYTHONPATH에 추가할 것. 체크포인트 다운로드 경로는 README.md "채점 모듈" 절 참고.
+    # CSD는 pip 패키지가 없음 — vendor/CSD로 이미 vendoring됨(리포에 커밋됨).
+    # 실행 시 PYTHONPATH=vendor 필요. 체크포인트 다운로드 경로는 README.md "채점 모듈" 절 참고.
 
 **완료 (2026-07-18, 3090 서버)**: `python scripts/smoke_test_scoring.py` PASS
 (success_mean=0.9133 > failure_mean=0.6767). 스냅샷: `envs/t2i-score.txt`.

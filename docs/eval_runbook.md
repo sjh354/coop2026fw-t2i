@@ -37,9 +37,12 @@ GPU: `t2i-score` env, 단독 사용 권장(생성 프로세스와 동시 로드 
 
 ```bash
 for preset in edu-flat-v2 observational playful-soft storybook-scene; do
-  python -m scripts.validate_ref_set --preset "$preset" --dir "refs/$preset"
+  PYTHONPATH=vendor python -m scripts.validate_ref_set --preset "$preset" --dir "refs/$preset"
 done
 ```
+
+(`PYTHONPATH=vendor` 필요 — CSD 공개 구현이 `vendor/CSD`로 vendoring돼 있음. 체크포인트는
+`weights/scoring/csd_vit-l.pth`에 미리 받아둘 것, README.md "채점 모듈" 절 참고.)
 
 `configs/ref_sets/<preset>.yaml`이 `status: validated`면 3번으로, `needs-review`면
 `reports/ref_set_validation.md`의 outlier 목록을 보고 이미지 재수집 후 재실행.
@@ -52,7 +55,7 @@ done
 for preset in edu-flat-v2 observational playful-soft storybook-scene; do
   for vdir in image-prompts/v2*_${preset##*-}*; do  # 실제로는 run과 preset 매핑을 note에서 확인할 것
     run=$(basename "$vdir")
-    python -m src.scoring --dir "$vdir/images" \
+    PYTHONPATH=vendor python -m src.scoring --dir "$vdir/images" \
       --out "bench/scores/${run}_csd.csv" --components csd \
       --ref-manifest "configs/ref_sets/${preset}.yaml"
   done
