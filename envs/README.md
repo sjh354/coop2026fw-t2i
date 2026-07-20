@@ -102,7 +102,10 @@ LLaVA-Video, InternVideo2-CLIP 등 무관한 백엔드가 없는 의존성(`llav
     pip install torch --index-url https://download.pytorch.org/whl/cu121
     pip install -r ./requirements-common.txt
     pip install "transformers>=4.49.0" qwen-vl-utils[decord] accelerate
+    pip install torchvision --index-url https://download.pytorch.org/whl/cu121
     # transformers 4.49 미만은 Qwen2_5_VLForConditionalGeneration이 없음.
+    # torchvision은 qwen_vl_utils가 import 시점에 요구하는데 위 pip install 목록에는
+    # 안 딸려옴 — torch와 반드시 같은 cu121 인덱스로 설치할 것(2026-07-20 확인).
 
 가중치는 `HF_HOME`에 자동 다운로드(`Qwen/Qwen2.5-VL-7B-Instruct`, ~16GB). VRAM 실측치는
 `scripts/judge.py` 스모크 테스트 결과 참고(README.md "채점 모듈" 절).
