@@ -196,21 +196,28 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
                     else:
                         st.write("—")
 
+    def resolve_pending_image(key):
+        n, fname = key.split("/", 1)
+        if n not in vmap:
+            return None
+        return next((p for p in images(vmap[n]) if p.name == fname), None)
+
     if st.button("Submit golden set changes", type="primary"):
         pending = st.session_state.golden_pending
-        changes = {k: v for k, v in pending.items()
-                   if v != on_disk(next(p for p in grids[k.split("/", 1)[0]]
-                                         if p.name == k.split("/", 1)[1]))}
+        changes = {}
+        for k, v in pending.items():
+            img_path = resolve_pending_image(k)
+            if img_path is not None and v != on_disk(img_path):
+                changes[k] = v
         if not changes:
             st.info("변경사항 없음.")
         else:
             for key, want_golden in changes.items():
-                n, fname = key.split("/", 1)
-                img_path = next(p for p in grids[n] if p.name == fname)
+                img_path = resolve_pending_image(key)
                 if want_golden:
                     ref_dir.mkdir(parents=True, exist_ok=True)
-                    shutil.copy(img_path, ref_dir / fname)
+                    shutil.copy(img_path, ref_dir / img_path.name)
                 else:
-                    (ref_dir / fname).unlink()
+                    (ref_dir / img_path.name).unlink()
             st.session_state.golden_pending = {}
             st.rerun()
