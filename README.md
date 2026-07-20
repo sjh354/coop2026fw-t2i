@@ -108,9 +108,17 @@
 - [x] **스타일 프리셋 확정**: 12개 → 4개(`edu-flat-v2`/`playful-soft`/`storybook-scene`/`observational`) + 보류 1개(`mono-minimal`)로 통합. 설계 근거·시각 언어·leakage 방지 authoring rules(R1~R9): `bench/style-presets-v2.md`. 구 12개 프리셋 yaml은 `configs/experiments/archive/presets-v1/`로 보존(과거 실험 노트가 참조). **R9 스모크 테스트 완료(2026-07-19)**: lumina2 + r9-smoke3(apple/cat/book)로 4개 전부 생성·육안 확인 — leakage 없음 확인되어 4개 전부 `status: validated`로 전환. `observational`/`storybook-scene`은 교육용치고 스타일이 과하게 고퀄리티/복잡하다는 별도 지적이 있었으나 leakage와 무관한 이슈라 일단 본 실험에 포함하고 채점 결과로 판단하기로 함 — 상세는 `bench/results.md`.
 - [x] **rewriter 1차 구현 + 검증 하네스**: `src/rewriter`(`rewrite(prompt_ko, opts) -> {prompt_en, meta}`, provider는 `opts.llm_fn`으로 교체 가능, lang="es"는 인터페이스만 두고 `NotImplementedError`), `scripts/verify_rewriter.py`(과목별 한국어 샘플 20개 → 수량/스타일오염/길이 자동 체크 → `bench/rewriter-verification-report.md`). 자동 체크 실패 시 위반 사유를 피드백으로 넣어 최대 1회 재생성(`meta["retried"]`에 기록). 기본 provider/모델은 OpenAI `gpt-5`(`src/rewriter/providers.py::call_openai`, `.env`의 `OPENAI_API_KEY` 사용). `tests/`에 유닛 테스트 21개 통과. **실행 완료(2026-07-19 재검증)**: `python -m scripts.verify_rewriter` 결과 20/20 실제 통과 — 빈 출력을 PASS로 잘못 기록하던 버그(#18) 수정 후 리포트 재생성 확인. 스페인어는 다음 단계.
 - [x] **채점 모듈 1차 구현**: `src/scoring.py`(`score_image(image, prompt, components, ref_set=None) → {vqascore?, custom_cv?, csd?}`). VLM-as-judge는 `scripts/judge.py`로 분리(로컬 Qwen2.5-VL). 상세는 아래 "채점 모듈" 절. `custom_cv`(OpenCV, 모델 불필요)와 배치 CSV/마크다운 생성은 저장소의 실제 파일럿 PNG로 로컬 검증 완료. **VQAScore 스모크테스트 완료(2026-07-19, 3090 서버)**: `python scripts/smoke_test_scoring.py` PASS — success_mean=0.9133 > failure_mean=0.6767, vram_peak=6.06GB(clip-flant5-xl 로드 기준, T2I 생성 모델과 동시 로드 안 함). `t2i-score` env 구성 시 `t2v-metrics==3.0` 자체 패키징 문제(무관한 VLM 백엔드를 import 시점에 전부 끌어옴) 우회가 필요했음 — `envs/README.md`의 "t2v-metrics 3.0 패키징 문제" 절과 `envs/fix_t2v_metrics.sh` 참고. **CSD도 2026-07-20 실측 검증 완료**(체크포인트 로드+forward+`validate_ref_set.py --provisional` 전체 경로, 위 "채점 모듈" 절 참고).
-- [ ] **golden set 시드 확보**: 스타일 합격작 20장 이상 모으기 시작(초기엔 unDraw/Storyset 등 라이선스 깨끗한 소스로 부트스트랩 가능, 평가 전용).
-- [ ] **기존 모델 후보군 실측 비교**: 벤치마크 프롬프트셋 + 확정된 스타일 프리셋 + 채점 모듈로 지금까지 써본 모델들을 동일 조건에서 채점 → 1차 순위표.
-- [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.)
+- [ ] **golden set 시드 확보**: 스타일 합격작 20장 이상 모으기 시작(초기엔 unDraw/Storyset 등 라이선스 깨끗한 소스로 부트스트랩 가능, 평가 전용). csd 정식 채점의 선행 조건 — 아직 미착수.
+- [x] **기존 모델 후보군 실측 비교**: 벤치마크 프롬프트셋(bench_v1, 40개) × 확정 스타일 프리셋 4개(`edu-flat-v2`/`observational`/`playful-soft`/`storybook-scene`) × 3개 후보 모델(lumina2/pixart-sigma/flux2-klein-4b-nf4) = 12개 run(480장) 생성 후 채점 완료(2026-07-20, `bench/scores/merged.md`). csd는 golden set 미수집으로 제외, vqascore+custom_cv+judge_pass_rate만으로 harmonic 계산.
+
+  | model | vqascore | custom_cv | judge_pass_rate | harmonic |
+  |---|---|---|---|---|
+  | lumina2 | 0.840 | 0.739 | 0.944 | 0.789 |
+  | flux2-klein-4b-nf4 | 0.837 | 0.756 | 0.925 | 0.791 |
+  | pixart-sigma | 0.805 | 0.740 | 0.810 | 0.731 |
+
+  judge 축별 pass율: pixart-sigma가 counting에서 66%(21/32)로 세 모델 중 유독 낮음(lumina2 94%, flux2-klein 81%) — 방언 파일럿에서 이미 나온 "lumina2가 복합 프롬프트 전 축에서 가장 안정적" 결론과 일치. spatial/attribute는 세 모델 다 80~100%대지만, judge 자체의 spatial/attribute 판정 정확도가 파일럿에서 낮게 나온 바 있어(위 "채점 모듈" 절) 액면 그대로 신뢰하지 않고 이미지 직접 확인이 필요.
+- [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.) 위 1차 비교 결과대로면 pixart-sigma의 counting 약점이 우선 조사 대상 — judge 오탐인지 실제 모델 한계인지 이미지 직접 확인 필요.
 
 ## 실행
 
