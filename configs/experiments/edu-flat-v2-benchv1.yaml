@@ -1,0 +1,16 @@
+# v2 스타일 프리셋. 설계 근거·S/L 티어·authoring rules: bench/style-presets-v2.md
+# status: validated — R9 스모크 테스트(lumina2, r9-smoke3: apple/cat/book) leakage 없음 확인 (2026-07-19). 스타일 고퀄리티 이슈는 별도 트랙.
+# 구 v1(educational-flat) 및 별도 파일럿 계열(educational-flat-v2*)과는 분리된 파일 — 덮어쓰지 않음.
+name: edu-flat-v2
+status: validated
+keywords: bench_v1
+seed: 0
+style: >-
+  flat educational vector illustration, limited flat color palette,
+  crisp geometric shapes, thin clean outline of even width,
+  clear readable silhouette, completely flat color fill,
+  centered single subject on plain light background
+negative: >-
+  photorealistic, 3d render, photograph, gradient, soft shading, drop shadow,
+  heavy black outline, painterly, textured, busy background, cluttered,
+  text, letters, watermark, signature, grainy, noisy
