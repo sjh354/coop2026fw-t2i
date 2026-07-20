@@ -165,6 +165,13 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
     grids = {n: images(vmap[n]) for n in picks}
     kws = posts[picks[0]].get("keywords", [])
 
+    if "golden_pending" not in st.session_state:
+        st.session_state.golden_pending = {}
+    pending = st.session_state.golden_pending
+
+    def on_disk(img_path):
+        return bool(ref_dir and (ref_dir / img_path.name).exists())
+
     with st.container(key="golden-grid"):
         for row in range(min(n_rows, len(kws))):
             st.markdown(f"**{kws[row]}**")
@@ -175,16 +182,28 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
                     if row < len(grids[n]):
                         img_path = grids[n][row]
                         st.image(str(img_path), width="stretch")
-                        is_golden = ref_dir and (ref_dir / img_path.name).exists()
+                        key = f"{n}/{img_path.name}"
+                        is_golden = pending.get(key, on_disk(img_path))
                         label = "✅ Golden" if is_golden else "➕ Golden"
                         if st.button(label, key=f"golden_{n}_{row}",
                                      type="primary" if is_golden else "secondary",
                                      disabled=not ref_name):
-                            if is_golden:
-                                (ref_dir / img_path.name).unlink()
-                            else:
-                                ref_dir.mkdir(parents=True, exist_ok=True)
-                                shutil.copy(img_path, ref_dir / img_path.name)
-                            st.rerun()
+                            pending[key] = not is_golden
                     else:
                         st.write("—")
+
+    changes = {k: v for k, v in pending.items()
+               if v != on_disk(next(p for p in grids[k.split("/", 1)[0]]
+                                     if p.name == k.split("/", 1)[1]))}
+    if st.button(f"Submit golden set changes ({len(changes)})",
+                 type="primary", disabled=not changes):
+        for key, want_golden in changes.items():
+            n, fname = key.split("/", 1)
+            img_path = next(p for p in grids[n] if p.name == fname)
+            if want_golden:
+                ref_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy(img_path, ref_dir / fname)
+            else:
+                (ref_dir / fname).unlink()
+        st.session_state.golden_pending = {}
+        st.rerun()
