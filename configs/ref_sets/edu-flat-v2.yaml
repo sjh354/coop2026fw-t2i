@@ -1,0 +1,54 @@
+preset: edu-flat-v2
+status: validated
+count: 15
+stats:
+  mean: 0.6097
+  min: 0.4474
+  std: 0.0686
+outliers: []
+images:
+- path: refs/edu-flat-v2/Gemini_Generated_Image_88cmb088cmb088cm.png
+  sha256: 994b9ffc0c174cba94818c2500c7c9aa2f908e5569eef75d7d9631d0436ac6b5
+  mean_similarity: 0.6564
+- path: refs/edu-flat-v2/Gemini_Generated_Image_a3jkqla3jkqla3jk.png
+  sha256: e5b245384a9c5a0ea31c83cf6f24231c01b6aefbb85fae463f2e9fa9f6970f73
+  mean_similarity: 0.5952
+- path: refs/edu-flat-v2/Gemini_Generated_Image_anpk01anpk01anpk.png
+  sha256: 05aed04114203c1e00575e9c9efe5cca420526f01aeb58cb653cf1683fadac49
+  mean_similarity: 0.6224
+- path: refs/edu-flat-v2/Gemini_Generated_Image_b8nxfyb8nxfyb8nx.png
+  sha256: 480fbd8d2cd6de22aba14f4be686a1eba46c5b2b0bc4fd12f1d4e43837e07df4
+  mean_similarity: 0.5931
+- path: refs/edu-flat-v2/Gemini_Generated_Image_fb8fmxfb8fmxfb8f.png
+  sha256: 03d42f8432a2803ed6830fc101f62eeed19826127ad9becedf3788e260aeb451
+  mean_similarity: 0.5848
+- path: refs/edu-flat-v2/Gemini_Generated_Image_frzn3afrzn3afrzn.png
+  sha256: 92c897213b5133b1e29f9aba2cbb1686c2bdfeb5c297b063d5a6d27533e033c7
+  mean_similarity: 0.6096
+- path: refs/edu-flat-v2/Gemini_Generated_Image_gtjfongtjfongtjf.png
+  sha256: c1cf5d4b6a06e65282aec1fcb53487fc4cb855a84e41ccd5fc2551269a334b73
+  mean_similarity: 0.6089
+- path: refs/edu-flat-v2/Gemini_Generated_Image_h99rvkh99rvkh99r.png
+  sha256: f8b238deeac3b117284eba9be0f107ac683bcd2054ec142249c1091768750a91
+  mean_similarity: 0.646
+- path: refs/edu-flat-v2/Gemini_Generated_Image_kt3uc9kt3uc9kt3u.png
+  sha256: 6c9f7783eb829afbfdde4a08e68df79cd2b0852c4c3eb5fd3d31563228d655cc
+  mean_similarity: 0.5336
+- path: refs/edu-flat-v2/Gemini_Generated_Image_l9sp0kl9sp0kl9sp.png
+  sha256: 28dea261f957917be21070e59f0bdebd116a25f060a7b5e930c7b56f5f1c92ef
+  mean_similarity: 0.6047
+- path: refs/edu-flat-v2/Gemini_Generated_Image_lk18pplk18pplk18.png
+  sha256: 08a7dfa52945e0c02fe9624acbe4c5d84b18f8102bc9dea317434b099811f8db
+  mean_similarity: 0.6079
+- path: refs/edu-flat-v2/Gemini_Generated_Image_oqu187oqu187oqu1.png
+  sha256: 8708624babbd2dd078d08717afcdfe3f31cae02be7e7c43a28bd499d9f0b088f
+  mean_similarity: 0.6186
+- path: refs/edu-flat-v2/Gemini_Generated_Image_rhcxthrhcxthrhcx.png
+  sha256: 98e9d846386e83cd5aa1c1dbb6dba3340782f3b2e82da7aff87e1b9580c9b064
+  mean_similarity: 0.645
+- path: refs/edu-flat-v2/Gemini_Generated_Image_wkmutkwkmutkwkmu.png
+  sha256: d184a7a6938afb16247beb31a4936aeeaceb56ae213ab63bcdf889314e3982c4
+  mean_similarity: 0.5919
+- path: refs/edu-flat-v2/Gemini_Generated_Image_xq2dbnxq2dbnxq2d.png
+  sha256: 242bb77fca86531f2bce6368aed22da3c3294d5211d915e22ccc54631a5cd3f2
+  mean_similarity: 0.6281

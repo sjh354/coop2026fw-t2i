@@ -1,0 +1,39 @@
+preset: observational
+status: validated
+count: 10
+stats:
+  mean: 0.5189
+  min: 0.2466
+  std: 0.104
+outliers: []
+images:
+- path: refs/observational/61gnm3fd1srmy0czfzrbzjd1sm.png
+  sha256: a1febbc9a8597e970ebf601082deba4cad0349e60e77fc6ea8c0123f81b2e9e6
+  mean_similarity: 0.5643
+- path: refs/observational/9r8wzqjan1rmr0czfzrs0cnc4r.png
+  sha256: 57d91803608605323bb53c8d4b6d1950872d1fa44f143abb44223bd25397565f
+  mean_similarity: 0.5766
+- path: refs/observational/replicate-prediction-5srvr8qhvhrmy0czfzqsvmkwn8.png
+  sha256: 196a326fdb389fd4b86339fb98aeccc326ad354ef8909d18a2966af7160c1fb3
+  mean_similarity: 0.5263
+- path: refs/observational/replicate-prediction-6b5g7p2nvsrmw0czfzst6gcybg.png
+  sha256: ff265895cf0aba901de76081735219dcea412f8e74a9970ec7b0dfc66dcd07f1
+  mean_similarity: 0.5458
+- path: refs/observational/replicate-prediction-esw1brzjv1rmw0czfzpvhp4ewg.png
+  sha256: 200ec95f0c98b904981cee55264ca105ac5d516472913290c2988ade33d6d072
+  mean_similarity: 0.3965
+- path: refs/observational/replicate-prediction-h9h1yh5fp5rmr0czfzsabzkv90.png
+  sha256: d255d9cdae866343dee9cf4545f3cc91a288e2f26b4dbe2651deba1df4ebff3e
+  mean_similarity: 0.4755
+- path: refs/observational/replicate-prediction-kxhqfvzdt1rmy0czfzs8vwez1c.png
+  sha256: 47c2e7b51173f4e20a49a15eaf20e4257f7911745c0fcc0f266a8af1ffeb06d8
+  mean_similarity: 0.5397
+- path: refs/observational/replicate-prediction-r4xrgbrycdrmw0czfzss7wakmc.png
+  sha256: 2de20153b2c6d3cbf0460804137749b6b14079474dd7a195df5e837161740b9c
+  mean_similarity: 0.5625
+- path: refs/observational/replicate-prediction-w5g1144bw1rmt0czfzsr0kxhxm.png
+  sha256: b96b55b9b01fcad78e95d92fd38b2db4857d8178ed013dc97febfaca804191dc
+  mean_similarity: 0.5441
+- path: refs/observational/replicate-prediction-zkbeapym15rmr0czfzste53vfg.png
+  sha256: 4496e0eb3ef277139f46e307bbf2fb3f06cf03c95585cf7e0d38de5477576880
+  mean_similarity: 0.458

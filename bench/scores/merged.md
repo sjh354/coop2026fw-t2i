@@ -4,9 +4,9 @@
 
 | model | vqascore | custom_cv | csd | judge_pass_rate | harmonic |
 |---|---|---|---|---|---|
-| flux2-klein-4b-nf4 | 0.8368 | 0.7561 | None | 0.925 | 0.7908 |
-| lumina2 | 0.8396 | 0.7393 | None | 0.9437 | 0.7891 |
-| pixart-sigma | 0.8045 | 0.7396 | None | 0.8104 | 0.7308 |
+| flux2-klein-4b-nf4 | 0.8368 | 0.7561 | 0.4797 | 0.925 | 0.653 |
+| lumina2 | 0.8396 | 0.7393 | 0.4425 | 0.9437 | 0.6303 |
+| pixart-sigma | 0.8045 | 0.7396 | 0.4286 | 0.8104 | 0.5804 |
 
 ## 모델×축 pass율 (judge)
 
