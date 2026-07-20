@@ -43,6 +43,13 @@ def _load_pass1(paths, merged):
     for path in paths:
         for row in _read_csv(path):
             key = (row["run"], row["item_id"])
+            if key in merged and merged[key].get("_image") not in (None, row.get("image")):
+                raise ValueError(
+                    f"(run, item_id)={key} 중복 — {merged[key]['_image']!r}와 {row.get('image')!r}가 "
+                    "같은 키로 충돌합니다. item_id가 빈 문자열이면(비-bench_v1 run) 이미지별로 "
+                    "구분이 안 되어 조인 시 데이터가 섞입니다 — bench_v1 run만 merge_results.py로 합칠 것."
+                )
+            merged[key]["_image"] = row.get("image")
             merged[key]["run"] = row["run"]
             merged[key]["model"] = row["model"]
             merged[key]["item_id"] = row["item_id"]
