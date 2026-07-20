@@ -6,6 +6,7 @@ refs/
 
 # --- 모델 캐시 (HF_HOME을 리포 안으로 잡았을 경우 대비) ---
 hf/
+hf_cache/
 .cache/
 *.safetensors
 *.ckpt
