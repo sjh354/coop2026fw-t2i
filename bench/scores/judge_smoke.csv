@@ -1,0 +1,19 @@
+run,model,item_id,axis,verdict,rationale,retried
+smoke,,v211_00_three_apples_in_a_basket,counting,pass,바구니 안에는 정확히 3개의 사과가 그려져 있습니다.,False
+smoke,,v211_00_three_apples_in_a_basket,spatial,n/a,,False
+smoke,,v211_00_three_apples_in_a_basket,attribute,n/a,,False
+smoke,,v211_01_a_tree_to_the_left_of_a_house,counting,n/a,,False
+smoke,,v211_01_a_tree_to_the_left_of_a_house,spatial,pass,나무는 집의 왼쪽에 위치해 있습니다.,False
+smoke,,v211_01_a_tree_to_the_left_of_a_house,attribute,n/a,,False
+smoke,,v211_02_a_cat_wearing_a_blue_hat,counting,n/a,,False
+smoke,,v211_02_a_cat_wearing_a_blue_hat,spatial,n/a,,False
+smoke,,v211_02_a_cat_wearing_a_blue_hat,attribute,pass,"고양이의 모자와 다리, 꼬리는 모두 파란색으로 표현되어 있지 않다.",False
+smoke,,v207_01_a_tree_to_the_left_of_a_house,counting,n/a,,False
+smoke,,v207_01_a_tree_to_the_left_of_a_house,spatial,pass,나무는 집의 왼쪽에 위치해 있습니다.,False
+smoke,,v207_01_a_tree_to_the_left_of_a_house,attribute,n/a,,False
+smoke,,v214_00_three_apples_in_a_basket,counting,fail,바구니 안에는 두 개의 사과가 그려져 있습니다.,False
+smoke,,v214_00_three_apples_in_a_basket,spatial,n/a,,False
+smoke,,v214_00_three_apples_in_a_basket,attribute,n/a,,False
+smoke,,v205_02_a_cat_wearing_a_blue_hat,counting,n/a,,False
+smoke,,v205_02_a_cat_wearing_a_blue_hat,spatial,n/a,,False
+smoke,,v205_02_a_cat_wearing_a_blue_hat,attribute,pass,고양이의 모자와 다리는 모두 파란색으로 표현되어 있습니다.,False

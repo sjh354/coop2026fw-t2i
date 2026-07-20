@@ -1,0 +1,121 @@
+run,model,item_id,axis,verdict,rationale,retried
+v234_lumina2,lumina2,bench_v1_001,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_001,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_001,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_002,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_002,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_002,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_003,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_003,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_003,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_004,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_004,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_004,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_005,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_005,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_005,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_006,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_006,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_006,attribute,pass,상자는 파란색이고 리본은 노란색으로 색이 서로 뒤바뀌지 않았다.,False
+v234_lumina2,lumina2,bench_v1_007,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_007,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_007,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_008,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_008,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_008,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_009,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_009,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_009,attribute,pass,"왕의 옷은 빨간색이고, 왕비의 치마는 파란색으로 색 전이가 없습니다.",False
+v234_lumina2,lumina2,bench_v1_010,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_010,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_010,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_011,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_011,spatial,pass,농부가 초가집보다 앞(전경)에 위치하고 초가지붕이 식별됩니다.,False
+v234_lumina2,lumina2,bench_v1_011,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_012,counting,pass,아이가 정확히 3명입니다.,False
+v234_lumina2,lumina2,bench_v1_012,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_012,attribute,pass,셋 모두 노란 저고리를 입고 손을 잡고 있습니다.,False
+v234_lumina2,lumina2,bench_v1_013,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_013,spatial,pass,"단풍나무가 왼쪽에 있고, 소나무가 오른쪽에 위치해 있어 좌우가 정확합니다.",False
+v234_lumina2,lumina2,bench_v1_013,attribute,pass,"단풍나무의 잎은 붉은색이고, 소나무의 잎은 초록색으로 색상이 정확합니다.",False
+v234_lumina2,lumina2,bench_v1_014,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_014,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_014,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_015,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_015,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_015,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_016,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_016,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_016,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_017,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_017,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_017,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_018,counting,pass,이미지에는 정확히 4마리의 참새가 보입니다.,False
+v234_lumina2,lumina2,bench_v1_018,spatial,pass,모든 참새들이 나뭇가지 위에 앉아 있습니다.,False
+v234_lumina2,lumina2,bench_v1_018,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_019,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_019,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_019,attribute,pass,주황색과 흰색의 배색이 반전되지 않고 유지되어 있다.,False
+v234_lumina2,lumina2,bench_v1_020,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_020,spatial,pass,"지구가 태양의 왼쪽, 달이 태양의 오른쪽에 배치되어 있습니다.",False
+v234_lumina2,lumina2,bench_v1_020,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_021,counting,fail,"연잎이 2장으로, 5장이 아닙니다.",False
+v234_lumina2,lumina2,bench_v1_021,spatial,pass,개구리는 연잎 위에 앉아 있습니다.,False
+v234_lumina2,lumina2,bench_v1_021,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_022,counting,pass,빨간 튤립이 2송이고 노란 튤립이 3송이므로 색별 수량이 정확합니다.,False
+v234_lumina2,lumina2,bench_v1_022,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_022,attribute,pass,빨간 튤립과 노란 튤립의 색상은 각각 다르게 표현되어 있습니다.,False
+v234_lumina2,lumina2,bench_v1_023,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_023,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_023,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_024,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_024,spatial,pass,학생은 책상 아래 공간에 들어가 있습니다.,False
+v234_lumina2,lumina2,bench_v1_024,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_025,counting,pass,이미지에는 정확히 3명의 사람이 한 줄로 서 있습니다.,False
+v234_lumina2,lumina2,bench_v1_025,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_025,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_026,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_026,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_026,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_027,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_027,spatial,pass,국그릇이 밥그릇의 오른쪽에 위치하고 있습니다.,False
+v234_lumina2,lumina2,bench_v1_027,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_028,counting,pass,"인물은 총 3명으로, 앉아 읽는 2명과 창가에 선 1명이 구분됩니다.",False
+v234_lumina2,lumina2,bench_v1_028,spatial,pass,"인물들은 서로 다른 공간에 위치하고 있으며, 앉아 읽는 2명과 창가에 선 1명이 구분됩니다.",False
+v234_lumina2,lumina2,bench_v1_028,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_029,counting,pass,이미지에는 정확히 3개의 접시가 보입니다.,False
+v234_lumina2,lumina2,bench_v1_029,spatial,pass,오븐은 요리사의 뒤에 배경에 위치하고 있습니다.,False
+v234_lumina2,lumina2,bench_v1_029,attribute,pass,요리사는 빨간색 앞치마를 착용하고 있습니다.,False
+v234_lumina2,lumina2,bench_v1_030,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_030,spatial,pass,아이가 웅덩이 옆을 걸어 있다.,False
+v234_lumina2,lumina2,bench_v1_030,attribute,pass,우비가 노란색이고 우산이 파란색으로 색이 교차되지 않는다.,False
+v234_lumina2,lumina2,bench_v1_031,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_031,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_031,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_032,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_032,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_032,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_033,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_033,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_033,attribute,pass,두 인물의 표정이 기쁨과 분노로 뚜렷이 구분되어 있습니다.,False
+v234_lumina2,lumina2,bench_v1_034,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_034,spatial,pass,"왼쪽 아이는 바닥에 앉아 있고, 오른쪽 아이는 서서 손을 내밀고 있습니다.",False
+v234_lumina2,lumina2,bench_v1_034,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_035,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_035,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_035,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_036,counting,pass,아이가 정확히 3명입니다.,False
+v234_lumina2,lumina2,bench_v1_036,spatial,pass,"중심 아이가 시무룩하고, 양 옆 아이들이 웃는 표정으로 위치하고 있습니다.",False
+v234_lumina2,lumina2,bench_v1_036,attribute,pass,아이들의 표정이 정확하게 웃음과 시무룩으로 구분되어 있습니다.,False
+v234_lumina2,lumina2,bench_v1_037,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_037,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_037,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_038,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_038,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_038,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_039,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_039,spatial,n/a,,False
+v234_lumina2,lumina2,bench_v1_039,attribute,n/a,,False
+v234_lumina2,lumina2,bench_v1_040,counting,n/a,,False
+v234_lumina2,lumina2,bench_v1_040,spatial,pass,새싹은 큰 나무의 그늘 아래에 위치해 있습니다.,False
+v234_lumina2,lumina2,bench_v1_040,attribute,n/a,,False

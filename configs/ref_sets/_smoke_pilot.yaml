@@ -1,0 +1,18 @@
+preset: _smoke_pilot
+status: provisional
+count: 3
+stats:
+  mean: 0.6175
+  min: 0.5511
+  std: 0.0481
+outliers: []
+images:
+- path: refs/_smoke_pilot/v211_00_three_apples_in_a_basket.png
+  sha256: af1e4ce1111c51b1134008014f0a906504e0746be55e1482210f4905c22094d2
+  mean_similarity: 0.6506
+- path: refs/_smoke_pilot/v211_01_a_tree_to_the_left_of_a_house.png
+  sha256: a2040b19d7faa7eaef1d72306ce5248768270bc2777b9e5e0dfd3175c22203b5
+  mean_similarity: 0.6075
+- path: refs/_smoke_pilot/v211_02_a_cat_wearing_a_blue_hat.png
+  sha256: 44b1c7391d487ab7f1589918d6824670af4a7e178c49f51c30367ab93eecb309
+  mean_similarity: 0.5943
