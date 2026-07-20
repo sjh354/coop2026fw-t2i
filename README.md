@@ -84,7 +84,16 @@
   **로컬 Qwen2.5-VL-7B-Instruct**(전용 `t2i-judge` env, 3090에서 직접 추론)로 API 키 없이
   판정한다. 예전에 있던 Anthropic API 기반 `score_image_vlm`은 제거됨. bench_v1의
   counting/spatial/attribute 축별로 pass/fail을 구조화 JSON으로 받는다. 실행 순서는
-  `docs/eval_runbook.md` 참고.
+  `docs/eval_runbook.md` 참고. `t2i-judge` env 구성 시 `qwen-vl-utils`가 import 시점에
+  요구하는 `torchvision`이 설치 목록에서 빠져 있었음 — `envs/README.md` 참고해 추가로 설치할 것.
+  **스모크 테스트 완료(2026-07-20, 3090 서버)**: `--smoke-map tests/judge_smoke_map.yaml` PASS
+  없이 실행 완료, vram_peak=15.78GB. 단, 결과는 **정확도 이슈를 드러냄** — 알려진 실패 파일럿
+  3장 중 2장(v207 spatial 좌우반전, v205 attribute 색 전이)에서 judge가 `pass`를 냄(false
+  positive). v205는 rationale 자체가 "다리도 파란색"이라고 결함을 인지하고도 verdict는
+  pass로 낸 경우 — 판정 로직(프롬프트/파싱)이 아니라 모델의 spatial-reasoning/fine-grained
+  attribute 판단 자체가 약한 것으로 보임. counting 축은 성공/실패 양쪽 다 정확히 잡음.
+  본 실험 결과 해석 시 judge의 spatial/attribute 축 판정은 액면 그대로 신뢰하지 말고
+  이미지 직접 확인으로 교차검증할 것 — 별도 개선 트랙 필요(프롬프트 튜닝 또는 더 큰 모델).
 - **최종 병합**: `scripts/merge_results.py` — pass1(vqascore/cv) + csd + judge CSV를
   run×item_id 기준으로 합쳐 harmonic 집계 최종 CSV + 모델별 컴포넌트 평균/모델×축 pass율
   리포트를 만든다. csd가 없어도(정식 ref_set 미수집) 나머지 컴포넌트만으로 동작한다.
