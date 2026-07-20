@@ -51,9 +51,15 @@ done
 
 ## 3. csd 패스 — validated/provisional manifest가 있는 run만
 
+run 디렉토리 이름(`vNNN_<model>`)에는 preset이 안 들어있다 — note frontmatter의
+`experiment:` 필드로 매핑해야 한다(디렉토리명 glob으로는 절대 못 찾음, 2026-07-20
+확인). 예:
+
 ```bash
 for preset in edu-flat-v2 observational playful-soft storybook-scene; do
-  for vdir in image-prompts/v2*_${preset##*-}*; do  # 실제로는 run과 preset 매핑을 note에서 확인할 것
+  for note in image-prompts/v2*/v2*.md; do
+    grep -q "^experiment: $preset$" "$note" || continue
+    vdir=$(dirname "$note")
     run=$(basename "$vdir")
     PYTHONPATH=vendor python -m src.scoring --dir "$vdir/images" \
       --out "bench/scores/${run}_csd.csv" --components csd \
