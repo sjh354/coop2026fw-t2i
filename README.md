@@ -111,11 +111,11 @@
 - [x] **golden set 확보**: 최초 수집분은 벤치마크 대상 12개 run(v231~v242) 이미지에서 골라 자체 참조(self-reference) 오염 발견 → 폐기(`refs/_old_self_ref_backup/`에 보존, 스코어링엔 미사용). 프론티어 모델(Imagen-4)로 4개 프리셋 독립 재생성(edu-flat-v2 15장/observational 10장/playful-soft 10장/storybook-scene 10장, bench_v1 40개 키워드와 주제 미중복) 후 전량 교체. `validate_ref_set.py` 4개 프리셋 전부 `status: validated`(2026-07-20). storybook-scene은 세이프티 필터로 아동 피사체가 전혀 생성되지 않아 성인/비인물 장면 위주로 구성됨 — 아동 대상 스타일 정합성은 추후 재검증 필요.
 - [x] **기존 모델 후보군 실측 비교**: 벤치마크 프롬프트셋(bench_v1, 40개) × 확정 스타일 프리셋 4개(`edu-flat-v2`/`observational`/`playful-soft`/`storybook-scene`) × 3개 후보 모델(lumina2/pixart-sigma/flux2-klein-4b-nf4) = 12개 run(480장) 생성 후 채점 완료(2026-07-20, `bench/scores/merged.md`). csd 포함 4개 컴포넌트(vqascore/custom_cv/csd/judge_pass_rate) 전부로 harmonic 계산 완료 — flux2-klein-4b-nf4(0.653) > lumina2(0.6303) > pixart-sigma(0.5804).
 
-  | model | vqascore | custom_cv | judge_pass_rate | harmonic |
-  |---|---|---|---|---|
-  | lumina2 | 0.840 | 0.739 | 0.944 | 0.789 |
-  | flux2-klein-4b-nf4 | 0.837 | 0.756 | 0.925 | 0.791 |
-  | pixart-sigma | 0.805 | 0.740 | 0.810 | 0.731 |
+  | model | vqascore | custom_cv | csd | judge_pass_rate | harmonic |
+  |---|---|---|---|---|---|
+  | flux2-klein-4b-nf4 | 0.837 | 0.756 | 0.480 | 0.925 | 0.653 |
+  | lumina2 | 0.840 | 0.739 | 0.443 | 0.944 | 0.630 |
+  | pixart-sigma | 0.805 | 0.740 | 0.429 | 0.810 | 0.580 |
 
   judge 축별 pass율: pixart-sigma가 counting에서 66%(21/32)로 세 모델 중 유독 낮음(lumina2 94%, flux2-klein 81%) — 방언 파일럿에서 이미 나온 "lumina2가 복합 프롬프트 전 축에서 가장 안정적" 결론과 일치. spatial/attribute는 세 모델 다 80~100%대지만, judge 자체의 spatial/attribute 판정 정확도가 파일럿에서 낮게 나온 바 있어(위 "채점 모듈" 절) 액면 그대로 신뢰하지 않고 이미지 직접 확인이 필요.
 - [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.) 위 1차 비교 결과대로면 pixart-sigma의 counting 약점이 우선 조사 대상 — judge 오탐인지 실제 모델 한계인지 이미지 직접 확인 필요.
