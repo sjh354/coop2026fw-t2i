@@ -57,13 +57,16 @@ def _load_vqascore():
 def load_csd_model():
     """CSD(Contrastive Style Descriptors) ViT-L 체크포인트를 lazy-load한다.
 
-    공개 구현: https://github.com/learn2phoenix/CSD
-    체크포인트를 WEIGHTS/csd_vit-l.pth 에 미리 받아둘 것 (README 참고).
-    scripts/validate_ref_set.py도 이 함수를 그대로 재사용한다.
+    공개 구현: https://github.com/learn2phoenix/CSD (vendor/CSD, MIT 라이선스로 vendoring).
+    체크포인트는 저자 공식 HF 미러 https://huggingface.co/tomg-group-umd/CSD-ViT-L 에서
+    받아 WEIGHTS/csd_vit-l.pth 에 둔다 (README 참고). scripts/validate_ref_set.py도
+    이 함수를 그대로 재사용한다.
 
-    주의: 아래 CSD_CLIP 생성자 인자/forward 반환 형태(3-tuple)/state dict 키는
-    공개 구현 문서 기준으로 작성했고 GPU 서버에서 직접 돌려 확인하지 못했다.
-    3090에서 첫 실행 시 CSD 리포와 대조해 맞을 것.
+    2026-07-20 ubuntu@172.10.5.23 t2i-score env에서 실제 체크포인트로 로드+forward
+    검증 완료 (load_state_dict strict 매치, style embedding shape [N, 768]).
+    체크포인트의 state dict 키는 "module." 접두사가 붙어 있어 convert_state_dict로
+    벗겨내야 한다 — 벗기지 않으면 strict=False가 조용히 0개 키 매치로 통과해
+    랜덤 초기화 상태로 채점하게 된다.
     """
     if "model" not in _csd_cache:
         if not CSD_CHECKPOINT.exists():
@@ -72,12 +75,18 @@ def load_csd_model():
                 "'채점 모듈' 절에 안내된 URL에서 받아 이 경로에 둘 것."
             )
         import torch
-        from CSD.model import CSD_CLIP  # 공개 구현 vendored 또는 pip 설치 전제
+        from CSD.model import CSD_CLIP  # vendor/CSD
+        from CSD.utils import convert_state_dict
 
         model = CSD_CLIP("vit_large", "default")
-        state = torch.load(CSD_CHECKPOINT, map_location="cpu")
-        model.load_state_dict(state["model_state_dict"], strict=False)
+        checkpoint = torch.load(CSD_CHECKPOINT, map_location="cpu", weights_only=False)
+        state = convert_state_dict(checkpoint["model_state_dict"])
+        msg = model.load_state_dict(state, strict=False)
+        if msg.missing_keys or msg.unexpected_keys:
+            raise RuntimeError(f"CSD 체크포인트 로드 불일치: {msg}")
         model.eval()
+        if torch.cuda.is_available():
+            model = model.cuda()
         _csd_cache["model"] = model
     return _csd_cache["model"]
 
@@ -94,6 +103,7 @@ def csd_style_embedding(model, image_path):
                               std=[0.26862954, 0.26130258, 0.27577711]),
     ])
     img = preprocess(Image.open(image_path).convert("RGB")).unsqueeze(0)
+    img = img.to(next(model.parameters()).device)
     with torch.no_grad():
         _, _, style_emb = model(img)
     return torch.nn.functional.normalize(style_emb, dim=-1)
