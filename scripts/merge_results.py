@@ -2,9 +2,9 @@
 최종 채점 CSV 1개 + 마크다운 리포트를 만든다.
 
     python -m scripts.merge_results \\
-        --pass1 bench/scores/v223_lumina2_pass1.csv bench/scores/v224_lumina2_pass1.csv \\
-        --csd bench/scores/v223_lumina2_csd.csv \\
-        --judge bench/scores/judge_v223_lumina2.csv bench/scores/judge_v224_lumina2.csv \\
+        --pass1 bench/scores/v223_lumina2/pass1.csv bench/scores/v224_lumina2/pass1.csv \\
+        --csd bench/scores/v223_lumina2/csd.csv \\
+        --judge bench/scores/v223_lumina2/judge.csv bench/scores/v224_lumina2/judge.csv \\
         --out bench/scores/merged.csv
 
 --csd/--judge는 생략 가능 — csd가 아직 없으면(정식 ref_set 미수집) 그 컴포넌트만

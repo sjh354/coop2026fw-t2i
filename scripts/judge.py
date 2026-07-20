@@ -19,7 +19,7 @@
     4. 구조화 JSON 파싱 실패 시 피드백을 붙여 1회 재생성, 그래도 실패하면
        verdict=parse_error (meta로 retried 기록).
 
-출력: bench/scores/judge_{run}.csv (item_id, axis, verdict, rationale, retried) +
+출력: bench/scores/{run}/judge.csv (item_id, axis, verdict, rationale, retried) +
 run/model 컬럼(scripts/merge_results.py 조인 키).
 
 스모크 테스트(--smoke-map)는 bench_v1 이전 파일럿 PNG용 — 아래 참고.
@@ -224,7 +224,7 @@ def main():
         bench_v1_prompts = _bench_v1_prompts()
         for run_dir in args.runs:
             run_name = pathlib.Path(run_dir).name
-            out_path = SCORES_DIR / f"judge_{run_name}.csv"
+            out_path = SCORES_DIR / run_name / "judge.csv"
             if out_path.exists() and not args.force:
                 print(f"[skip] {out_path} 이미 존재 (--force로 재실행)")
                 continue

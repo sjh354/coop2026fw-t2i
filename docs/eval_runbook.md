@@ -23,7 +23,7 @@ conda activate t2i-score
 for vdir in image-prompts/v2*_lumina2 image-prompts/v2*_pixart-sigma image-prompts/v2*_flux2-klein-4b-nf4; do
   run=$(basename "$vdir")
   python -m src.scoring --dir "$vdir/images" \
-    --out "bench/scores/${run}_pass1.csv" --components vqascore,cv
+    --out "bench/scores/${run}/pass1.csv" --components vqascore,cv
 done
 ```
 
@@ -62,7 +62,7 @@ for preset in edu-flat-v2 observational playful-soft storybook-scene; do
     vdir=$(dirname "$note")
     run=$(basename "$vdir")
     PYTHONPATH=vendor python -m src.scoring --dir "$vdir/images" \
-      --out "bench/scores/${run}_csd.csv" --components csd \
+      --out "bench/scores/${run}/csd.csv" --components csd \
       --ref-manifest "configs/ref_sets/${preset}.yaml"
   done
 done
@@ -83,9 +83,9 @@ python -m scripts.judge --runs image-prompts/v2*_lumina2 image-prompts/v2*_pixar
 
 ```bash
 python -m scripts.merge_results \
-  --pass1 bench/scores/*_pass1.csv \
-  --csd bench/scores/*_csd.csv \
-  --judge bench/scores/judge_*.csv \
+  --pass1 bench/scores/*/pass1.csv \
+  --csd bench/scores/*/csd.csv \
+  --judge bench/scores/*/judge.csv \
   --out bench/scores/merged.csv
 ```
 

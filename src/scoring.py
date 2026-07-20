@@ -14,10 +14,10 @@ vqascore/cv는 먼저 채점하고 csd는 ref_set 확정 후(scripts/validate_re
 재실행할 수 있어야 한다. run/model/item_id 컬럼은 scripts/merge_results.py의 조인 키.
 
     python -m src.scoring --dir image-prompts/v211_lumina2/images \\
-        --out bench/scores/v211_lumina2_pass1.csv --components vqascore,cv
+        --out bench/scores/v211_lumina2/pass1.csv --components vqascore,cv
 
     python -m src.scoring --dir image-prompts/v211_lumina2/images \\
-        --out bench/scores/v211_lumina2_csd.csv --components csd \\
+        --out bench/scores/v211_lumina2/csd.csv --components csd \\
         --ref-manifest configs/ref_sets/edu-flat-v2.yaml
 """
 import argparse
