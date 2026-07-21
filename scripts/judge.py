@@ -69,12 +69,12 @@ def _load_judge_model():
     return _model_cache["model"], _model_cache["processor"]
 
 
-def _call_judge_vlm(image_path, user_text):
+def _call_judge_vlm(image_path, user_text, system=JUDGE_SYSTEM):
     from qwen_vl_utils import process_vision_info
 
     model, processor = _load_judge_model()
     messages = [
-        {"role": "system", "content": JUDGE_SYSTEM},
+        {"role": "system", "content": system},
         {"role": "user", "content": [
             {"type": "image", "image": str(image_path)},
             {"type": "text", "text": user_text},
