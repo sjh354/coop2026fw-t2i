@@ -1,0 +1,97 @@
+run,model,type,source,axis,verdict,rationale,retried
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,claude,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당 사항은 적용되지 않는다.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,claude,layout_structure,pass,프롬프트에서 설명된 그릴 구조와 일치한다.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,claude,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,chatgpt,content_present,pass,"The image contains three large empty photo frames with colorful borders, paper clips, tape, stickers, rainbow icons, smiley faces, cherries, and a small camera illustration.",False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,chatgpt,text_legibility,n/a,There is no text in the image to assess legibility.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,chatgpt,layout_structure,pass,"The layout includes three photo frames, decorative elements, and writing areas with balanced spacing.",False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,chatgpt,educational_fit,pass,"The design uses a clean vector style, colorful decorations, and a classroom-friendly theme suitable for young learners.",False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,qwen,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당 사항은 적용되지 않는다.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,qwen,layout_structure,pass,프롬프트에서 설명된 그릴 구조와 일치한다.,False
+v245_qwen-image-lecture24,qwen-image,structured_worksheet_template,qwen,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,claude,content_present,pass,이미지에는 프롬프트에서 언급된 네 개의 바가 모두 포함되어 있습니다.,False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당 사항이 없습니다.,False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,claude,layout_structure,pass,이미지의 구조는 프롬프트에서 언급된 바와 일치합니다.,False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 나이대에 맞는 톤을 가지고 있으며 왜곡이나 잡음이 없습니다.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,chatgpt,content_present,pass,"The image contains a bar graph with four categories, each represented by a different colored bar and an icon.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,chatgpt,text_legibility,pass,The title 'Elementary School Worksheet?' and the axis labels are clearly legible.,False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,chatgpt,layout_structure,pass,The bar graph is well-structured with labeled axes and a clear grid. The icons are placed below each category as specified.,False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,chatgpt,educational_fit,pass,"The worksheet uses a flat style, has a classroom-friendly design, and includes elements suitable for elementary school students.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,qwen,content_present,pass,"The image contains a bar graph displaying the favorite toys of Grade 1 learners, with each bar representing a different toy.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,qwen,text_legibility,pass,"The text in the image, including the title, labels, and questions, is legible and clear.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,qwen,layout_structure,pass,"The layout structure, including the bar graph, axis labels, and question format, aligns with the provided description.",False
+v245_qwen-image-lecture24,qwen-image,data_visualization_chart,qwen,educational_fit,pass,"The image uses a flat style with a clean design, appropriate for an educational worksheet, and the content is suitable for young learners.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,claude,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,claude,layout_structure,pass,프롬프트에서 언급된 모든 구조적 요소가 이미지에 정확하게 반영되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,claude,educational_fit,pass,"깔끔한 플랫 스타일과 나이대에 적합한 톤으로, 왜곡이나 잡음이 없는 이미지이다.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,chatgpt,content_present,pass,"이미지에는 역사적인 정치인의 상반신, 정장을 입은 모습, 특징적인 수염과 머리 스타일, 국기, 그리고 펼쳐진 종이가 포함되어 있다.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,chatgpt,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다.,False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,chatgpt,layout_structure,pass,"이미지의 구성은 균형 잡혀 있으며, 국기와 종이가 각각 그림의 양쪽에 배치되어 있다.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,chatgpt,educational_fit,pass,"이미지는 플랫 스타일로 그려져 있으며, 어린이에게 적합한 톤을 사용하고 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,qwen,content_present,fail,"The timeline does not accurately represent key events such as Lincoln's birth year being 1809 instead of 1809, and the marriage date being 1842 instead of 1842.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,qwen,text_legibility,fail,The text is not legible due to the use of non-standard characters and abbreviations that do not convey meaningful information.,False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,qwen,layout_structure,fail,"The layout structure is inconsistent and lacks clear markers for significant years, making it difficult to follow the timeline.",False
+v245_qwen-image-lecture24,qwen-image,historical_figure_portrait,qwen,educational_fit,fail,"The style is not flat or clean, and the content is not age-appropriate or factually accurate, which detracts from its educational value.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,claude,content_present,pass,"이미지에는 프롬프트에서 언급된 네 명의 학생들이 두 개의 학교 책상 주변에 앉아 있으며, 그 중 한 명의 여학생이 손으로 책을 들고 있고, 다른 학생들은 색연필과 그림을 하고 있습니다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없습니다.,False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,claude,layout_structure,pass,"이미지의 구성은 프롬프트에서 언급된 학생들의 배치와 책상, 휠체어의 위치가 일치합니다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이들에게 적합한 톤으로 표현되어 있으며, 왜곡이나 잡음이 없습니다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,chatgpt,content_present,pass,"이미지에는 네 명의 학생이 테이블 주위에 앉아 있으며, 그들은 각각 그림, 책, 포스터 같은 창의적인 프로젝트를 보여주고 있습니다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,chatgpt,text_legibility,n/a,프롬프트에서 텍스트가 요구되지 않았습니다.,False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,chatgpt,layout_structure,pass,"이미지에는 테이블, 학생, 그리고 배경의 칠판과 벽이 포함되어 있으며, 학교 교실의 일반적인 구성 요소가 잘 나타나 있습니다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,chatgpt,educational_fit,pass,"이미지는 깔끔한 플랫 스타일, 어린이에게 친숙한 톤, 왜곡이나 잡음이 없으며, 교육적 목적에 적합합니다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,qwen,content_present,pass,프롬프트에서 명시된 네 명의 아이들이 테이블에 앉아 그림을 그리거나 책을 읽고 있는 내용이 모두 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,qwen,text_legibility,pass,"프롬프트에서 언급된 대로, 아이들의 머리 위에 있는 대화 пузы리에 한국어로 적힌 텍스트가 모두 읽을 수 있는 상태로 렌더링되어 있다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,qwen,layout_structure,pass,"프롬프트에서 설명한 대로, 간단한 나무 테이블과 의자가 있는 교실이나 도서관 같은 설정이 잘 표현되어 있다.",False
+v245_qwen-image-lecture24,qwen-image,multi_character_classroom_collaboration,qwen,educational_fit,pass,"프롬프트에서 요구한 대로, 깔끔하고 평면적인 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없는 만화적인 그림이 잘 표현되어 있다.",False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,claude,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로입니다.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다.",False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,chatgpt,content_present,pass,The image shows a child interviewing two grandparents in a cozy living room setting.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,chatgpt,text_legibility,n/a,There are no texts or labels present in the image.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,chatgpt,layout_structure,pass,"The layout includes a sofa for the grandparents, a floor lamp, a side table, and flowers, all arranged in a way that fits the description.",False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,chatgpt,educational_fit,pass,"The illustration uses soft pastel colors, a clean educational style, and minimal background details to create a warm family atmosphere suitable for children's textbooks.",False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,qwen,content_present,pass,이미지에는 프롬프트에서 언급된 세 명의 캐릭터가 모두 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,qwen,layout_structure,pass,"이미지의 구성은 프롬프트에서 언급된 모든 요소를 포함하고 있으며, 각 요소의 위치와 배치가 일치한다.",False
+v245_qwen-image-lecture24,qwen-image,intergenerational_indoor_scene,qwen,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로 그려져 있으며, 나이대에 맞는 따뜻한 톤과 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,claude,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로입니다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤을 가지고 있으며, 왜곡이나 잡음이 없습니다.",False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,chatgpt,content_present,pass,"이미지에는 프롬프트에서 언급된 단일 캐릭터와 손으로 사용하는 도구인 천문공기, 그리고 작업 표면이 포함되어 있다.",False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,chatgpt,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,chatgpt,layout_structure,pass,이미지의 구성은 프롬프트에서 언급된 그릴드/축/라벨 위치/도형 배열과 일치한다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,chatgpt,educational_fit,pass,"이미지는 깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡·잡음이 없는 교육적 일러스트레이션 스타일을 사용하고 있다.",False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,qwen,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,qwen,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로다.,False
+v245_qwen-image-lecture24,qwen-image,single_character_cutout,qwen,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당사항 없음.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,claude,layout_structure,pass,이미지의 구조는 프롬프트에서 설명한 그림의 구조와 일치한다.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,claude,educational_fit,pass,"이미지는 깔끔한 flat 스타일로, 나이대에 맞는 톤이며 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,chatgpt,content_present,pass,"The image contains all the required elements: a simplified animal cell diagram, labeled organelles, a title, educational descriptions, and a color key.",False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,chatgpt,text_legibility,pass,All text is legible and uses clean typography.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,chatgpt,layout_structure,pass,The layout follows a classroom-friendly structure with clear labels and a color key.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,chatgpt,educational_fit,pass,"The image has a clean, flat style, uses a classroom-friendly tone, and does not contain any distortion or noise.",False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,qwen,content_present,pass,프롬프트에서 명시된 모든 세포 구성 요소가 이미지에 포함되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,qwen,text_legibility,pass,프롬프트에서 언급된 모든 텍스트가 읽을 수 있는 실제 단어로 렌더링되어 있다.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,qwen,layout_structure,pass,프롬프트에서 설명된 구조와 일치하는 레이아웃이 있다.,False
+v245_qwen-image-lecture24,qwen-image,labeled_science_diagram,qwen,educational_fit,pass,"깔끔한 플랫 스타일, 나이대에 적합한 톤, 왜곡이나 잡음이 없다.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 도형이 포함되어 있습니다.,False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,claude,text_legibility,n/a,이미지에는 텍스트가 없습니다.,False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,claude,layout_structure,pass,"도형들은 두 줄로 네 개씩 정렬되어 있으며, 각 도형은 흰색 배경에 고립되어 있습니다.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,chatgpt,content_present,pass,The image contains all the required eight geometric shapes.,False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,chatgpt,text_legibility,pass,"The text is legible and uses clear, clean typography.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,chatgpt,layout_structure,pass,"The shapes are arranged in a grid format with answer lines beneath them, following the specified layout structure.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,chatgpt,educational_fit,pass,"The worksheet has a clean, flat style with a white background, suitable for an elementary school setting, and includes clear instructions and questions.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,qwen,content_present,pass,The worksheet contains all the shapes and objects as described in the prompt.,False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,qwen,text_legibility,pass,The text on the worksheet is legible and clearly written.,False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,qwen,layout_structure,pass,"The layout follows the structure described in the prompt, including sections for names, shapes, and real-life objects.",False
+v245_qwen-image-lecture24,qwen-image,geometric_shape_set,qwen,educational_fit,pass,"The worksheet uses a simple, flat style suitable for young learners and includes clear, age-appropriate visuals.",False
