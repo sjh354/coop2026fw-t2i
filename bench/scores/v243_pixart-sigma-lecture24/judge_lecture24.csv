@@ -1,0 +1,97 @@
+run,model,type,source,axis,verdict,rationale,retried
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,claude,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당사항 없음.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,claude,layout_structure,pass,프롬프트에서 설명된 그릴 레이아웃과 일치한다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,claude,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,chatgpt,content_present,pass,The image contains three large empty photo frames with colorful borders as specified in the prompt.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,chatgpt,text_legibility,n/a,There is no text present in the image.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,chatgpt,layout_structure,pass,"The layout includes three photo frames with decorative elements like paper clips, tape, stickers, rainbow icons, smiley faces, cherries, and a small camera illustration, which are consistent with the prompt.",False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,chatgpt,educational_fit,pass,"The image uses a clean vector layout with a white background, balanced spacing, colorful educational decorations, and a classroom-friendly design suitable for an elementary school worksheet template.",False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,qwen,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당사항 없음.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,qwen,layout_structure,pass,프롬프트에서 설명된 그릴 레이아웃과 일치한다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,structured_worksheet_template,qwen,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,claude,content_present,fail,프롬프트에 따라 바의 색상과 크기가 다르게 표현되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,claude,layout_structure,fail,프롬프트에 따라 바의 크기와 색상이 다르게 표현되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,claude,educational_fit,pass,"플랫 스타일로 깔끔하게 표현되어 있으며, 나이대에 맞는 톤을 사용하고 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,chatgpt,content_present,pass,The image contains a colorful bar graph comparing four categories with different colored bars and small icons below each category.,False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,chatgpt,text_legibility,n/a,There is no text in the image to assess legibility.,False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,chatgpt,layout_structure,pass,"The image has a structured layout with a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,chatgpt,educational_fit,pass,"The image uses a flat style, classroom-friendly design, and includes elements suitable for an elementary school worksheet.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,qwen,content_present,pass,"The image contains all the elements mentioned in the prompt, including the title, toy icons, colored bars, and numerical labels.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,qwen,text_legibility,n/a,"There is no text in the image other than the title, labels, and questions.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,qwen,layout_structure,pass,"The layout follows the structure described in the prompt, with a clear grid for the bars and labels.",False
+v243_pixart-sigma-lecture24,pixart-sigma,data_visualization_chart,qwen,educational_fit,pass,"The image uses a flat style with simple, colorful icons suitable for young learners, and there is no distortion or noise present.",False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,claude,content_present,pass,프롬프트의 모든 요소가 이미지에 포함되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,claude,layout_structure,pass,프롬프트에서 설명된 그림의 구조와 일치한다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,claude,educational_fit,pass,"깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡이나 잡음이 없다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,chatgpt,content_present,pass,"이미지에는 역사적인 정치인의 상반신이 포함되어 있으며, 특징적인 얼굴과 머리 스타일이 보입니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,chatgpt,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,chatgpt,layout_structure,pass,"이미지의 구성은 평형 잡힌 것으로, 국기와 펄럭이지 않는 종이��이 양쪽에 배치되어 있습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,chatgpt,educational_fit,pass,"이미지는 플랫 스타일로, 어린이에게 적합한 톤으로 그려져 있으며, 왜곡이나 잡음이 없습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,qwen,content_present,fail,The image does not contain a timeline or any specific events related to Abraham Lincoln's life.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,qwen,text_legibility,n/a,There is no text present in the image.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,qwen,layout_structure,n/a,There is no structured layout or timeline in the image.,False
+v243_pixart-sigma-lecture24,pixart-sigma,historical_figure_portrait,qwen,educational_fit,fail,The image has a chaotic design and does not fit the educational purpose of a timeline poster for Abraham Lincoln's life events.,False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,claude,content_present,pass,"이미지에는 프롬프트에서 언급된 네 명의 학생들이 두 개의 학교 책상 주변에 앉아 있으며, 두 명의 여학생이 왼쪽에, 한 명의 여학생과 한 명의 남학생이 오른쪽에 앉아 있습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,claude,layout_structure,pass,이미지의 구성은 프롬프트에서 언급된 두 개의 학교 책상 주변에 네 명의 학생들이 앉아 있는 구조를 잘 보여줍니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로 그려져 있으며, 어린이에게 적합한 톤을 가지고 있습니다. 왜곡이나 잡음이 없습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,chatgpt,content_present,pass,"The image shows four students sitting around a table with various creative projects, including drawings and a booklet, and one student in a wheelchair. Speech bubbles are present above each student.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,chatgpt,text_legibility,n/a,There is no text in the image that requires legibility assessment.,False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,chatgpt,layout_structure,pass,"The layout includes a classroom setting with a table, chairs, and speech bubbles above each student, which aligns with the described structure.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,chatgpt,educational_fit,pass,"The image has a soft pastel color palette, a clean and simple style, and a balanced composition suitable for an elementary school textbook illustration.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,qwen,content_present,pass,프롬프트에서 명시된 네 명의 아이들이 테이블에 앉아 그림을 그리거나 읽고 있는 내용이 이미지에 포함되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,qwen,text_legibility,pass,"프롬프트에서 언급된 대로, 아이들의 머리 위에 있는 말풍선에는 한국어로 쓰여진 텍스트가 있으며, 읽을 수 있는 실제 단어로 렌더링되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,qwen,layout_structure,pass,"프롬프트에서 설명한 대로, 아이들은 테이블에 앉아 있으며, 그림과 책이 정확히 그려져 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,multi_character_classroom_collaboration,qwen,educational_fit,pass,"프롬프트에서 언급된 대로, 이 이미지는 깔끔한 플랫 스타일로 그려져 있으며, 어린이용 교육적 요소가 잘 반영되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,claude,layout_structure,pass,"이미지의 구성은 프롬프트에서 설명한那样으로, 가구와 장식이 정확하게 배치되어 있습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,claude,educational_fit,pass,"이미지는 깔끔하고 평면적인 스타일로, 어린이에게 적합한 톤을 가지고 있으며, 왜곡이나 잡음이 없습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,chatgpt,content_present,pass,"이미지에는 어린이와 두 명의 할머니, 할아버지가 소파에 앉아 있는 모습이 포함되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,chatgpt,text_legibility,n/a,프롬프트에서 텍스트가 요구되지 않았기 때문에 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,chatgpt,layout_structure,pass,"이미지에는 소파, 바닥 램프, 측면 테이블, 꽃 등 간단한 가구가 포함되어 있으며, 프롬프트의 설명과 일치한다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,chatgpt,educational_fit,pass,"이미지는 깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡이나 잡음이 없으며, 따뜻한 가족 분위기를 전달한다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,qwen,content_present,pass,"이미지에는 프롬프트에서 언급된 세 명의 캐릭터와 그들의 옷차림, 의자, 책상, 식물, 램프 등이 모두 포함되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,qwen,layout_structure,pass,"이미지의 구성은 프롬프트에서 언급된 모든 요소를 포함하고 있으며, 캐릭터와 물체의 위치가 명확하게 정의되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,intergenerational_indoor_scene,qwen,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로 그려져 있으며, 나이대에 맞는 따뜻한 색상과 부드러운 톤으로 표현되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,claude,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로입니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤을 가지고 있으며, 왜곡이나 잡음이 없습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,chatgpt,content_present,pass,"이미지에는 프롬프트에서 언급된 주요 대상인 인물과 흉부 위까지의 모습, 그리고 작업대와 천공기 등이 포함되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,chatgpt,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,chatgpt,layout_structure,pass,"이미지의 구성은 프롬프트에서 언급된 작업대 위에 천공기와 인물이 배치되어 있으며, 간단한 평평한 색상 배경이 사용되었다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,chatgpt,educational_fit,pass,"이미지는 깔끔한 플랫 스타일, 부드러운 팔레트 컬러, 균형 잡힌 구성, 그리고 명확한 객체 상호작용을 보여주며, 어린이에게 적합한 톤을 가지고 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,qwen,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,qwen,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,single_character_cutout,qwen,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,claude,content_present,pass,"이미지에는 주요 대상인 큰 원형 세포, 핵, 내부 줄무늬가 있는 4개의 원형 기관절, 좌측의 단단한 리본 모양의 집합, 그리고 오른쪽과 하단 왼쪽의 두 개의 비어있는 원형이 포함되어 있다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,claude,text_legibility,n/a,텍스트나 글자가 포함되어 있지 않아 평가할 수 없다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,claude,layout_structure,pass,"그리드, 축, 라벨 위치, 도형 배열이 프롬프트에서 설명한 것과 일치한다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,claude,educational_fit,pass,"깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡이나 잡음이 없으며, 과학 워크시트에 적합한 내용이다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,chatgpt,content_present,fail,The image does not show a simplified animal cell diagram with labeled organelles.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,chatgpt,text_legibility,n/a,There is no text in the image.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,chatgpt,layout_structure,n/a,There is no structured layout or grid in the image.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,chatgpt,educational_fit,fail,The image is not a science worksheet; it appears to be a different type of illustration with no educational content related to cells.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,qwen,content_present,pass,The diagram contains all the required cellular components as specified in the prompt.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,qwen,text_legibility,pass,The labels and title are clearly legible in black text on a white background.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,qwen,layout_structure,pass,The layout follows a typical scientific diagram structure with labels pointing to the corresponding parts of the cell.,False
+v243_pixart-sigma-lecture24,pixart-sigma,labeled_science_diagram,qwen,educational_fit,pass,"The diagram uses a flat style with clear, simple labels, making it suitable for educational purposes. The color coding is consistent with the prompt, and there is no distortion or noise present.",False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,claude,content_present,fail,이미지에는 원이 포함되어 있지 않습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 평가할 수 없습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,claude,layout_structure,pass,"이미지는 두 줄로 네 개씩 배치된 정육면체, 사각형, 사각형, 삼각형, 직사각형, 원, 다각형의 순서로 구성되어 있습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,chatgpt,content_present,fail,"이미지에는 정육각형, 사각형, 삼각형, 직사각형, 원형, 다각형 등이 포함되어 있지 않습니다.",False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,chatgpt,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,chatgpt,layout_structure,fail,이미지의 구조는 프롬프트에서 요구하는 학습 시트의 구조와 일치하지 않습니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,chatgpt,educational_fit,fail,이미지는 복잡한 그림과 흰색 배경이 아닌 검은색 벡터 라인으로 구성되어 있어 교육적 적합성이 부족합니다.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,qwen,content_present,fail,The image does not contain the required shapes or the text for the test.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,qwen,text_legibility,n/a,There is no text in the image.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,qwen,layout_structure,n/a,There is no structured layout as per the prompt.,False
+v243_pixart-sigma-lecture24,pixart-sigma,geometric_shape_set,qwen,educational_fit,fail,The image is not in a flat style and lacks the educational content described in the prompt.,False

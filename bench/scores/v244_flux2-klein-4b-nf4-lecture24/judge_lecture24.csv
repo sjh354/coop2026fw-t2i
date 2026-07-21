@@ -1,0 +1,97 @@
+run,model,type,source,axis,verdict,rationale,retried
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당 사항은 적용되지 않는다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,layout_structure,pass,프롬프트에서 설명된 그릴 레이아웃과 일치한다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,content_present,pass,The image contains three large empty photo frames with colorful borders as specified in the prompt.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,text_legibility,n/a,There is no text present in the image.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,layout_structure,pass,"The layout includes three large photo frames with decorative elements around them, arranged in a balanced manner.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,educational_fit,pass,"The image uses a clean vector style with colorful, educational decorations suitable for an elementary school worksheet template.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당 사항이 없습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,layout_structure,pass,프롬프트에서 설명된 그릴 구조와 일치합니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,content_present,pass,이미지에는 프롬프트에서 언급된 네 개의 바가 모두 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않아 해당 사항이 없음.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,layout_structure,pass,이미지의 구조는 프롬프트에서 언급된 바와 일치한다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 나이대에 맞는 톤을 가지고 있으며 왜곡이나 잡음이 없다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,content_present,pass,"The image contains the required elements: a colorful bar graph, four categories with different colored bars, small icons, a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,text_legibility,fail,The text in the title and some of the comprehension questions is not legible due to poor font choice and distortion.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,layout_structure,pass,"The layout includes a bar graph with labeled axes, icons under each category, and a structured format for comprehension questions and answers.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,educational_fit,pass,"The image uses a flat style, classroom-friendly icons, and a clean design suitable for an elementary school worksheet.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,content_present,pass,The image contains a bar graph with the specified number of bars and corresponding toy icons.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,text_legibility,n/a,"There is no text in the image other than the title, labels, and questions.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,layout_structure,pass,The layout follows the structure of a bar graph worksheet with clear labels and a question section.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,educational_fit,pass,"The image uses a flat style, appropriate for young learners, with clear and simple elements suitable for educational purposes.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,claude,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,claude,layout_structure,pass,프롬프트에서 언급된 모든 구조적 요소가 이미지에 정확하게 반영되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,claude,educational_fit,pass,"깔끔한 플랫 스타일과 나이대에 적합한 톤으로, 왜곡이나 잡음이 없는 이미지이다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,chatgpt,content_present,pass,"이미지에는 역사적인 정치인의 상반신, 정식 역사적인 옷차림, 특징적인 얼굴 수염과 머리 스타일, 국기와 펄럭이는 종이��, 그리고 흰색 배경이 포함되어 있습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,chatgpt,text_legibility,n/a,프롬프트에서 텍스트가 요구되지 않았습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,chatgpt,layout_structure,pass,"이미지의 구성은 균형 잡혀 있으며, 역사적인 정치인의 상반신이 중앙에 배치되어 있습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,chatgpt,educational_fit,pass,"이미지는 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없으며, 깔끔하고 교육적입니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,qwen,content_present,fail,The timeline does not accurately represent Abraham Lincoln's life events; it contains incorrect dates and events.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,qwen,text_legibility,fail,The text is not legible due to poor rendering and misspellings.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,qwen,layout_structure,fail,The layout structure is not consistent with the provided description; the timeline is not properly aligned and labeled.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,historical_figure_portrait,qwen,educational_fit,fail,The image does not fit an educational style; it uses a flat design but the text is unclear and the overall presentation is chaotic.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,claude,content_present,pass,프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,claude,layout_structure,pass,"프롬프트에서 설명된 데스크와 자세, 키즈의 배치가 잘 표현되어 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,claude,educational_fit,pass,"깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없으며, 학교 환경을 연상시킨다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,chatgpt,content_present,pass,"The image shows four students sitting around a table with various creative projects, including drawings and booklets, which aligns with the prompt.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,chatgpt,text_legibility,pass,The speech bubbles contain legible Korean text that is part of the prompt.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,chatgpt,layout_structure,pass,"The layout includes a classroom setting with a table, chairs, and windows, consistent with the prompt's description.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,chatgpt,educational_fit,pass,"The image uses soft pastel colors, a clean and simple style, and a child-friendly approach suitable for an elementary school textbook illustration.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,qwen,content_present,pass,프롬프트에서 명시된 네 명의 아이들이 테이블에 앉아 그림을 그리거나 책을 읽고 있는 내용이 이미지에 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,qwen,text_legibility,pass,"프롬프트에서 언급된 대로, 아이들의 머리 위에 있는 대화 пузы리에 한국어로 쓰여진 텍스트가 잘 읽히며, 텍스트는 실제 단어로 렌더링되어 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,qwen,layout_structure,pass,"프롬프트에서 설명된 대로, 간단한 나무 테이블과 의자, 그리고 아이들이 그림을 그리거나 책을 읽는 모습이 잘 표현되어 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,multi_character_classroom_collaboration,qwen,educational_fit,pass,"프롬프트에서 언급된 대로, 깔끔하고 평면적인 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없는 만화 스타일로 그려져 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,claude,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로입니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,chatgpt,content_present,pass,The image shows a child interviewing two grandparents in a cozy living room setting.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,chatgpt,text_legibility,n/a,There is no text present in the image.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,chatgpt,layout_structure,pass,"The layout includes a child sitting on a stool, two grandparents on a sofa, and simple furniture like a floor lamp and side table.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,chatgpt,educational_fit,pass,"The illustration uses soft pastel colors, a clean educational style, and minimal background details to create a warm family atmosphere suitable for an elementary school textbook.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,qwen,content_present,pass,이미지에는 프롬프트에서 언급된 세 명의 캐릭터가 모두 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,qwen,layout_structure,pass,이미지의 구성은 프롬프트에서 언급된 가구와 배경 요소들이 정확하게 반영되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,intergenerational_indoor_scene,qwen,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 나이대에 맞는 따뜻하고 부드러운 색상으로 표현되어 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,claude,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로입니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,chatgpt,content_present,pass,"이미지에는 프롬프트에서 언급된 주요 대상인 인물과 그가 사용하는 수동 도구인 천문학 기계, 그리고 작업 표면이 모두 포함되어 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,chatgpt,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,chatgpt,layout_structure,pass,"이미지의 구성은 프롬프트에서 언급된 그림자와 일치하며, 인물과 작업 표면이 잘 정렬되어 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,chatgpt,educational_fit,pass,"이미지는 깔끔한 플랫 스타일, 부드러운 팔레트 색상, 균형 잡힌 조성, 그리고 왜곡이나 잡음이 없는 교육적 일러스트레이션 스타일을 가지고 있다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,qwen,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,qwen,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,qwen,layout_structure,pass,이미지의 구성은 프롬프트에서 설명한 그대로다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,single_character_cutout,qwen,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,text_legibility,n/a,프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,layout_structure,pass,이미지의 구조는 프롬프트에서 설명한 대로 동물세포의 형태와 배치를 잘 따르고 있다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며 왜곡이나 잡음이 없다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,content_present,fail,"The image contains many misspellings and nonsensical words, which do not match the intended educational content.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,text_legibility,fail,The text is mostly illegible due to misspellings and nonsensical words.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,layout_structure,pass,"The diagram has a clear circular shape with labeled parts connected by lines, resembling a simplified animal cell structure.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,educational_fit,fail,"The content is nonsensical and does not provide accurate information about the cell's organelles, making it unsuitable for an educational worksheet.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,content_present,pass,The diagram contains all the main parts of an animal cell as described in the prompt.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,text_legibility,pass,All labels and the title are clearly legible in black text on a white background.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,layout_structure,pass,The layout follows a circular structure with labeled parts pointing to their respective locations within the cell.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,educational_fit,pass,"The diagram uses a flat style with clear labels, appropriate for educational purposes, and has a clean, simple design suitable for young learners.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,content_present,pass,이미지에는 프롬프트에서 언급된 모든 도형이 포함되어 있습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,text_legibility,n/a,이미지에는 텍스트가 없습니다.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,layout_structure,pass,"도형들은 두 줄로 네 개씩 정렬되어 있으며, 각 도형은 명확한 흰색 공간으로 고립되어 있습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,educational_fit,pass,"이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,content_present,fail,The image contains only six shapes instead of the required eight.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,text_legibility,n/a,There is no text in the image that needs legibility assessment.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,layout_structure,fail,The shapes are not arranged in a grid format as per the instruction.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,educational_fit,pass,"The image uses a clean flat style, appropriate for an elementary school worksheet, and has a white background which is suitable for printing.",False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,content_present,pass,The worksheet contains all the shapes and objects as described in the prompt.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,text_legibility,pass,All text on the worksheet is legible and clear.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,layout_structure,pass,The layout follows a structured format with clear sections for different tasks.,False
+v244_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,educational_fit,pass,"The worksheet uses a simple, flat style suitable for young learners and includes clear, non-complex images.",False
