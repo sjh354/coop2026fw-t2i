@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수업용 VLM 프롬프트 24종 벤치 — PixArt-Σ vs FLUX.2-klein vs Qwen-Image</title>
+<style>
+:root {
+  --paper: #f4f5f7; --ink: #1c2028; --ink-soft: #565f6d; --line: #dadfe6; --panel: #ffffff;
+  --px: #b5651d; --px-soft: #f1e2d1;
+  --fx: #1f6f7a; --fx-soft: #d9ecee;
+  --qw: #7a4fb5; --qw-soft: #e7ddf3;
+  --code-bg: #eceef2; --pass: #2f8f5b; --fail: #c0392b;
+  --shadow: 0 1px 2px rgba(28,32,40,.06), 0 6px 20px -8px rgba(28,32,40,.12);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #14171d; --ink: #e7e9ee; --ink-soft: #9aa3b2; --line: #2b303a; --panel: #1b1f27;
+    --px: #d98a42; --px-soft: #2e2419; --fx: #4fb5c2; --fx-soft: #17282b; --qw: #b294e0; --qw-soft: #241c30;
+    --code-bg: #20242d; --pass: #5cbf8a; --fail: #e2685a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.5); }
+}
+:root[data-theme="dark"] { --paper: #14171d; --ink: #e7e9ee; --ink-soft: #9aa3b2; --line: #2b303a; --panel: #1b1f27;
+  --px: #d98a42; --px-soft: #2e2419; --fx: #4fb5c2; --fx-soft: #17282b; --qw: #b294e0; --qw-soft: #241c30;
+  --code-bg: #20242d; --pass: #5cbf8a; --fail: #e2685a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.5); }
+:root[data-theme="light"] { --paper: #f4f5f7; --ink: #1c2028; --ink-soft: #565f6d; --line: #dadfe6; --panel: #ffffff;
+  --px: #b5651d; --px-soft: #f1e2d1; --fx: #1f6f7a; --fx-soft: #d9ecee; --qw: #7a4fb5; --qw-soft: #e7ddf3;
+  --code-bg: #eceef2; --pass: #2f8f5b; --fail: #c0392b; --shadow: 0 1px 2px rgba(28,32,40,.06), 0 6px 20px -8px rgba(28,32,40,.12); }
+
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 15.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: ui-serif, Georgia, "Iowan Old Style", "Noto Serif KR", serif; text-wrap: balance; font-weight: 600; margin: 0; }
+.mono, .metric-v, .num, .scorebar { font-variant-numeric: tabular-nums; }
+code, .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+a { color: inherit; }
+.wrap { max-width: 1420px; margin: 0 auto; padding: 0 28px 96px; }
+
+header.masthead { border-bottom: 1px solid var(--line); padding: 56px 0 32px; margin-bottom: 40px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-bottom: 14px; }
+h1.title { font-size: 34px; line-height: 1.2; max-width: 56ch; }
+.subtitle { margin-top: 12px; color: var(--ink-soft); font-size: 15.5px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 22px; font-size: 13px; color: var(--ink-soft); }
+.meta-row span b { color: var(--ink); font-weight: 600; }
+
+.overview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 48px; }
+@media (max-width: 980px) { .overview { grid-template-columns: 1fr; } }
+.model-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 24px 26px; box-shadow: var(--shadow); border-top: 3px solid var(--stripe, var(--line)); }
+.model-card.px { --stripe: var(--px); }
+.model-card.fx { --stripe: var(--fx); }
+.model-card.qw { --stripe: var(--qw); }
+.model-card h3 { font-size: 18px; }
+.model-card .repo { color: var(--ink-soft); font-size: 12.5px; margin-top: 2px; }
+.model-card .figures { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+.figure-block .num { font-size: 26px; font-weight: 700; letter-spacing: -.01em; }
+.figure-block .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-soft); margin-top: 4px; }
+.model-card.px .figures .num { color: var(--px); }
+.model-card.fx .figures .num { color: var(--fx); }
+.model-card.qw .figures .num { color: var(--qw); }
+.model-card .judgeline { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--ink-soft); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 10px 18px; padding: 18px 22px; margin-bottom: 48px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; font-size: 13.5px; }
+nav.toc a { text-decoration: none; color: var(--ink-soft); display: inline-flex; gap: 7px; align-items: baseline; }
+nav.toc a:hover { color: var(--ink); }
+.toc-num { font-family: ui-monospace, monospace; font-size: 11px; color: var(--ink-soft); }
+
+section.category { margin-bottom: 56px; }
+.category-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.category-num { font-family: ui-monospace, monospace; font-size: 13px; color: var(--ink-soft); }
+.category-head h2 { font-size: 22px; }
+
+.srcrow { display: grid; grid-template-columns: 200px 1fr; gap: 22px; padding: 18px 0; border-bottom: 1px dashed var(--line); }
+.srcrow:last-child { border-bottom: none; }
+.srclabel .srcname { font-weight: 600; font-size: 13.5px; }
+.srclabel .srcprompt { margin: 6px 0 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; }
+
+.cellpair3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 900px) { .srcrow { grid-template-columns: 1fr; } .cellpair3 { grid-template-columns: 1fr; } }
+figure.cell { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+figure.cell.px { box-shadow: inset 3px 0 0 var(--px); }
+figure.cell.fx { box-shadow: inset 3px 0 0 var(--fx); }
+figure.cell.qw { box-shadow: inset 3px 0 0 var(--qw); }
+figure.cell img { width: 100%; display: block; aspect-ratio: 1 / 1; object-fit: cover; background: var(--code-bg); }
+figcaption { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 5px; }
+.metric { display: flex; align-items: baseline; gap: 5px; font-size: 11.5px; }
+.metric-k { color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; font-size: 10px; width: 22px; flex-shrink: 0; }
+.metric-v { font-weight: 600; min-width: 3.4ch; }
+.scorebar { flex: 1; height: 4px; border-radius: 2px; background: var(--code-bg); overflow: hidden; display: inline-block; }
+.scorebar-fill { display: block; height: 100%; background: var(--line); }
+.scorebar.px .scorebar-fill { background: var(--px); }
+.scorebar.fx .scorebar-fill { background: var(--fx); }
+.scorebar.qw .scorebar-fill { background: var(--qw); }
+
+.pillrow { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; padding: 2px 5px; border-radius: 4px; background: var(--code-bg); cursor: help; line-height: 1.3; }
+.pill-k { text-transform: uppercase; letter-spacing: .02em; color: var(--ink-soft); font-size: 8.5px; }
+.pill.v-pass { color: var(--pass); }
+.pill.v-fail { color: var(--fail); font-weight: 700; }
+.pill.v-na { color: var(--ink-soft); opacity: .55; }
+
+section.analysis { margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--line); }
+section.analysis h2 { font-size: 24px; margin-bottom: 18px; }
+section.analysis h3 { font-size: 16px; margin: 28px 0 10px; }
+section.analysis p { color: var(--ink); }
+section.analysis p + p { margin-top: 12px; }
+
+.tablewrap { overflow-x: auto; margin: 20px 0 8px; }
+table.avgtable { border-collapse: collapse; width: 100%; min-width: 900px; font-size: 13.5px; }
+table.avgtable th, table.avgtable td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+table.avgtable th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); font-weight: 600; }
+table.avgtable td.num { text-align: right; font-family: ui-monospace, monospace; }
+table.avgtable td.winner { font-weight: 600; }
+table.avgtable td.winner.px { color: var(--px); }
+table.avgtable td.winner.fx { color: var(--fx); }
+table.avgtable td.winner.qw { color: var(--qw); }
+table.avgtable td.pxrowlabel { border-left: 3px solid var(--px); padding-left: 9px; font-weight: 600; }
+table.avgtable td.fxrowlabel { border-left: 3px solid var(--fx); padding-left: 9px; font-weight: 600; }
+table.avgtable td.qwrowlabel { border-left: 3px solid var(--qw); padding-left: 9px; font-weight: 600; }
+.who { font-size: 10.5px; color: var(--ink-soft); font-family: ui-sans-serif, sans-serif; margin-left: 2px; }
+
+.legend { display: flex; gap: 22px; margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.swatch.px { background: var(--px); }
+.swatch.fx { background: var(--fx); }
+.swatch.qw { background: var(--qw); }
+
+.callout { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; margin: 24px 0; font-size: 13.5px; color: var(--ink-soft); }
+.callout b { color: var(--ink); }
+.callout.warn { border-left: 3px solid var(--fail); }
+
+footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">t2i-lab · 수업용 벤치마크 보고서</div>
+    <h1 class="title">VLM이 직접 작성한 프롬프트 24종으로 본 PixArt-Σ vs FLUX.2-klein vs Qwen-Image</h1>
+    <p class="subtitle">Claude / ChatGPT / Qwen2.5-VL-7B-Instruct가 참조 이미지 8장을 보고 각자 작성한 생성 프롬프트를 세 후보 모델에 동일하게 흘려, VQAScore·custom_cv·csd_target(단일 레퍼런스 스타일 유사도)·VLM-judge(4축) 네 가지로 채점한 결과. Qwen-Image는 16GB VRAM 서빙 기준 탈락 후보지만 품질 상한 확인용으로 함께 실었다.</p>
+    <div class="meta-row">
+      <span><b>8</b> categories × <b>3</b> VLM sources = <b>24</b> prompts/model</span>
+      <span>runs&nbsp;<b>v243</b> (PixArt-Σ) · <b>v244</b> (FLUX.2-klein) · <b>v245</b> (Qwen-Image)</span>
+      <span>seed&nbsp;<b>0</b>, fixed across all three models</span>
+      <span>scoring&nbsp;<b>t2i-score</b>/<b>t2i-judge</b> @ 172.10.5.23</span>
+    </div>
+  </header>
+
+  <div class="overview">
+    <div class="model-card px">
+      <h3>PixArt-Σ</h3>
+      <div class="repo mono">configs/models/pixart-sigma.yaml</div>
+      <div class="figures">
+        <div class="figure-block"><div class="num">0.775</div><div class="lbl">avg VQAScore</div></div>
+        <div class="figure-block"><div class="num">0.712</div><div class="lbl">avg custom_cv</div></div>
+        <div class="figure-block"><div class="num">0.529</div><div class="lbl">avg csd_target</div></div>
+      </div>
+      <div class="judgeline">judge pass rate — content 75% · text n/a · layout 87% · edu 88%</div>
+    </div>
+    <div class="model-card fx">
+      <h3>FLUX.2-klein-4B (nf4)</h3>
+      <div class="repo mono">configs/models/flux2-klein-4b-nf4.yaml</div>
+      <div class="figures">
+        <div class="figure-block"><div class="num">0.824</div><div class="lbl">avg VQAScore</div></div>
+        <div class="figure-block"><div class="num">0.732</div><div class="lbl">avg custom_cv</div></div>
+        <div class="figure-block"><div class="num">0.610</div><div class="lbl">avg csd_target</div></div>
+      </div>
+      <div class="judgeline">judge pass rate — content 88% · text 33% · layout 94% · edu 94%</div>
+    </div>
+    <div class="model-card qw">
+      <h3>Qwen-Image (GGUF Q5_K_M)</h3>
+      <div class="repo mono">configs/models/qwen-image.yaml</div>
+      <div class="figures">
+        <div class="figure-block"><div class="num">0.869</div><div class="lbl">avg VQAScore</div></div>
+        <div class="figure-block"><div class="num">0.766</div><div class="lbl">avg custom_cv</div></div>
+        <div class="figure-block"><div class="num">0.628</div><div class="lbl">avg csd_target</div></div>
+      </div>
+      <div class="judgeline">judge pass rate — content 100% · text 100% · layout 100% · edu 100%</div>
+    </div>
+  </div>
+
+  <nav class="toc"><a href="#cat-1"><span class="toc-num">01</span>Structured Worksheet Template</a><a href="#cat-2"><span class="toc-num">02</span>Data Visualization Chart</a><a href="#cat-3"><span class="toc-num">03</span>Historical Figure Portrait</a><a href="#cat-4"><span class="toc-num">04</span>Multi-Character Classroom Collaboration</a><a href="#cat-5"><span class="toc-num">05</span>Intergenerational Indoor Scene</a><a href="#cat-6"><span class="toc-num">06</span>Single-Character Cutout</a><a href="#cat-7"><span class="toc-num">07</span>Labeled Science Diagram</a><a href="#cat-8"><span class="toc-num">08</span>Geometric Shape Set</a></nav>
+
+  
+    <section class="category" id="cat-1">
+      <div class="category-head">
+        <span class="category-num">01</span>
+        <h2>Structured Worksheet Template</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six small teardrop-shaped location pins in different colors placed along that line, each box connected to one pin by a thin vertical stroke, thick black outlines, all boxes completely empty with white interiors, plain white background, no text, no letters.">A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six sm…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_00_structured_worksheet_template_claude.png" alt="Structured Worksheet Template — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.427</span><span class="scorebar px"><span class="scorebar-fill" style="width:43%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.749</span><span class="scorebar px"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.378</span><span class="scorebar px"><span class="scorebar-fill" style="width:38%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 해당사항 없음."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 설명된 그릴 레이아웃과 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_00_structured_worksheet_template_claude.png" alt="Structured Worksheet Template — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.729</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.818</span><span class="scorebar fx"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.508</span><span class="scorebar fx"><span class="scorebar-fill" style="width:51%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 해당 사항은 적용되지 않는다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 설명된 그릴 레이아웃과 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_00_structured_worksheet_template_claude.png" alt="Structured Worksheet Template — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.784</span><span class="scorebar qw"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.820</span><span class="scorebar qw"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.528</span><span class="scorebar qw"><span class="scorebar-fill" style="width:53%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 해당 사항은 적용되지 않는다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 설명된 그릴 구조와 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create a printable elementary school worksheet template containing three large empty photo frames with colorful borders. Decorate the page using paper clips, tape, stickers, rainbow icons, smiley faces, cherries, and a small camera illustration while leaving the writing areas completely blank. Use a clean vector layout, white background, balanced spacing, colorful educational decorations, and a classroom-friendly printable design.">Create a printable elementary school worksheet template containing three large empty photo frames with colorful borders. Decorate the page using paper…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_01_structured_worksheet_template_chatgpt.png" alt="Structured Worksheet Template — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.643</span><span class="scorebar px"><span class="scorebar-fill" style="width:64%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.664</span><span class="scorebar px"><span class="scorebar-fill" style="width:66%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.332</span><span class="scorebar px"><span class="scorebar-fill" style="width:33%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains three large empty photo frames with colorful borders as specified in the prompt."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There is no text present in the image."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The layout includes three photo frames with decorative elements like paper clips, tape, stickers, rainbow icons, smiley faces, cherries, and a small camera illustration, which are consistent with the prompt."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image uses a clean vector layout with a white background, balanced spacing, colorful educational decorations, and a classroom-friendly design suitable for an elementary school worksheet template."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_01_structured_worksheet_template_chatgpt.png" alt="Structured Worksheet Template — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.712</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.714</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.425</span><span class="scorebar fx"><span class="scorebar-fill" style="width:43%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains three large empty photo frames with colorful borders as specified in the prompt."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There is no text present in the image."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The layout includes three large photo frames with decorative elements around them, arranged in a balanced manner."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image uses a clean vector style with colorful, educational decorations suitable for an elementary school worksheet template."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_01_structured_worksheet_template_chatgpt.png" alt="Structured Worksheet Template — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.836</span><span class="scorebar qw"><span class="scorebar-fill" style="width:84%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.767</span><span class="scorebar qw"><span class="scorebar-fill" style="width:77%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.451</span><span class="scorebar qw"><span class="scorebar-fill" style="width:45%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains three large empty photo frames with colorful borders, paper clips, tape, stickers, rainbow icons, smiley faces, cherries, and a small camera illustration."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There is no text in the image to assess legibility."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The layout includes three photo frames, decorative elements, and writing areas with balanced spacing."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The design uses a clean vector style, colorful decorations, and a classroom-friendly theme suitable for young learners."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six small teardrop-shaped location pins in different colors placed along that line, each box connected to one pin by a thin vertical stroke, thick black outlines, all boxes completely empty with white interiors, plain white background, no text, no letters.">A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six sm…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_02_structured_worksheet_template_qwen.png" alt="Structured Worksheet Template — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.427</span><span class="scorebar px"><span class="scorebar-fill" style="width:43%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.749</span><span class="scorebar px"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.378</span><span class="scorebar px"><span class="scorebar-fill" style="width:38%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_02_structured_worksheet_template_qwen.png" alt="Structured Worksheet Template — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.729</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.818</span><span class="scorebar fx"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.508</span><span class="scorebar fx"><span class="scorebar-fill" style="width:51%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_02_structured_worksheet_template_qwen.png" alt="Structured Worksheet Template — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.784</span><span class="scorebar qw"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.820</span><span class="scorebar qw"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.528</span><span class="scorebar qw"><span class="scorebar-fill" style="width:53%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-2">
+      <div class="category-head">
+        <span class="category-num">02</span>
+        <h2>Data Visualization Chart</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="A simple vertical bar chart on white background, four bars of equal width standing on a horizontal baseline, the leftmost bar blue and medium height, the second bar green and tallest, the third bar orange and shortest, the fourth bar purple and medium-tall, thin horizontal gridlines behind the bars, a plain vertical axis line on the left, no numbers, no labels, no text.">A simple vertical bar chart on white background, four bars of equal width standing on a horizontal baseline, the leftmost bar blue and medium height, …</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_03_data_visualization_chart_claude.png" alt="Data Visualization Chart — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.789</span><span class="scorebar px"><span class="scorebar-fill" style="width:79%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.779</span><span class="scorebar px"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.336</span><span class="scorebar px"><span class="scorebar-fill" style="width:34%"></span></span></span>
+                <span class="pillrow"><span class="pill v-fail" title="content_present: fail — 프롬프트에 따라 바의 색상과 크기가 다르게 표현되어 있다."><span class="pill-k">content</span>✕</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-fail" title="layout_structure: fail — 프롬프트에 따라 바의 크기와 색상이 다르게 표현되어 있다."><span class="pill-k">layout</span>✕</span><span class="pill v-pass" title="educational_fit: pass — 플랫 스타일로 깔끔하게 표현되어 있으며, 나이대에 맞는 톤을 사용하고 있다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_03_data_visualization_chart_claude.png" alt="Data Visualization Chart — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.893</span><span class="scorebar fx"><span class="scorebar-fill" style="width:89%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.776</span><span class="scorebar fx"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.500</span><span class="scorebar fx"><span class="scorebar-fill" style="width:50%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 네 개의 바가 모두 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 해당 사항이 없음."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구조는 프롬프트에서 언급된 바와 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 나이대에 맞는 톤을 가지고 있으며 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_03_data_visualization_chart_claude.png" alt="Data Visualization Chart — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.875</span><span class="scorebar qw"><span class="scorebar-fill" style="width:87%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.816</span><span class="scorebar qw"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.531</span><span class="scorebar qw"><span class="scorebar-fill" style="width:53%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 네 개의 바가 모두 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 해당 사항이 없습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구조는 프롬프트에서 언급된 바와 일치합니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 나이대에 맞는 톤을 가지고 있으며 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create a printable elementary school worksheet featuring a colorful bar graph comparing four categories with different colored bars and small icons below each category. Include a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout. Use vector graphics, high readability, white background, and a classroom-friendly printable worksheet design.">Create a printable elementary school worksheet featuring a colorful bar graph comparing four categories with different colored bars and small icons be…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_04_data_visualization_chart_chatgpt.png" alt="Data Visualization Chart — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.572</span><span class="scorebar px"><span class="scorebar-fill" style="width:57%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.709</span><span class="scorebar px"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.494</span><span class="scorebar px"><span class="scorebar-fill" style="width:49%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains a colorful bar graph comparing four categories with different colored bars and small icons below each category."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There is no text in the image to assess legibility."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The image has a structured layout with a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image uses a flat style, classroom-friendly design, and includes elements suitable for an elementary school worksheet."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_04_data_visualization_chart_chatgpt.png" alt="Data Visualization Chart — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.770</span><span class="scorebar fx"><span class="scorebar-fill" style="width:77%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.703</span><span class="scorebar fx"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.569</span><span class="scorebar fx"><span class="scorebar-fill" style="width:57%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains the required elements: a colorful bar graph, four categories with different colored bars, small icons, a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout."><span class="pill-k">content</span>✓</span><span class="pill v-fail" title="text_legibility: fail — The text in the title and some of the comprehension questions is not legible due to poor font choice and distortion."><span class="pill-k">text</span>✕</span><span class="pill v-pass" title="layout_structure: pass — The layout includes a bar graph with labeled axes, icons under each category, and a structured format for comprehension questions and answers."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image uses a flat style, classroom-friendly icons, and a clean design suitable for an elementary school worksheet."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_04_data_visualization_chart_chatgpt.png" alt="Data Visualization Chart — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.893</span><span class="scorebar qw"><span class="scorebar-fill" style="width:89%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.780</span><span class="scorebar qw"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.709</span><span class="scorebar qw"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains a bar graph with four categories, each represented by a different colored bar and an icon."><span class="pill-k">content</span>✓</span><span class="pill v-pass" title="text_legibility: pass — The title &#x27;Elementary School Worksheet?&#x27; and the axis labels are clearly legible."><span class="pill-k">text</span>✓</span><span class="pill v-pass" title="layout_structure: pass — The bar graph is well-structured with labeled axes and a clear grid. The icons are placed below each category as specified."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The worksheet uses a flat style, has a classroom-friendly design, and includes elements suitable for elementary school students."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A bar graph worksheet titled &#x27;bar graphs&#x27;. The graph displays the favorite toys of Grade 1 learners, with each bar representing a different toy. The toys are represented by icons at the bottom: a doll, a robot, a basketball, a dinosaur, a truck, and a teddy bear. The bars are colored yellow, blue, orange, red, and brown. The y-axis is labeled with numbers from 1 to 12, indicating the count of learners who prefer each toy. The worksheet includes questions asking students to identify which toy is most liked, least liked, and how many learners like specific combinations of toys. The background is white, and the text is black, with a beige header section. There is no text in the image other than the title, labels, and questions.">A bar graph worksheet titled &#x27;bar graphs&#x27;. The graph displays the favorite toys of Grade 1 learners, with each bar representing a different toy. The t…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_05_data_visualization_chart_qwen.png" alt="Data Visualization Chart — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.865</span><span class="scorebar px"><span class="scorebar-fill" style="width:87%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.718</span><span class="scorebar px"><span class="scorebar-fill" style="width:72%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.506</span><span class="scorebar px"><span class="scorebar-fill" style="width:51%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_05_data_visualization_chart_qwen.png" alt="Data Visualization Chart — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.901</span><span class="scorebar fx"><span class="scorebar-fill" style="width:90%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.709</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.722</span><span class="scorebar fx"><span class="scorebar-fill" style="width:72%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_05_data_visualization_chart_qwen.png" alt="Data Visualization Chart — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.933</span><span class="scorebar qw"><span class="scorebar-fill" style="width:93%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.729</span><span class="scorebar qw"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.764</span><span class="scorebar qw"><span class="scorebar-fill" style="width:76%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-3">
+      <div class="category-head">
+        <span class="category-num">03</span>
+        <h2>Historical Figure Portrait</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="A friendly cartoon portrait illustration of a nineteenth-century American statesman, tall dark hat removed, dark beard along the jawline without a mustache, black formal coat and bow tie, calm smiling expression, upper body only facing slightly left, a striped and starred flag hanging behind his right shoulder, a rolled parchment scroll placed near his left side, plain white background, no text.">A friendly cartoon portrait illustration of a nineteenth-century American statesman, tall dark hat removed, dark beard along the jawline without a mus…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_06_historical_figure_portrait_claude.png" alt="Historical Figure Portrait — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.924</span><span class="scorebar px"><span class="scorebar-fill" style="width:92%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.667</span><span class="scorebar px"><span class="scorebar-fill" style="width:67%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.322</span><span class="scorebar px"><span class="scorebar-fill" style="width:32%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트의 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 설명된 그림의 구조와 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_06_historical_figure_portrait_claude.png" alt="Historical Figure Portrait — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.940</span><span class="scorebar fx"><span class="scorebar-fill" style="width:94%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.743</span><span class="scorebar fx"><span class="scorebar-fill" style="width:74%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.392</span><span class="scorebar fx"><span class="scorebar-fill" style="width:39%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 언급된 모든 구조적 요소가 이미지에 정확하게 반영되어 있다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일과 나이대에 적합한 톤으로, 왜곡이나 잡음이 없는 이미지이다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_06_historical_figure_portrait_claude.png" alt="Historical Figure Portrait — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.927</span><span class="scorebar qw"><span class="scorebar-fill" style="width:93%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.818</span><span class="scorebar qw"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.390</span><span class="scorebar qw"><span class="scorebar-fill" style="width:39%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 언급된 모든 구조적 요소가 이미지에 정확하게 반영되어 있다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일과 나이대에 적합한 톤으로, 왜곡이나 잡음이 없는 이미지이다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create an educational illustration showing a single historical political figure in a friendly cartoon style. Display the upper body only, wearing formal historical clothing with distinctive facial hair and hairstyle appropriate for the period. Place a national flag on one side and a rolled parchment scroll on the other as symbolic props. Use a plain white background, balanced composition, clean educational illustration style, and soft muted colors.">Create an educational illustration showing a single historical political figure in a friendly cartoon style. Display the upper body only, wearing form…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_07_historical_figure_portrait_chatgpt.png" alt="Historical Figure Portrait — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.718</span><span class="scorebar px"><span class="scorebar-fill" style="width:72%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.696</span><span class="scorebar px"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.335</span><span class="scorebar px"><span class="scorebar-fill" style="width:33%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 역사적인 정치인의 상반신이 포함되어 있으며, 특징적인 얼굴과 머리 스타일이 보입니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 평형 잡힌 것으로, 국기와 펄럭이지 않는 종이��이 양쪽에 배치되어 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 플랫 스타일로, 어린이에게 적합한 톤으로 그려져 있으며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_07_historical_figure_portrait_chatgpt.png" alt="Historical Figure Portrait — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.745</span><span class="scorebar fx"><span class="scorebar-fill" style="width:74%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.760</span><span class="scorebar fx"><span class="scorebar-fill" style="width:76%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.277</span><span class="scorebar fx"><span class="scorebar-fill" style="width:28%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 역사적인 정치인의 상반신, 정식 역사적인 옷차림, 특징적인 얼굴 수염과 머리 스타일, 국기와 펄럭이는 종이��, 그리고 흰색 배경이 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에서 텍스트가 요구되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 균형 잡혀 있으며, 역사적인 정치인의 상반신이 중앙에 배치되어 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없으며, 깔끔하고 교육적입니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_07_historical_figure_portrait_chatgpt.png" alt="Historical Figure Portrait — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.793</span><span class="scorebar qw"><span class="scorebar-fill" style="width:79%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.812</span><span class="scorebar qw"><span class="scorebar-fill" style="width:81%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.377</span><span class="scorebar qw"><span class="scorebar-fill" style="width:38%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 역사적인 정치인의 상반신, 정장을 입은 모습, 특징적인 수염과 머리 스타일, 국기, 그리고 펼쳐진 종이가 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 균형 잡혀 있으며, 국기와 종이가 각각 그림의 양쪽에 배치되어 있다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 플랫 스타일로 그려져 있으며, 어린이에게 적합한 톤을 사용하고 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="Create an educational timeline poster about Abraham Lincoln&#x27;s life events. The timeline spans from 1800 to 1870. Key events include his birth in 1809, marriage to Mary Todd in 1842, abolition of slavery in 1865, and his election as president in 1861. The timeline is marked with red dots at significant years. The text is clear and legible, with a focus on historical facts. The background is white, and the text is primarily black with some red highlights. The top left corner features a portrait of Abraham Lincoln. The bottom right corner includes a copyright notice and a website link for more worksheets.">Create an educational timeline poster about Abraham Lincoln&#x27;s life events. The timeline spans from 1800 to 1870. Key events include his birth in 1809,…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_08_historical_figure_portrait_qwen.png" alt="Historical Figure Portrait — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.918</span><span class="scorebar px"><span class="scorebar-fill" style="width:92%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.674</span><span class="scorebar px"><span class="scorebar-fill" style="width:67%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.431</span><span class="scorebar px"><span class="scorebar-fill" style="width:43%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_08_historical_figure_portrait_qwen.png" alt="Historical Figure Portrait — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.780</span><span class="scorebar fx"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.728</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.355</span><span class="scorebar fx"><span class="scorebar-fill" style="width:36%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_08_historical_figure_portrait_qwen.png" alt="Historical Figure Portrait — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.918</span><span class="scorebar qw"><span class="scorebar-fill" style="width:92%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.680</span><span class="scorebar qw"><span class="scorebar-fill" style="width:68%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.478</span><span class="scorebar qw"><span class="scorebar-fill" style="width:48%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-4">
+      <div class="category-head">
+        <span class="category-num">04</span>
+        <h2>Multi-Character Classroom Collaboration</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="Four elementary school students sitting around two joined classroom desks seen from a slight front angle, two girls on the left side and one boy and one girl on the right side, the girl at the back holding up a folded paper booklet with both hands, the boy holding a marker pen, colored drawings and pencils scattered on the desk surface, one child seated in a wheelchair, bright cheerful expressions, clean indoor floor, plain white background, no text.">Four elementary school students sitting around two joined classroom desks seen from a slight front angle, two girls on the left side and one boy and o…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_09_multi_character_classroom_collaboration_claude.png" alt="Multi-Character Classroom Collaboration — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.887</span><span class="scorebar px"><span class="scorebar-fill" style="width:89%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.689</span><span class="scorebar px"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.597</span><span class="scorebar px"><span class="scorebar-fill" style="width:60%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 네 명의 학생들이 두 개의 학교 책상 주변에 앉아 있으며, 두 명의 여학생이 왼쪽에, 한 명의 여학생과 한 명의 남학생이 오른쪽에 앉아 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 언급된 두 개의 학교 책상 주변에 네 명의 학생들이 앉아 있는 구조를 잘 보여줍니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로 그려져 있으며, 어린이에게 적합한 톤을 가지고 있습니다. 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_09_multi_character_classroom_collaboration_claude.png" alt="Multi-Character Classroom Collaboration — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.957</span><span class="scorebar fx"><span class="scorebar-fill" style="width:96%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.676</span><span class="scorebar fx"><span class="scorebar-fill" style="width:68%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.421</span><span class="scorebar fx"><span class="scorebar-fill" style="width:42%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 프롬프트에서 언급된 모든 요소가 이미지에 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 프롬프트에서 설명된 데스크와 자세, 키즈의 배치가 잘 표현되어 있다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일, 어린이에게 적합한 톤, 왜곡이나 잡음이 없으며, 학교 환경을 연상시킨다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_09_multi_character_classroom_collaboration_claude.png" alt="Multi-Character Classroom Collaboration — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.968</span><span class="scorebar qw"><span class="scorebar-fill" style="width:97%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.725</span><span class="scorebar qw"><span class="scorebar-fill" style="width:72%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.507</span><span class="scorebar qw"><span class="scorebar-fill" style="width:51%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 네 명의 학생들이 두 개의 학교 책상 주변에 앉아 있으며, 그 중 한 명의 여학생이 손으로 책을 들고 있고, 다른 학생들은 색연필과 그림을 하고 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 언급된 학생들의 배치와 책상, 휠체어의 위치가 일치합니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이들에게 적합한 톤으로 표현되어 있으며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create a Korean elementary school textbook illustration showing four students sitting around a classroom table and sharing their creative projects. Each student presents a different work such as a drawing, booklet, or poster while smiling and talking. One student uses a wheelchair. Include speech bubbles above each student. Use soft pastel colors, a clean educational illustration style, a simple classroom background, balanced composition, and child-friendly textbook artwork.">Create a Korean elementary school textbook illustration showing four students sitting around a classroom table and sharing their creative projects. Ea…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_10_multi_character_classroom_collaboration_chatgpt.png" alt="Multi-Character Classroom Collaboration — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.783</span><span class="scorebar px"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.672</span><span class="scorebar px"><span class="scorebar-fill" style="width:67%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.687</span><span class="scorebar px"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image shows four students sitting around a table with various creative projects, including drawings and a booklet, and one student in a wheelchair. Speech bubbles are present above each student."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There is no text in the image that requires legibility assessment."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The layout includes a classroom setting with a table, chairs, and speech bubbles above each student, which aligns with the described structure."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image has a soft pastel color palette, a clean and simple style, and a balanced composition suitable for an elementary school textbook illustration."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_10_multi_character_classroom_collaboration_chatgpt.png" alt="Multi-Character Classroom Collaboration — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.840</span><span class="scorebar fx"><span class="scorebar-fill" style="width:84%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.696</span><span class="scorebar fx"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.828</span><span class="scorebar fx"><span class="scorebar-fill" style="width:83%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image shows four students sitting around a table with various creative projects, including drawings and booklets, which aligns with the prompt."><span class="pill-k">content</span>✓</span><span class="pill v-pass" title="text_legibility: pass — The speech bubbles contain legible Korean text that is part of the prompt."><span class="pill-k">text</span>✓</span><span class="pill v-pass" title="layout_structure: pass — The layout includes a classroom setting with a table, chairs, and windows, consistent with the prompt&#x27;s description."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image uses soft pastel colors, a clean and simple style, and a child-friendly approach suitable for an elementary school textbook illustration."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_10_multi_character_classroom_collaboration_chatgpt.png" alt="Multi-Character Classroom Collaboration — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.851</span><span class="scorebar qw"><span class="scorebar-fill" style="width:85%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.761</span><span class="scorebar qw"><span class="scorebar-fill" style="width:76%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.750</span><span class="scorebar qw"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 네 명의 학생이 테이블 주위에 앉아 있으며, 그들은 각각 그림, 책, 포스터 같은 창의적인 프로젝트를 보여주고 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에서 텍스트가 요구되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지에는 테이블, 학생, 그리고 배경의 칠판과 벽이 포함되어 있으며, 학교 교실의 일반적인 구성 요소가 잘 나타나 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일, 어린이에게 친숙한 톤, 왜곡이나 잡음이 없으며, 교육적 목적에 적합합니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A group of four children sitting at a table, each engaged in drawing or reading about a park they have drawn. The child on the left is holding a book open to a page showing a drawing of a park, while the other three children are focused on their drawings. The child in the wheelchair on the right has a completed drawing of a park. Each child has a speech bubble above their head with Korean text expressing their thoughts about the park. The setting appears to be a classroom or a library, with a simple wooden table and chairs. The overall style is cartoonish and colorful, suitable for a children&#x27;s illustration. There is no text in the image itself, only the speech bubbles containing text.">A group of four children sitting at a table, each engaged in drawing or reading about a park they have drawn. The child on the left is holding a book …</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_11_multi_character_classroom_collaboration_qwen.png" alt="Multi-Character Classroom Collaboration — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.887</span><span class="scorebar px"><span class="scorebar-fill" style="width:89%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.694</span><span class="scorebar px"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.686</span><span class="scorebar px"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_11_multi_character_classroom_collaboration_qwen.png" alt="Multi-Character Classroom Collaboration — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.893</span><span class="scorebar fx"><span class="scorebar-fill" style="width:89%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.682</span><span class="scorebar fx"><span class="scorebar-fill" style="width:68%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.783</span><span class="scorebar fx"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_11_multi_character_classroom_collaboration_qwen.png" alt="Multi-Character Classroom Collaboration — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.916</span><span class="scorebar qw"><span class="scorebar-fill" style="width:92%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.754</span><span class="scorebar qw"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.876</span><span class="scorebar qw"><span class="scorebar-fill" style="width:88%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-5">
+      <div class="category-head">
+        <span class="category-num">05</span>
+        <h2>Intergenerational Indoor Scene</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="An elderly couple with gray hair sitting side by side on a beige fabric sofa in a living room, the grandmother wearing a magenta cardigan and yellow scarf gesturing with one hand, the grandfather in a light blue shirt smiling, a young child in a red hoodie kneeling on the floor in the foreground with their back to the viewer, writing on a small notepad with a pencil, a floor lamp with a green shade behind the sofa, a wooden side table with a small potted plant, soft green rug, no text.">An elderly couple with gray hair sitting side by side on a beige fabric sofa in a living room, the grandmother wearing a magenta cardigan and yellow s…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_12_intergenerational_indoor_scene_claude.png" alt="Intergenerational Indoor Scene — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.923</span><span class="scorebar px"><span class="scorebar-fill" style="width:92%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.662</span><span class="scorebar px"><span class="scorebar-fill" style="width:66%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.732</span><span class="scorebar px"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 설명한那样으로, 가구와 장식이 정확하게 배치되어 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔하고 평면적인 스타일로, 어린이에게 적합한 톤을 가지고 있으며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_12_intergenerational_indoor_scene_claude.png" alt="Intergenerational Indoor Scene — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.951</span><span class="scorebar fx"><span class="scorebar-fill" style="width:95%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.682</span><span class="scorebar fx"><span class="scorebar-fill" style="width:68%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.604</span><span class="scorebar fx"><span class="scorebar-fill" style="width:60%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 설명한 그대로입니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_12_intergenerational_indoor_scene_claude.png" alt="Intergenerational Indoor Scene — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.958</span><span class="scorebar qw"><span class="scorebar-fill" style="width:96%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.705</span><span class="scorebar qw"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.639</span><span class="scorebar qw"><span class="scorebar-fill" style="width:64%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 설명한 그대로입니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create an elementary school textbook illustration showing a child interviewing two grandparents in a cozy living room. The child is writing notes on a clipboard while the grandparents sit on a sofa and answer questions with friendly expressions. Include simple furniture such as a floor lamp, side table, and flowers. Use soft pastel colors, clean educational illustration style, minimal background details, and warm family atmosphere.">Create an elementary school textbook illustration showing a child interviewing two grandparents in a cozy living room. The child is writing notes on a…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_13_intergenerational_indoor_scene_chatgpt.png" alt="Intergenerational Indoor Scene — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.764</span><span class="scorebar px"><span class="scorebar-fill" style="width:76%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.705</span><span class="scorebar px"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.671</span><span class="scorebar px"><span class="scorebar-fill" style="width:67%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 어린이와 두 명의 할머니, 할아버지가 소파에 앉아 있는 모습이 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에서 텍스트가 요구되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지에는 소파, 바닥 램프, 측면 테이블, 꽃 등 간단한 가구가 포함되어 있으며, 프롬프트의 설명과 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡이나 잡음이 없으며, 따뜻한 가족 분위기를 전달한다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_13_intergenerational_indoor_scene_chatgpt.png" alt="Intergenerational Indoor Scene — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.793</span><span class="scorebar fx"><span class="scorebar-fill" style="width:79%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.728</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.728</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image shows a child interviewing two grandparents in a cozy living room setting."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There is no text present in the image."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The layout includes a child sitting on a stool, two grandparents on a sofa, and simple furniture like a floor lamp and side table."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The illustration uses soft pastel colors, a clean educational style, and minimal background details to create a warm family atmosphere suitable for an elementary school textbook."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_13_intergenerational_indoor_scene_chatgpt.png" alt="Intergenerational Indoor Scene — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.779</span><span class="scorebar qw"><span class="scorebar-fill" style="width:78%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.753</span><span class="scorebar qw"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.752</span><span class="scorebar qw"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image shows a child interviewing two grandparents in a cozy living room setting."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — There are no texts or labels present in the image."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — The layout includes a sofa for the grandparents, a floor lamp, a side table, and flowers, all arranged in a way that fits the description."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The illustration uses soft pastel colors, a clean educational style, and minimal background details to create a warm family atmosphere suitable for children&#x27;s textbooks."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A cozy living room scene featuring three characters. On the left, an elderly woman sits on a beige armchair wearing a pink sweater, gray pants, and a yellow scarf. She has glasses and is smiling. In the center, an elderly man sits on the same armchair, dressed in a light blue shirt and dark pants. He also has a friendly smile. To the right, a younger person, possibly a child, is sitting cross-legged on the floor, holding a notepad and pen, seemingly taking notes or drawing. The background includes a green floor lamp with a light shade, a small table with a vase of flowers, and another potted plant. The overall style is cartoonish and warm-toned, with soft pastel colors dominating the scene.">A cozy living room scene featuring three characters. On the left, an elderly woman sits on a beige armchair wearing a pink sweater, gray pants, and a …</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_14_intergenerational_indoor_scene_qwen.png" alt="Intergenerational Indoor Scene — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.929</span><span class="scorebar px"><span class="scorebar-fill" style="width:93%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.710</span><span class="scorebar px"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.797</span><span class="scorebar px"><span class="scorebar-fill" style="width:80%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_14_intergenerational_indoor_scene_qwen.png" alt="Intergenerational Indoor Scene — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.963</span><span class="scorebar fx"><span class="scorebar-fill" style="width:96%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.711</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.652</span><span class="scorebar fx"><span class="scorebar-fill" style="width:65%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_14_intergenerational_indoor_scene_qwen.png" alt="Intergenerational Indoor Scene — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.971</span><span class="scorebar qw"><span class="scorebar-fill" style="width:97%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.749</span><span class="scorebar qw"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.705</span><span class="scorebar qw"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-6">
+      <div class="category-head">
+        <span class="category-num">06</span>
+        <h2>Single-Character Cutout</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="An elderly woman with gray hair tied in a bun and round glasses, wearing a white long-sleeve blouse and green vest, seated at an old black treadle sewing machine mounted on a wooden table, both hands guiding a folded pink checkered cloth under the needle, gentle focused smile, upper body and table only with nothing below, isolated on a flat pale blue rounded background shape, no text.">An elderly woman with gray hair tied in a bun and round glasses, wearing a white long-sleeve blouse and green vest, seated at an old black treadle sew…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_15_single_character_cutout_claude.png" alt="Single-Character Cutout — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.906</span><span class="scorebar px"><span class="scorebar-fill" style="width:91%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.689</span><span class="scorebar px"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.774</span><span class="scorebar px"><span class="scorebar-fill" style="width:77%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 설명한 그대로입니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤을 가지고 있으며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_15_single_character_cutout_claude.png" alt="Single-Character Cutout — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.961</span><span class="scorebar fx"><span class="scorebar-fill" style="width:96%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.670</span><span class="scorebar fx"><span class="scorebar-fill" style="width:67%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.628</span><span class="scorebar fx"><span class="scorebar-fill" style="width:63%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 설명한 그대로입니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_15_single_character_cutout_claude.png" alt="Single-Character Cutout — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.965</span><span class="scorebar qw"><span class="scorebar-fill" style="width:96%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.703</span><span class="scorebar qw"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.576</span><span class="scorebar qw"><span class="scorebar-fill" style="width:58%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 설명한 그대로입니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤을 가지고 있으며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create an educational cutout illustration showing a single character using a hands-on tool such as a sewing machine at a work table. Display only the upper body and the work surface, cropping everything below the table. Place the character on a simple flat solid-color background shape without additional scenery. Use clean educational illustration style, soft pastel colors, balanced composition, and clear object interaction.">Create an educational cutout illustration showing a single character using a hands-on tool such as a sewing machine at a work table. Display only the …</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_16_single_character_cutout_chatgpt.png" alt="Single-Character Cutout — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.749</span><span class="scorebar px"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.748</span><span class="scorebar px"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.589</span><span class="scorebar px"><span class="scorebar-fill" style="width:59%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 주요 대상인 인물과 흉부 위까지의 모습, 그리고 작업대와 천공기 등이 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 언급된 작업대 위에 천공기와 인물이 배치되어 있으며, 간단한 평평한 색상 배경이 사용되었다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일, 부드러운 팔레트 컬러, 균형 잡힌 구성, 그리고 명확한 객체 상호작용을 보여주며, 어린이에게 적합한 톤을 가지고 있다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_16_single_character_cutout_chatgpt.png" alt="Single-Character Cutout — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.712</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.749</span><span class="scorebar fx"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.692</span><span class="scorebar fx"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 주요 대상인 인물과 그가 사용하는 수동 도구인 천문학 기계, 그리고 작업 표면이 모두 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았기 때문에 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 언급된 그림자와 일치하며, 인물과 작업 표면이 잘 정렬되어 있다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일, 부드러운 팔레트 색상, 균형 잡힌 조성, 그리고 왜곡이나 잡음이 없는 교육적 일러스트레이션 스타일을 가지고 있다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_16_single_character_cutout_chatgpt.png" alt="Single-Character Cutout — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.712</span><span class="scorebar qw"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.815</span><span class="scorebar qw"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.722</span><span class="scorebar qw"><span class="scorebar-fill" style="width:72%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 단일 캐릭터와 손으로 사용하는 도구인 천문공기, 그리고 작업 표면이 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구성은 프롬프트에서 언급된 그릴드/축/라벨 위치/도형 배열과 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡·잡음이 없는 교육적 일러스트레이션 스타일을 사용하고 있다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A cartoon-style elderly woman is sitting at a sewing machine, working on a piece of fabric. She has gray hair, wears glasses, and is dressed in a green top with a pink apron. The sewing machine is black with silver accents, and she is holding a spool of thread in her left hand. The fabric she is sewing is red and white checkered. The background is a light blue gradient, and there is a wooden table beneath the sewing machine. The overall style is simple and colorful, with soft edges and minimal shading.">A cartoon-style elderly woman is sitting at a sewing machine, working on a piece of fabric. She has gray hair, wears glasses, and is dressed in a gree…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_17_single_character_cutout_qwen.png" alt="Single-Character Cutout — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.976</span><span class="scorebar px"><span class="scorebar-fill" style="width:98%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.695</span><span class="scorebar px"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.728</span><span class="scorebar px"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_17_single_character_cutout_qwen.png" alt="Single-Character Cutout — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.980</span><span class="scorebar fx"><span class="scorebar-fill" style="width:98%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.733</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.753</span><span class="scorebar fx"><span class="scorebar-fill" style="width:75%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_17_single_character_cutout_qwen.png" alt="Single-Character Cutout — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.976</span><span class="scorebar qw"><span class="scorebar-fill" style="width:98%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.791</span><span class="scorebar qw"><span class="scorebar-fill" style="width:79%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.806</span><span class="scorebar qw"><span class="scorebar-fill" style="width:81%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-7">
+      <div class="category-head">
+        <span class="category-num">07</span>
+        <h2>Labeled Science Diagram</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="A black and white line drawing of an animal cell for a science worksheet, one large oval cell outlined with a thin double membrane line, a single large circle in the center representing the nucleus, four oval organelles with internal wavy stripes distributed around the nucleus, a cluster of short curved ribbon shapes on the left side, two plain empty ovals on the right and lower left, everything drawn in thin black outlines with light gray fill only inside the organelles, white background, no text, no letters, no arrows.">A black and white line drawing of an animal cell for a science worksheet, one large oval cell outlined with a thin double membrane line, a single larg…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_18_labeled_science_diagram_claude.png" alt="Labeled Science Diagram — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.706</span><span class="scorebar px"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.731</span><span class="scorebar px"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.525</span><span class="scorebar px"><span class="scorebar-fill" style="width:52%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 주요 대상인 큰 원형 세포, 핵, 내부 줄무늬가 있는 4개의 원형 기관절, 좌측의 단단한 리본 모양의 집합, 그리고 오른쪽과 하단 왼쪽의 두 개의 비어있는 원형이 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 텍스트나 글자가 포함되어 있지 않아 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 그리드, 축, 라벨 위치, 도형 배열이 프롬프트에서 설명한 것과 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 깔끔한 플랫 스타일, 나이대에 맞는 톤, 왜곡이나 잡음이 없으며, 과학 워크시트에 적합한 내용이다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_18_labeled_science_diagram_claude.png" alt="Labeled Science Diagram — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.759</span><span class="scorebar fx"><span class="scorebar-fill" style="width:76%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.726</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.672</span><span class="scorebar fx"><span class="scorebar-fill" style="width:67%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았으므로 평가할 수 없다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구조는 프롬프트에서 설명한 대로 동물세포의 형태와 배치를 잘 따르고 있다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_18_labeled_science_diagram_claude.png" alt="Labeled Science Diagram — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.770</span><span class="scorebar qw"><span class="scorebar-fill" style="width:77%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.799</span><span class="scorebar qw"><span class="scorebar-fill" style="width:80%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.640</span><span class="scorebar qw"><span class="scorebar-fill" style="width:64%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 요소가 포함되어 있다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 해당사항 없음."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지의 구조는 프롬프트에서 설명한 그림의 구조와 일치한다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 flat 스타일로, 나이대에 맞는 톤이며 왜곡이나 잡음이 없다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create a printable elementary science worksheet showing a simplified animal cell diagram with labeled organelles. Include the cell membrane, cytoplasm, nucleus, mitochondria, and vacuole connected to their labels using straight leader lines. Add a worksheet title, short educational descriptions for each organelle, and a color key at the bottom. Use black vector outlines, grayscale fills, clean typography, white background, and a classroom-friendly printable layout.">Create a printable elementary science worksheet showing a simplified animal cell diagram with labeled organelles. Include the cell membrane, cytoplasm…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_19_labeled_science_diagram_chatgpt.png" alt="Labeled Science Diagram — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.565</span><span class="scorebar px"><span class="scorebar-fill" style="width:57%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.714</span><span class="scorebar px"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.497</span><span class="scorebar px"><span class="scorebar-fill" style="width:50%"></span></span></span>
+                <span class="pillrow"><span class="pill v-fail" title="content_present: fail — The image does not show a simplified animal cell diagram with labeled organelles."><span class="pill-k">content</span>✕</span><span class="pill v-na" title="text_legibility: n/a — There is no text in the image."><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — There is no structured layout or grid in the image."><span class="pill-k">layout</span>·</span><span class="pill v-fail" title="educational_fit: fail — The image is not a science worksheet; it appears to be a different type of illustration with no educational content related to cells."><span class="pill-k">edu</span>✕</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_19_labeled_science_diagram_chatgpt.png" alt="Labeled Science Diagram — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.439</span><span class="scorebar fx"><span class="scorebar-fill" style="width:44%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.727</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.626</span><span class="scorebar fx"><span class="scorebar-fill" style="width:63%"></span></span></span>
+                <span class="pillrow"><span class="pill v-fail" title="content_present: fail — The image contains many misspellings and nonsensical words, which do not match the intended educational content."><span class="pill-k">content</span>✕</span><span class="pill v-fail" title="text_legibility: fail — The text is mostly illegible due to misspellings and nonsensical words."><span class="pill-k">text</span>✕</span><span class="pill v-pass" title="layout_structure: pass — The diagram has a clear circular shape with labeled parts connected by lines, resembling a simplified animal cell structure."><span class="pill-k">layout</span>✓</span><span class="pill v-fail" title="educational_fit: fail — The content is nonsensical and does not provide accurate information about the cell&#x27;s organelles, making it unsuitable for an educational worksheet."><span class="pill-k">edu</span>✕</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_19_labeled_science_diagram_chatgpt.png" alt="Labeled Science Diagram — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.789</span><span class="scorebar qw"><span class="scorebar-fill" style="width:79%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.741</span><span class="scorebar qw"><span class="scorebar-fill" style="width:74%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.618</span><span class="scorebar qw"><span class="scorebar-fill" style="width:62%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains all the required elements: a simplified animal cell diagram, labeled organelles, a title, educational descriptions, and a color key."><span class="pill-k">content</span>✓</span><span class="pill v-pass" title="text_legibility: pass — All text is legible and uses clean typography."><span class="pill-k">text</span>✓</span><span class="pill v-pass" title="layout_structure: pass — The layout follows a classroom-friendly structure with clear labels and a color key."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The image has a clean, flat style, uses a classroom-friendly tone, and does not contain any distortion or noise."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A detailed diagram of an animal cell labeled with various cellular components. The cell membrane is pink, mitochondria are red, vacuole is orange, cytoplasm is yellow, and nucleus is purple. The diagram includes labels pointing to each part of the cell. The background is white, and the text is black. The title &#x27;Animal Cell&#x27; is at the top. There is no text in the image other than the labels and the title.">A detailed diagram of an animal cell labeled with various cellular components. The cell membrane is pink, mitochondria are red, vacuole is orange, cyt…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_20_labeled_science_diagram_qwen.png" alt="Labeled Science Diagram — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.911</span><span class="scorebar px"><span class="scorebar-fill" style="width:91%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.697</span><span class="scorebar px"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.520</span><span class="scorebar px"><span class="scorebar-fill" style="width:52%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_20_labeled_science_diagram_qwen.png" alt="Labeled Science Diagram — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.851</span><span class="scorebar fx"><span class="scorebar-fill" style="width:85%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.733</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.721</span><span class="scorebar fx"><span class="scorebar-fill" style="width:72%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_20_labeled_science_diagram_qwen.png" alt="Labeled Science Diagram — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.948</span><span class="scorebar qw"><span class="scorebar-fill" style="width:95%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.742</span><span class="scorebar qw"><span class="scorebar-fill" style="width:74%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.678</span><span class="scorebar qw"><span class="scorebar-fill" style="width:68%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+    <section class="category" id="cat-8">
+      <div class="category-head">
+        <span class="category-num">08</span>
+        <h2>Geometric Shape Set</h2>
+      </div>
+      
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Claude</span>
+            <p class="srcprompt" title="A row of eight separate geometric outline shapes evenly spaced on a plain white background, arranged in two rows of four, thin black outlines with no fill, the shapes are a regular hexagon, a square, a rhombus standing on one corner, an equilateral triangle, a trapezoid with the shorter side on top, a wide rectangle, a circle, and a regular pentagon, each shape isolated with clear white space around it, no shading, no text, no numbers.">A row of eight separate geometric outline shapes evenly spaced on a plain white background, arranged in two rows of four, thin black outlines with no …</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_21_geometric_shape_set_claude.png" alt="Geometric Shape Set — Claude — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.932</span><span class="scorebar px"><span class="scorebar-fill" style="width:93%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.800</span><span class="scorebar px"><span class="scorebar-fill" style="width:80%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.525</span><span class="scorebar px"><span class="scorebar-fill" style="width:53%"></span></span></span>
+                <span class="pillrow"><span class="pill v-fail" title="content_present: fail — 이미지에는 원이 포함되어 있지 않습니다."><span class="pill-k">content</span>✕</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않아 평가할 수 없습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 이미지는 두 줄로 네 개씩 배치된 정육면체, 사각형, 사각형, 삼각형, 직사각형, 원, 다각형의 순서로 구성되어 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_21_geometric_shape_set_claude.png" alt="Geometric Shape Set — Claude — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.950</span><span class="scorebar fx"><span class="scorebar-fill" style="width:95%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.825</span><span class="scorebar fx"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.715</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 도형이 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 이미지에는 텍스트가 없습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 도형들은 두 줄로 네 개씩 정렬되어 있으며, 각 도형은 명확한 흰색 공간으로 고립되어 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_21_geometric_shape_set_claude.png" alt="Geometric Shape Set — Claude — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.956</span><span class="scorebar qw"><span class="scorebar-fill" style="width:96%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.812</span><span class="scorebar qw"><span class="scorebar-fill" style="width:81%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.468</span><span class="scorebar qw"><span class="scorebar-fill" style="width:47%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — 이미지에는 프롬프트에서 언급된 모든 도형이 포함되어 있습니다."><span class="pill-k">content</span>✓</span><span class="pill v-na" title="text_legibility: n/a — 이미지에는 텍스트가 없습니다."><span class="pill-k">text</span>·</span><span class="pill v-pass" title="layout_structure: pass — 도형들은 두 줄로 네 개씩 정렬되어 있으며, 각 도형은 흰색 배경에 고립되어 있습니다."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — 이미지는 깔끔한 플랫 스타일로, 어린이에게 적합한 톤이며, 왜곡이나 잡음이 없습니다."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">ChatGPT</span>
+            <p class="srcprompt" title="Create a printable elementary mathematics worksheet introducing basic geometric shapes. Include exactly eight shapes: regular hexagon, square, rhombus, equilateral triangle, trapezoid, rectangle, circle, and regular pentagon, each with a blank answer line beneath it. Add sections asking students to count sides and corners and identify real-world objects matching each shape. Use black vector outlines, clean typography, white background, and a printable worksheet layout.">Create a printable elementary mathematics worksheet introducing basic geometric shapes. Include exactly eight shapes: regular hexagon, square, rhombus…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_22_geometric_shape_set_chatgpt.png" alt="Geometric Shape Set — ChatGPT — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.572</span><span class="scorebar px"><span class="scorebar-fill" style="width:57%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.730</span><span class="scorebar px"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.398</span><span class="scorebar px"><span class="scorebar-fill" style="width:40%"></span></span></span>
+                <span class="pillrow"><span class="pill v-fail" title="content_present: fail — 이미지에는 정육각형, 사각형, 삼각형, 직사각형, 원형, 다각형 등이 포함되어 있지 않습니다."><span class="pill-k">content</span>✕</span><span class="pill v-na" title="text_legibility: n/a — 프롬프트에 텍스트가 포함되지 않았습니다."><span class="pill-k">text</span>·</span><span class="pill v-fail" title="layout_structure: fail — 이미지의 구조는 프롬프트에서 요구하는 학습 시트의 구조와 일치하지 않습니다."><span class="pill-k">layout</span>✕</span><span class="pill v-fail" title="educational_fit: fail — 이미지는 복잡한 그림과 흰색 배경이 아닌 검은색 벡터 라인으로 구성되어 있어 교육적 적합성이 부족합니다."><span class="pill-k">edu</span>✕</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_22_geometric_shape_set_chatgpt.png" alt="Geometric Shape Set — ChatGPT — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.643</span><span class="scorebar fx"><span class="scorebar-fill" style="width:64%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.745</span><span class="scorebar fx"><span class="scorebar-fill" style="width:74%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.735</span><span class="scorebar fx"><span class="scorebar-fill" style="width:73%"></span></span></span>
+                <span class="pillrow"><span class="pill v-fail" title="content_present: fail — The image contains only six shapes instead of the required eight."><span class="pill-k">content</span>✕</span><span class="pill v-na" title="text_legibility: n/a — There is no text in the image that needs legibility assessment."><span class="pill-k">text</span>·</span><span class="pill v-fail" title="layout_structure: fail — The shapes are not arranged in a grid format as per the instruction."><span class="pill-k">layout</span>✕</span><span class="pill v-pass" title="educational_fit: pass — The image uses a clean flat style, appropriate for an elementary school worksheet, and has a white background which is suitable for printing."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_22_geometric_shape_set_chatgpt.png" alt="Geometric Shape Set — ChatGPT — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.690</span><span class="scorebar qw"><span class="scorebar-fill" style="width:69%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.794</span><span class="scorebar qw"><span class="scorebar-fill" style="width:79%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.761</span><span class="scorebar qw"><span class="scorebar-fill" style="width:76%"></span></span></span>
+                <span class="pillrow"><span class="pill v-pass" title="content_present: pass — The image contains all the required eight geometric shapes."><span class="pill-k">content</span>✓</span><span class="pill v-pass" title="text_legibility: pass — The text is legible and uses clear, clean typography."><span class="pill-k">text</span>✓</span><span class="pill v-pass" title="layout_structure: pass — The shapes are arranged in a grid format with answer lines beneath them, following the specified layout structure."><span class="pill-k">layout</span>✓</span><span class="pill v-pass" title="educational_fit: pass — The worksheet has a clean, flat style with a white background, suitable for an elementary school setting, and includes clear instructions and questions."><span class="pill-k">edu</span>✓</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+        <div class="srcrow">
+          <div class="srclabel">
+            <span class="srcname">Qwen2.5-VL-7B</span>
+            <p class="srcprompt" title="A black and white worksheet titled &quot;UNIT 17 test&quot;. At the top, there is a space for the student&#x27;s name. Below the title, instructions ask to write the name of each shape provided: rectangle, circle, square, hexagon, triangle, trapezoid, rhombus, pentagon. Eight shapes are shown, each labeled with a blank line underneath for the student to write their answers. The shapes include a hexagon, square, diamond, triangle, trapezoid, circle, pentagon, and another diamond. Below, there is a section asking to write how many sides and corners each shape has, with examples of a circle, rectangle, diamond, and octagon. Finally, at the bottom, students are asked to identify what shape each real-life object is, showing images of a house, donut, sailboat, and playing card.">A black and white worksheet titled &quot;UNIT 17 test&quot;. At the top, there is a space for the student&#x27;s name. Below the title, instructions ask to write the…</p>
+          </div>
+          <div class="cellpair3">
+            <figure class="cell px">
+              <img src="../../../image-prompts/v243_pixart-sigma-lecture24/images/v243_23_geometric_shape_set_qwen.png" alt="Geometric Shape Set — Qwen2.5-VL-7B — PixArt-Σ" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.828</span><span class="scorebar px"><span class="scorebar-fill" style="width:83%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.736</span><span class="scorebar px"><span class="scorebar-fill" style="width:74%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.466</span><span class="scorebar px"><span class="scorebar-fill" style="width:47%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell fx">
+              <img src="../../../image-prompts/v244_flux2-klein-4b-nf4-lecture24/images/v244_23_geometric_shape_set_qwen.png" alt="Geometric Shape Set — Qwen2.5-VL-7B — FLUX.2-klein-4B (nf4)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.884</span><span class="scorebar fx"><span class="scorebar-fill" style="width:88%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.713</span><span class="scorebar fx"><span class="scorebar-fill" style="width:71%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.833</span><span class="scorebar fx"><span class="scorebar-fill" style="width:83%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure>
+            <figure class="cell qw">
+              <img src="../../../image-prompts/v245_qwen-image-lecture24/images/v245_23_geometric_shape_set_qwen.png" alt="Geometric Shape Set — Qwen2.5-VL-7B — Qwen-Image (GGUF Q5_K_M)" loading="lazy">
+              <figcaption>
+                <span class="metric"><span class="metric-k">vqa</span><span class="metric-v">0.862</span><span class="scorebar qw"><span class="scorebar-fill" style="width:86%"></span></span></span>
+                <span class="metric"><span class="metric-k">cv</span><span class="metric-v">0.696</span><span class="scorebar qw"><span class="scorebar-fill" style="width:70%"></span></span></span>
+                <span class="metric"><span class="metric-k">csd</span><span class="metric-v">0.822</span><span class="scorebar qw"><span class="scorebar-fill" style="width:82%"></span></span></span>
+                <span class="pillrow"><span class="pill v-na" title="content_present: n/a — "><span class="pill-k">content</span>·</span><span class="pill v-na" title="text_legibility: n/a — "><span class="pill-k">text</span>·</span><span class="pill v-na" title="layout_structure: n/a — "><span class="pill-k">layout</span>·</span><span class="pill v-na" title="educational_fit: n/a — "><span class="pill-k">edu</span>·</span></span>
+              </figcaption>
+            </figure></div>
+        </div>
+    </section>
+
+  <section class="analysis">
+    <h2>분석</h2>
+
+    <h3>카테고리별 평균 (3개 소스 평균)</h3>
+    <div class="tablewrap">
+      <table class="avgtable">
+        <thead>
+          <tr><th>Category</th><th class="num">PixArt-Σ vqa</th><th class="num">PixArt-Σ cv</th><th class="num">PixArt-Σ csd</th><th class="num">FLUX.2-klein-4B (nf4) vqa</th><th class="num">FLUX.2-klein-4B (nf4) cv</th><th class="num">FLUX.2-klein-4B (nf4) csd</th><th class="num">Qwen-Image (GGUF Q5_K_M) vqa</th><th class="num">Qwen-Image (GGUF Q5_K_M) cv</th><th class="num">Qwen-Image (GGUF Q5_K_M) csd</th><th>Winner</th></tr>
+        </thead>
+        <tbody>
+    <tr><td>Structured Worksheet Template</td><td class="num">0.499</td><td class="num">0.721</td><td class="num">0.363</td><td class="num">0.723</td><td class="num">0.783</td><td class="num">0.481</td><td class="num">0.801</td><td class="num">0.802</td><td class="num">0.502</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Data Visualization Chart</td><td class="num">0.742</td><td class="num">0.735</td><td class="num">0.445</td><td class="num">0.855</td><td class="num">0.729</td><td class="num">0.597</td><td class="num">0.900</td><td class="num">0.775</td><td class="num">0.668</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Historical Figure Portrait</td><td class="num">0.853</td><td class="num">0.679</td><td class="num">0.363</td><td class="num">0.821</td><td class="num">0.744</td><td class="num">0.342</td><td class="num">0.880</td><td class="num">0.770</td><td class="num">0.415</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Multi-Character Classroom Collaboration</td><td class="num">0.853</td><td class="num">0.685</td><td class="num">0.657</td><td class="num">0.897</td><td class="num">0.684</td><td class="num">0.677</td><td class="num">0.912</td><td class="num">0.747</td><td class="num">0.711</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Intergenerational Indoor Scene</td><td class="num">0.872</td><td class="num">0.692</td><td class="num">0.733</td><td class="num">0.902</td><td class="num">0.707</td><td class="num">0.661</td><td class="num">0.903</td><td class="num">0.736</td><td class="num">0.699</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Single-Character Cutout</td><td class="num">0.877</td><td class="num">0.711</td><td class="num">0.697</td><td class="num">0.885</td><td class="num">0.718</td><td class="num">0.691</td><td class="num">0.884</td><td class="num">0.770</td><td class="num">0.701</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Labeled Science Diagram</td><td class="num">0.728</td><td class="num">0.714</td><td class="num">0.514</td><td class="num">0.683</td><td class="num">0.729</td><td class="num">0.673</td><td class="num">0.835</td><td class="num">0.761</td><td class="num">0.645</td><td class="winner qw">Qwen-Image (GGUF Q5_K_M)</td></tr><tr><td>Geometric Shape Set</td><td class="num">0.777</td><td class="num">0.755</td><td class="num">0.463</td><td class="num">0.826</td><td class="num">0.761</td><td class="num">0.761</td><td class="num">0.836</td><td class="num">0.767</td><td class="num">0.684</td><td class="winner fx">FLUX.2-klein-4B (nf4)</td></tr></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="swatch px"></span>PixArt-Σ 우세</span>
+      <span><span class="swatch fx"></span>FLUX.2-klein 우세</span>
+      <span><span class="swatch qw"></span>Qwen-Image 우세</span>
+    </div>
+
+    <h3>judge 4축 pass rate (n/a 제외)</h3>
+    <div class="tablewrap">
+      <table class="avgtable">
+        <thead><tr><th>Model</th><th class="num">content_present</th><th class="num">text_legibility</th><th class="num">layout_structure</th><th class="num">educational_fit</th></tr></thead>
+        <tbody><tr><td class="pxrowlabel">PixArt-Σ</td><td class="num">12/16 (75%)<span class="who"> · n/a×8</span></td><td class="num">0/0 (0%)<span class="who"> · n/a×24</span></td><td class="num">13/15 (87%)<span class="who"> · n/a×9</span></td><td class="num">14/16 (88%)<span class="who"> · n/a×8</span></td></tr><tr><td class="fxrowlabel">FLUX.2-klein-4B (nf4)</td><td class="num">14/16 (88%)<span class="who"> · n/a×8</span></td><td class="num">1/3 (33%)<span class="who"> · n/a×21</span></td><td class="num">15/16 (94%)<span class="who"> · n/a×8</span></td><td class="num">15/16 (94%)<span class="who"> · n/a×8</span></td></tr><tr><td class="qwrowlabel">Qwen-Image (GGUF Q5_K_M)</td><td class="num">16/16 (100%)<span class="who"> · n/a×8</span></td><td class="num">3/3 (100%)<span class="who"> · n/a×21</span></td><td class="num">16/16 (100%)<span class="who"> · n/a×8</span></td><td class="num">16/16 (100%)<span class="who"> · n/a×8</span></td></tr></tbody>
+      </table>
+    </div>
+    
+    <h3>전반적 경향 — 세 모델 중 Qwen-Image가 4개 지표 전부 최상위</h3>
+    <p>VQAScore·custom_cv·csd_target·judge 4축 pass rate 전부 Qwen-Image(GGUF Q5_K_M) 우세로 수렴한다.
+    VQAScore 평균 0.869 (PixArt 0.775 / FLUX.2 0.824),
+    csd_target 평균 0.628 (PixArt 0.529 / FLUX.2 0.610),
+    judge content_present 100% / layout_structure 100% / educational_fit 100%
+    로 세 지표 모두 세 모델 중 가장 높다. 다만 Qwen-Image는 <code>configs/models/qwen-image.yaml</code> 노트에
+    "서빙 조건 탈락 후보지만 품질 상한 확인용"으로 명시돼 있듯, GGUF 양자화를 적용해도 VRAM peak가
+    15.6GB로 16GB 예산의 대부분을 소진해 이 저장소의 서빙 후보 기준에는 들지 않는다 — 여기서는 품질
+    상한을 보기 위한 참고 데이터로만 쓴다.</p>
+    <p>FLUX.2-klein-4B는 여전히 PixArt-Σ 대비 세 지표 모두 우세하다는 기존 결론이 유지된다 — custom_cv만
+    차이가 작고(참조 없는 flat-style 품질만 보는 지표라 신호가 약함) 방향이 카테고리별로 혼재한다.</p>
+
+    <h3>judge 세부 관찰</h3>
+    <p><b>text_legibility 축은 여전히 표본이 부족해 신뢰하기 어렵다.</b> Qwen2.5-VL이 "프롬프트에 텍스트가
+    명시적으로 요구되지 않으면 n/a"로 과도하게 넘기는 경향은 세 모델 채점에서 공통으로 관찰된다 — 이 축은
+    참고만 하고 실제 텍스트 렌더링 품질은 이미지를 육안으로 확인할 것.</p>
+    <p><b>historical_figure_portrait (qwen 소스)</b>가 v245(Qwen-Image)에서 4축 전부 fail로 나온 유일한
+    셀이다 — 세 모델 중 유일한 전체 fail 케이스라 03 섹션에서 이미지를 직접 확인해볼 것.</p>
+    <p><b>자기채점 순환성</b>은 여전히 유효한 주의사항이다 — qwen 소스 8개 프롬프트는 Qwen2.5-VL 자신이
+    작성한 것이라 같은 계열 모델(Qwen-Image)이 생성한 이미지를 판정할 때 같은 맹점을 공유할 가능성이 있다.</p>
+
+    <div class="callout warn"><b>csd_target 해석 주의:</b> 정식 CSD 파이프라인은 카테고리별 15~25장 검증된
+    ref_set의 평균 임베딩과 비교하지만, 이번 값은 <code>refs/vlm-target/</code>의 카테고리당 단일 이미지
+    1장과의 코사인 유사도다. 스타일 분포 매칭이 아니라 "그 한 장과 얼마나 닮았는가"에 가까운 약한 신호이므로
+    참고용으로만 쓸 것 (<code>scripts/score_csd_target.py</code>).</div>
+    <div class="callout">judge는 자유형 4축(content_present/text_legibility/layout_structure/educational_fit,
+    <code>scripts/judge_lecture24.py</code>)으로 별도 실행했다 — bench_v1의 counting/spatial/attribute 축
+    체계와는 다르며, expected 문장 대신 이미지 자체의 프롬프트를 기준으로 판정한다.</div>
+    
+  </section>
+
+  <footer>
+    Generated from <code>bench/scores/v243_pixart-sigma-lecture24/</code>, <code>v244_flux2-klein-4b-nf4-lecture24/</code>,
+    <code>v245_qwen-image-lecture24/</code> (각 <code>{pass1,csd_target,judge_lecture24}.csv</code>) · 이미지는 원본 해상도
+    PNG를 로컬 파일로 참조한다(base64 미포함). Hover a judge pill for its rationale.
+  </footer>
+</div>
+</body>
+</html>

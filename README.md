@@ -145,6 +145,12 @@
         images/
     envs/           conda env 규칙 + 성공한 pip freeze 스냅샷
     bench/          결론과 삽질 메모
+    reports/        생성된 리포트(md/html) — bench/reports/였던 것도 여기로 통합
+    scripts/
+      sweeps/       현재 쓰는 스윕/빌드 스크립트
+      archive/      끝난 스윕(sweep.sh~9_2.sh) — 과거 기록 보존용, 재실행 대상 아님
+    logs/           현재 실행 로그
+      archive/      끝난 스윕(sweep*)의 summary.tsv — 과거 기록 보존용
 
 ## 축이 3개다
 

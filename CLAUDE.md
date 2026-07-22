@@ -140,6 +140,14 @@ The goal: local and both servers should always be pullable to the same latest co
 
 Holds conclusions and troubleshooting notes only — vram/latency numbers are auto-recorded in note frontmatter and shown in the Streamlit Compare tab, so don't hand-copy numbers into this file.
 
+## Generated reports (`reports/`)
+
+All generated report files (md/html) live under top-level `reports/`, not `bench/`. `bench/` stays reserved for hand-written conclusion/troubleshooting notes. When adding a new report generator, write its output to `reports/`.
+
+## Archived one-off scripts (`scripts/archive/`, `logs/archive/`)
+
+Completed one-off sweep scripts (`sweep.sh` ~ `sweep9_2.sh` and `renumber_versions_sweep8_2.sh`) and their corresponding run logs live under `scripts/archive/` and `logs/archive/` — kept for historical reference, not meant to be rerun or extended. `scripts/sweeps/` holds scripts still in active use (keyword/grid builders, pilot sweeps).
+
 ## Keep README.md current
 
 `README.md` is the living research plan (pipeline stages, model/prompt/metric status, the ordered checklist). Whenever you do research or work that changes the plan — a decision made, a checklist item resolved, a new finding about prompting/models/metrics, a change in what to try next — update the relevant section of `README.md` in the same session, not just this CLAUDE.md or bench notes.
