@@ -13,6 +13,35 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
 - **앞으로 프롬프트/모델/채점 방식을 바꿀 때는 이 baseline 대비 개선 여부로 판단한다** — `configs/benchmarks/vlm-prompts.json`은 `configs/keywords/*`처럼 비교 기준이므로 함부로 편집하지 않는다(내용을 바꾸려면 새 파일로 분리).
 - **알려진 한계**: csd_target은 카테고리당 참조 이미지 1장(원본 교과서 이미지)만 쓰는 provisional 신호다 — 정식 golden set(카테고리당 15~25장) 수집 전까지는 "그 한 장과 얼마나 닮았는가"에 가까운 약한 신호로만 참고할 것.
 - **⚠️ 2026-07-27 발견 — v243/v244/v245는 프롬프트 드리프트로 무효화됨**: 커밋 `778d5dd`("backup", 07-27 10:41)가 `vlm-prompts.json`의 24개 중 15개(카테고리×소스) 프롬프트를 고정 baseline 규칙을 어기고 재작성했다. 그런데 `v243/v244/v245` 이미지는 그 전날(07-21)에 **옛 프롬프트**로 이미 생성돼 있었고, `vlm-prompts-spec.json`(TASK-B2 spec item 채점 체계)은 그 뒤(07-27 12:30)에 **새 프롬프트** 기준으로 작성됐다 — 즉 지금 채점 중이던 spec item 문구와 실제 이미지가 15개 카테고리에서 서로 다른 프롬프트를 가리키고 있었다. 새 프롬프트가 더 낫다고 판단해 **새 프롬프트를 baseline으로 확정**하고, `v243/v244/v245`는 `scripts/lecture_generate.sh` + `--model qwen-image`로 재생성하기로 함(새 버전 번호로 생성됨, v243~v245는 그대로 두고 새 버전이 baseline을 대체). TASK-B2 STAGE 0~3에서 만든 라벨(파일럿 29건 + `bench/scores/stage3_manual.csv` 96건)은 옛 이미지 기준이라 재생성 후 다시 라벨링해야 한다.
+- **✅ 2026-07-27 — 재생성 완료, baseline이 v246/v247/v249로 교체됨**: 서버 157에서 새 프롬프트 기준으로
+  재생성 완료 — `v246_pixart-sigma-lecture24`, `v247_flux2-klein-4b-nf4-lecture24`,
+  `v249_qwen-image-lecture24` (전부 status: done, 24장씩). 커밋 `552e478`로 3개 노트를 로컬·23서버에
+  동기화 완료(이미지 자체는 gitignored라 scp로 로컬에 별도 복사). qwen-image는 중간에 `v248`로
+  한 번 실패했었는데(status: running, 0장 — GGUF/디스크 공간 이슈로 죽은 시도) `.trash/`로
+  옮겨두고 커밋에서는 제외했다.
+  - v243/v244/v245는 지우지 않고 그대로 둔다 — "옛 프롬프트 기준 기록"으로만 참고, 최종 비교에는 쓰지 않는다.
+  - 새 STAGE 3 표본 `bench/scores/stage3_worklist_v2.csv` (125건, 축당 25건)를 v246/v247/v249
+    이미지 기준으로 새로 뽑아뒀다. 기존 `stage3_worklist.csv`/`stage3_manual.csv`(96건)는
+    v243/v244/v245 기준 기록이므로 건드리지 않았고, 최종 신뢰도 지표 계산에서는 제외한다.
+  - **남은 순서(순서를 지킬 것 — 자세한 내용은 `NextJob-TaskB2.md` STAGE 3 참고)**: `sample_stage3.py`가
+    `check` 문구를 그 시점 spec.json 값으로 worklist CSV에 얼려 넣고, `judge_spec_manual.py`는
+    spec.json이 아니라 그 worklist를 읽으므로, "문구 정리"와 "라벨링"을 동시에 할 수 없다. ①
+    부정문 spec 문구(19개 item 후보) 정리 → ② `sample_stage3.py` 재실행(seed 고정이라 표본은 그대로,
+    check만 갱신) → ③ 그제서야 `judge_spec_manual.py --worklist ... --out stage3_manual_v2.csv`로
+    125건 손 채점(대화형 터미널 도구, 자동화 대상 아님).
+  - **서버 23 — STAGE 3 κ 계산의 실제 블로커**: κ는 두 채점자(사람+VLM)가 있어야 나오는데 지금은
+    사람 쪽 준비만 진행 중이고 자동 쪽은 v246/v247/v249용으로 아예 없다 — 새 이미지 72장이 23에
+    없고, `t2i-judge` env도 23에서 지워져 있다(freeze는 `envs/t2i-judge.txt`에 보존, TASK-E 디스크
+    확보 중 지워진 것으로 추정). 디스크는 91% 사용(9.1GB 여유)이라 env를 바로 재생성하기도 빠듯한데,
+    그 대부분을 차지하는 `~/.cache/huggingface/hub/models--tencent--HunyuanImage-2.1`(18G)이 채점
+    전용 서버 역할과 안 맞는 **T2I 생성 모델 캐시**로 확인됨(역할 분리 규칙 위반 소지, 다른 작업 중
+    받았을 수도 있어 임의 삭제는 하지 않음) — 지우면 여유가 27GB로 늘어 env 재생성이 가능해진다.
+    사용자 확인 후 (a) 이미지 rsync → (b) `t2i-judge` 재생성 → (c) `judge_spec.py` 실행 → (d)
+    `judge_agreement.py`로 κ 계산, 4단계가 남아야 STAGE 3가 끝난다.
+  - **참고**: `measure_cv.py`의 상수(box row_band 0.3~0.7, 핀 aspect_range/min_area)는 v243의 옛
+    structured_worksheet_template 이미지에 맞춰 튜닝된 값이다. 새 프롬프트로 레이아웃이 달라졌을
+    수 있으니, v246 이미지로 CV 카운팅을 다시 돌릴 때 6/6 일치가 그대로 재현되는지 먼저 확인할 것 —
+    안 되면 상수를 새로 맞춰야 한다.
 
 | 모델 | 3090에서 동작 | 16GB 가능? | 결론 | 삽질 메모 |
 |---|---|---|---|---|

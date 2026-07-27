@@ -253,7 +253,44 @@ spec item의 type이 count 또는 attribute이고 measurer 필드가 "cv"인 것
 
 ---
 
-## STAGE 3 — 라벨 확대 + 정식 신뢰도 지표
+## STAGE 3 — 라벨 확대 + 정식 신뢰도 지표 ⏳ 진행 중 (2026-07-27, 이미지 재생성 후 재시작)
+
+> **현황**: v243/v244/v245 프롬프트 드리프트 발견으로 v246/v247/v249로 재생성 완료(`bench/results.md`
+> 참고), STAGE 0~2에서 만든 라벨은 전부 옛 이미지 기준이라 무효. `scripts/sample_stage3.py`로
+> v246/v247/v249 이미지 기준 새 worklist(`bench/scores/stage3_worklist_v2.csv`, 125건, 축당 25건)를
+> 제로베이스로 다시 뽑아뒀다. 이미지 자체는 gitignored라 로컬에 scp로 복사해둔 상태.
+>
+> **남은 일 순서(중요 — 아래 순서를 지킬 것)**:
+> `sample_stage3.py`는 worklist CSV에 `check` 문구를 그 시점 spec.json 값으로 그대로 얼려 넣고,
+> `judge_spec_manual.py`는 spec.json이 아니라 그 worklist의 `check` 컬럼을 읽어 사람에게 보여준다.
+> 즉 "라벨링하면서 동시에 문구를 고친다"는 불가능 — 순서를 바꾸면 사람이 옛 문구에 답하거나,
+> 라벨과 spec이 어긋난 채로 남는다(이번 세션 내내 되돌린 바로 그 문제 재발). 그래서:
+> 1. 부정문 spec 문구 정리(4번 항목, 아래 후보 19개 item)를 **먼저** `vlm-prompts-spec.json`에서 끝낸다.
+> 2. `scripts/sample_stage3.py`를 **다시** 돌려 `stage3_worklist_v2.csv`를 재생성한다(seed=0 고정이라
+>    item id가 안 바뀌면 표본 구성은 동일하게 재현됨 — check 문구만 새 것으로 갱신됨).
+> 3. 그 다음에 `judge_spec_manual.py --worklist stage3_worklist_v2.csv --out stage3_manual_v2.csv`로
+>    125건 손 채점(대화형 터미널 도구, 이미지를 직접 보고 y/n/u 입력 — 자동화 대상 아님).
+>
+> 부정문 후보(재작성 검토 대상, `configs/benchmarks/vlm-prompts-spec.json`):
+> structured_worksheet_template_{claude,qwen} s9, structured_worksheet_template_chatgpt s8/s9,
+> data_visualization_chart_claude s9, historical_figure_portrait_claude s3/s10,
+> historical_figure_portrait_qwen s2/s8, multi_character_classroom_collaboration_claude s9,
+> intergenerational_indoor_scene_claude s10, single_character_cutout_{claude s8/s9, chatgpt s4, qwen s7},
+> labeled_science_diagram_claude s10, labeled_science_diagram_qwen s6,
+> geometric_shape_set_claude s7/s9.
+>
+> **서버 23 — STAGE 3 κ 계산의 실제 블로커(발견사항 아님)**: STAGE 3 산출물은 κ이고, κ는 두 채점자가
+> 있어야 나온다. 지금은 사람 쪽만 준비됐고 자동(VLM) 쪽은 v246/v247/v249에 대해 아예 없다 —
+> 1. 새 이미지 72장이 아직 23에 없음(로컬·157에만 있음),
+> 2. `t2i-judge` env가 23에서 지워져 있음(freeze는 `envs/t2i-judge.txt`에 보존, TASK-E 디스크 확보 중
+>    지워진 것으로 추정),
+> 3. 그 env를 다시 만들 디스크 여유가 부족함 — 23은 91% 사용(9.1GB 여유)이고, 그 대부분을 차지하는
+>    `~/.cache/huggingface/hub/models--tencent--HunyuanImage-2.1`(18G)은 채점 전용 서버 역할과 안 맞는
+>    **T2I 생성 모델 캐시**(CLAUDE.md 서버 역할 분리 규칙 위반으로 보임 — 다만 다른 작업 중 받았을 수도
+>    있어 임의로 지우지 않음). 이 캐시를 지우면 여유가 27GB로 늘어 `t2i-judge` 재생성 여지가 생긴다.
+> → **사용자 확인 필요**: HunyuanImage-2.1 캐시를 지워도 되는지 확인 후, (a) 이미지 rsync, (b)
+>   `t2i-judge` env 재생성, (c) `judge_spec.py`를 v246/v247/v249에 실행, (d) `judge_agreement.py`로
+>   κ 계산 — 이 4단계가 남아야 STAGE 3가 완료된다.
 
 ```
 [근거]
