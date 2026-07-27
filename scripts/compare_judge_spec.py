@@ -14,6 +14,19 @@ def load_verdicts(path):
         return {(row["image"], row["item_id"]): row["verdict"] for row in csv.DictReader(f)}
 
 
+def cohens_kappa(auto, manual, keys):
+    n = len(keys)
+    po = sum(1 for k in keys if auto[k] == manual[k]) / n
+    categories = {auto[k] for k in keys} | {manual[k] for k in keys}
+    pe = sum(
+        (sum(1 for k in keys if auto[k] == c) / n) * (sum(1 for k in keys if manual[k] == c) / n)
+        for c in categories
+    )
+    if pe == 1:
+        return 1.0
+    return (po - pe) / (1 - pe)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--auto", required=True, help="judge_spec.py가 만든 CSV")
@@ -28,9 +41,15 @@ def main():
 
     agree = sum(1 for k in keys if auto[k] == manual[k])
     rate = agree / len(keys)
-    print(f"비교 대상: {len(keys)}건, 일치: {agree}건, 일치율: {rate:.2f}")
+    kappa = cohens_kappa(auto, manual, keys)
+    print(f"비교 대상: {len(keys)}건, 일치: {agree}건, 일치율: {rate:.2f}, Cohen's kappa: {kappa:.2f}")
     if rate < 0.8:
         print(f"[경고] 일치율이 0.8 미만입니다 ({rate:.2f}) — spec item 문구나 judge 프롬프트를 재검토하세요.")
+
+    lenient = sum(1 for k in keys if auto[k] != manual[k] and auto[k] == "yes" and manual[k] == "no")
+    strict = sum(1 for k in keys if auto[k] != manual[k] and auto[k] == "no" and manual[k] == "yes")
+    other = len(keys) - agree - lenient - strict
+    print(f"불일치 방향: auto관대(yes/no) {lenient}건, auto엄격(no/yes) {strict}건, 그 외 {other}건")
 
 
 if __name__ == "__main__":

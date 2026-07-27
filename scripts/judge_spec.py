@@ -38,6 +38,53 @@ JUDGE_SYSTEM = (
     '{"verdict": "yes"|"no"|"unclear"}'
 )
 
+PROBE_SYSTEM = (
+    "너는 이미지에 대한 질문에 값을 추출해 답하는 관찰자다. "
+    "질문이 요구하는 값만 관찰한 대로 답해라. 맞다/틀리다를 판단하지 마라. "
+    "다른 설명 없이 JSON 객체 하나만 출력해라: "
+    '{"answer": "<질문에서 요구한 형식의 값>"}'
+)
+
+
+def _parse_answer(raw):
+    start, end = raw.find("{"), raw.rfind("}")
+    if start == -1 or end == -1:
+        raise ValueError(f"JSON 객체를 찾을 수 없음: {raw[:200]!r}")
+    parsed = json.loads(raw[start:end + 1])
+    if "answer" not in parsed:
+        raise ValueError(f"answer 필드가 없음: {parsed}")
+    return str(parsed["answer"])
+
+
+def _eval_expect(answer, expect):
+    mode = expect["mode"]
+    if mode == "int_eq":
+        m = re.search(r"-?\d+", answer)
+        if not m:
+            return None
+        return "yes" if int(m.group()) == expect["value"] else "no"
+    if mode == "set_eq":
+        values = {v.strip().lower() for v in answer.split(",") if v.strip()}
+        expected = {v.strip().lower() for v in expect["value"]}
+        return "yes" if values == expected else "no"
+    if mode == "contains":
+        return "yes" if expect["value"].lower() in answer.lower() else "no"
+    raise ValueError(f"알 수 없는 expect mode: {mode}")
+
+
+def _judge_probe_item(image_path, item, stats):
+    raw = _call_judge_vlm(image_path, item["probe"], system=PROBE_SYSTEM)
+    try:
+        answer = _parse_answer(raw)
+    except (ValueError, json.JSONDecodeError, KeyError):
+        stats["unparseable"] += 1
+        return "unparseable"
+    verdict = _eval_expect(answer, item["expect"])
+    if verdict is None:
+        stats["unparseable"] += 1
+        return "unparseable"
+    return verdict
+
 
 def _expected_ids():
     categories = json.loads(PROMPTS_JSON.read_text(encoding="utf-8"))
@@ -80,10 +127,10 @@ def _judge_spec_item(image_path, check_text, stats):
         return "unclear"
 
 
-def judge_images(images_dir, spec_by_id, limit=None):
+def judge_images(images_dir, spec_by_id, limit=None, mode="yesno"):
     images_dir = pathlib.Path(images_dir)
     rows = []
-    stats = {"parse_errors": 0}
+    stats = {"parse_errors": 0, "unparseable": 0}
     images = sorted(images_dir.glob("*.png"))
     if limit:
         images = images[:limit]
@@ -103,7 +150,10 @@ def judge_images(images_dir, spec_by_id, limit=None):
         random.shuffle(items)
         passed = 0
         for item in items:
-            verdict = _judge_spec_item(img_path, item["check"], stats)
+            if mode == "probe" and "probe" in item and "expect" in item:
+                verdict = _judge_probe_item(img_path, item, stats)
+            else:
+                verdict = _judge_spec_item(img_path, item["check"], stats)
             if verdict == "yes":
                 passed += 1
             rows.append({
@@ -114,6 +164,9 @@ def judge_images(images_dir, spec_by_id, limit=None):
         print(f"{img_path.name} -> {passed}/{len(items)} ({score:.2f})")
     if stats["parse_errors"]:
         print(f"[warn] 파싱 실패로 unclear 처리된 응답 {stats['parse_errors']}건")
+    if stats["unparseable"]:
+        total_probes = sum(1 for r in rows if mode == "probe")
+        print(f"[warn] probe 파싱 실패(unparseable) {stats['unparseable']}건 / {total_probes}행")
     return rows
 
 
@@ -132,10 +185,12 @@ def main():
     ap.add_argument("--spec", default=str(ROOT / "configs" / "benchmarks" / "vlm-prompts-spec.json"))
     ap.add_argument("--out", required=True, help="결과 CSV 경로")
     ap.add_argument("--limit", type=int, help="채점할 이미지 수 제한 (파일럿용, 예: 3)")
+    ap.add_argument("--mode", choices=["yesno", "probe"], default="yesno",
+                    help="probe: probe/expect가 있는 항목은 추출형 질문으로 채점, 없으면 기존 yes/no로 폴백")
     args = ap.parse_args()
 
     spec_by_id = load_spec(args.spec)
-    rows = judge_images(args.images, spec_by_id, limit=args.limit)
+    rows = judge_images(args.images, spec_by_id, limit=args.limit, mode=args.mode)
     if rows:
         write_csv(rows, args.out)
         print(f"{len(rows)}행 -> {args.out}")
