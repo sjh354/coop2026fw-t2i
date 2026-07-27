@@ -46,10 +46,14 @@ def load_model_data(run_dir):
         category, source = prompt_id_from_image(row["image"])
         d = data.setdefault(f"{category}_{source}", {"category": category, "prompt_source": source})
         d["csd_target"] = float(row["csd_target"])
-    for row in _read_csv(run_dir / "judge_lecture24.csv"):
-        d = data.setdefault(f"{row['type']}_{row['source']}",
-                             {"category": row["type"], "prompt_source": row["source"]})
-        d.setdefault("judge", {})[row["axis"]] = row["verdict"]
+    judge_path = run_dir / "judge_lecture24.csv"
+    if judge_path.exists():
+        for row in _read_csv(judge_path):
+            d = data.setdefault(f"{row['type']}_{row['source']}",
+                                 {"category": row["type"], "prompt_source": row["source"]})
+            d.setdefault("judge", {})[row["axis"]] = row["verdict"]
+    else:
+        print(f"[warn] {judge_path} 없음 — judge 관련 통계(pass rate/fisher) 스킵")
     return data
 
 
