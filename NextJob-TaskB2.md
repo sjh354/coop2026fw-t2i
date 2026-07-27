@@ -52,10 +52,20 @@ Linux, RTX 3090 24GB. OpenCV, PaddleOCR 사용 가능. 새 대형 모델 도입 
 > 상대적·주관적 표현이 낀 항목만 틀렸고, 나머지 spatial/text 문항은 그대로 100% 일치했다. 축
 > 자체의 문제가 아니라 **문항 문구가 상대적/주관적 형용사를 쓰는지**가 원인으로 보인다.
 >
-> **B≥3 게이트 발동** — 문서 규칙("B가 3건 이상이면 STAGE 1로 가기 전에 spec 문구를 먼저 고치고
-> judge_spec.py를 재실행해 일치율을 다시 잰다")에 따라 STAGE 1로 자동 진행하지 않고 여기서 정지.
-> 사용자 확인 필요 (아래 대화 참고): spec 문구 수정 시 해당 문항의 기존 manual CSV 라벨이 무효화되어
-> 재채점이 필요함.
+> **B≥3 게이트 발동 → 해소 완료.** 문서 규칙에 따라 B로 분류된 4개 항목
+> (`structured_worksheet_template_claude/qwen`의 s8 "thick and black", `..._chatgpt`의 s8
+> "background is white", s9 "balanced/even")의 spec 문구를 `configs/benchmarks/vlm-prompts-spec.json`에서
+> 더 객관적으로 재작성(주관적 형용사 제거, 구체적 기준 명시)하고, server 23(`t2i-judge` env)에서
+> `judge_spec.py` 재실행 + 사용자가 새 문구로 4건 재채점.
+>
+> - claude s8, qwen s8: auto=yes / manual=yes로 **일치** (재작성으로 해소됨)
+> - chatgpt s8, s9: 여전히 **불일치** (auto=yes 또는 unclear / manual=no) — 원인은 문구 모호성이
+>   아니라 chatgpt 소스 이미지 자체가 의도한 worksheet 구조(박스 6개 + 핀 6개)를 거의 그리지 못한
+>   생성 실패작이라는 점. spec 문구를 더 고쳐도 해소되지 않는 별개 문제로 판단, 더 이상 문구를
+>   건드리지 않음.
+> - 재계산된 일치율: **18/27(0.67) → 20/27(0.74)**. 여전히 0.8 미만이나, B 게이트 조건("문구 고치고
+>   재실행")은 충족했으므로 STAGE 1로 진행. 최신 CSV는 `bench/scores/v243_pixart-sigma-lecture24/
+>   judge_spec_pilot.csv`, `judge_spec_manual.csv`에 반영됨.
 
 ```
 [해야 할 일]
