@@ -12,8 +12,9 @@
             {"id": "s5", "type": "spatial", "check": "the pins are placed along a single horizontal line at the bottom"},
             {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
             {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
-            {"id": "s8", "type": "style", "check": "the outline strokes look like they were drawn with a bold marker or thick pen, not a thin 1px pencil line, and are colored solid black rather than gray or another color"},
-            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"}
+            {"id": "s8", "type": "style", "check": "the outline strokes are colored solid black rather than gray or another color"},
+            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"},
+            {"id": "s10", "type": "style", "check": "the outline strokes are as thick as a bold marker or pen, not a thin 1px hairline"}
         ]
     },
     {
@@ -46,8 +47,9 @@
             {"id": "s5", "type": "spatial", "check": "the pins are placed along a single horizontal line at the bottom"},
             {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
             {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
-            {"id": "s8", "type": "style", "check": "the outline strokes look like they were drawn with a bold marker or thick pen, not a thin 1px pencil line, and are colored solid black rather than gray or another color"},
-            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"}
+            {"id": "s8", "type": "style", "check": "the outline strokes are colored solid black rather than gray or another color"},
+            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"},
+            {"id": "s10", "type": "style", "check": "the outline strokes are as thick as a bold marker or pen, not a thin 1px hairline"}
         ]
     },
     {
