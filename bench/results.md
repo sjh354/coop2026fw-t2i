@@ -245,3 +245,66 @@ promptenhancer) × 24프롬프트를 bench_v1 종합 1위 후보 flux2-klein-4b-
 - 원래 계획한 최종 판정 기준(spec 통과율)이 같은 세션의 TASK-B2/TASK-C 결과(κ<0.6 확정)로
   근거가 흔들림 — 채점 방법론 결정 전까지는 이 3조건 이미지에 대한 spec 채점을 최종 판정으로
   쓰지 말 것.
+
+## TASK-A · 통계 검정 — 새 baseline(v246/v247/v249) 재실행 (2026-07-28, 서버 23)
+
+프롬프트 드리프트로 v243/v244/v245가 무효화되고 v246(pixart-sigma)/v247(flux2-klein-4b-nf4)/
+v249(qwen-image)로 재생성된 뒤, 이 baseline에 대해 vqascore/custom_cv/csd_target 채점이
+한 번도 실행되지 않은 상태였음(spec item 채점만 있었음) — 이번에 처음부터 재실행.
+
+**서버 인프라 이슈(재현 시 참고)**:
+- `t2i-score` env가 서버 23에서 지워져 있었음 — `envs/t2i-score.txt`로 재생성 필요.
+  디스크가 1.8GB만 남아있어 t2i-rewrite 백엔드용 `Qwen2.5-7B-Instruct` HF 캐시(15G, 이미 삭제된
+  env 소속이라 재사용 안 됨)를 삭제해 공간 확보(사용자 승인 후 진행).
+- `torch==2.5.1+cu121` 같은 로컬 버전 지정은 PyPI가 아니라 `--index-url
+  https://download.pytorch.org/whl/cu121`로 따로 설치해야 함 — freeze 파일 그대로 `pip install -r`
+  하면 실패.
+- `t2v_metrics==3.0`은 import 시점에 안 쓰는 백엔드(InternVideo2 등)까지 전부 끌어와 `flash_attn`
+  미설치로 깨짐 — `envs/README.md`/`envs/fix_t2v_metrics.sh`에 있던 우회가 이번에도 필요했음
+  (site-packages의 `clipscore_models`/`itmscore_models` `__init__.py`에서 해당 import를
+  try/except로 감쌈). ffmpeg 시스템 패키지, `llava`(pip 미공개, `pip install
+  git+https://github.com/LLaVA-VL/LLaVA-NeXT.git`)도 새로 설치 필요.
+- CSD 채점은 `PYTHONPATH=vendor` 필수(README "채점 모듈" 절에 명시돼 있었으나 처음에 누락해 1회
+  실패) + `refs/lecture24/vlm-target/*.png`가 `.gitignore`로 제외돼 있어 로컬→서버 직접 scp 필요.
+
+**결과** (`reports/stats_lecture24_v2/`, n=24 paired):
+
+| metric | mean: pixart-sigma | mean: flux2-klein-4b-nf4 | mean: qwen-image |
+|---|---|---|---|
+| vqascore | 0.7692 | 0.8323 | 0.8701 |
+| custom_cv | 0.7089 | 0.7335 | 0.7692 |
+| csd_target | 0.5307 | 0.6302 | 0.6319 |
+
+Wilcoxon signed-rank (모든 쌍 유의):
+- vqascore: 세 쌍 전부 p<0.01 (pixart-sigma가 가장 낮고, qwen-image가 가장 높음 — effect r=0.57~0.81로 큰 편)
+- csd_target: pixart-sigma가 flux2-klein-4b-nf4/qwen-image보다 유의하게 낮음(p<0.01, r≈0.53~0.56).
+  flux2-klein-4b-nf4 vs qwen-image는 유의하지 않음(p=0.73, r=0.07) — 둘은 csd_target 기준 사실상 동급.
+
+judge_lecture24.csv(4축 pass/fail) 기반 통계(pass rate/Fisher)는 이번 baseline에 대해 한 번도
+생성된 적이 없어(스펙아이템 judge로 대체된 뒤 폐기된 경로로 보임) 스킵 — `scripts/stats_report.py`가
+해당 파일 부재 시 경고만 찍고 넘어가도록 수정함. 필요하면 TASK-C에서 이미 신뢰성 낮다고 결론난
+judge 시스템을 다시 붙이는 것보다, vqascore/csd_target 같은 연속형 지표를 주 근거로 쓰는 쪽이
+합리적.
+
+## TASK-F · Qwen-Image-Lightning 파일럿 (2026-07-28, 서버 157)
+
+`configs/models/qwen-image-lightning.yaml` 신규 — `OzzyGT/qwen-image-lighting-gguf`(8-step
+Lightning LoRA가 이미 fuse된 비공식 GGUF, Q4_K_S 11.5GB)를 기존 `generic.py`의 `gguf_repo`
+경로 그대로 사용(어댑터 코드 변경 없음 — LoRA를 diffusers `load_lora_weights`로 GGUF 양자화
+transformer 위에 얹는 공식 경로는 호환성 문제가 보고돼 있어, 대신 LoRA가 이미 병합된 GGUF를 선택).
+
+동일 시드(0)·동일 프롬프트(apple/cat, `educational-flat-v2-check` exp) 파일럿 비교(v253 vs v254):
+
+| | Lightning (8-step) | full qwen-image (30-step) |
+|---|---|---|
+| vram_peak | 15.56GB | 15.56GB |
+| sec/img | 97.05 | 207.18 |
+
+- 체크포인트 검증 기준 통과: 같은 시드에서 Lightning은 회갈색 톤의 다른 구도, full은 표준 빨간
+  사과로 육안상 명백히 다른 이미지 — 랜덤 초기화나 잘못된 로드가 아니라 체크포인트가 실제로 적용됨.
+  다만 색감이 원본과 크게 다른 점은 8-step distillation의 대가일 수 있어 24프롬프트 전체 스펙
+  채점 시 확인 필요.
+- 속도는 약 2.1배 향상(step 수는 30→8, 3.75배 감소했지만 텍스트 인코딩 등 고정 오버헤드가
+  전체의 상당 부분이라 배수만큼 안 줄어듦). VRAM은 동일(같은 아키텍처 계열, 양자화 레벨만 다름).
+- 다음 단계(TASK-F 본문 2~4번, 아직 미실행): `bench_cost.py`로 정식 VRAM/latency 측정, 동일 24
+  프롬프트 생성 후 spec+CSD 채점, quality/latency/VRAM 3열 비교표.

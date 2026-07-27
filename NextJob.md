@@ -48,7 +48,14 @@ P3  TASK-H (텍스트/수식 오버레이 파이프라인) — B가 끝나기 �
 
 ---
 
-### TASK-A · 기존 점수에 통계 검정 붙이기
+### TASK-A · 기존 점수에 통계 검정 붙이기 ✅ 새 baseline(v246/v247/v249)으로 재실행 완료 (2026-07-28)
+
+`bench/results.md`의 "TASK-A · 통계 검정 — 새 baseline(v246/v247/v249) 재실행" 절 참고.
+vqascore·csd_target 모두 세 모델 쌍 대부분 유의(p<0.01), qwen-image가 vqascore 최고,
+flux2-klein-4b-nf4/qwen-image는 csd_target 기준 유의차 없음(사실상 동급). judge_lecture24.csv
+(4축 pass/fail) 기반 통계는 이 baseline에 대해 생성된 적이 없어 스킵 처리(`stats_report.py`가
+파일 부재를 허용하도록 수정) — TASK-C에서 이미 신뢰성 낮다고 결론난 구형 judge 경로라 재생성
+가치는 낮음.
 
 ```
 [배경]
@@ -477,7 +484,12 @@ scripts/rewrite.py 신규. 인자 --in (프롬프트 JSON), --backend {passthrou
 
 ---
 
-### TASK-F · 속도 실험 (Qwen-Image-Lightning 등)
+### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🔵 1번(설정) + 파일럿 검증 완료, 2~4번 남음 (2026-07-28)
+
+`configs/models/qwen-image-lightning.yaml` 추가 완료(`bench/results.md` "TASK-F" 절 참고).
+동일 시드 파일럿(2장)으로 체크포인트 정상 적용 확인, 속도 약 2.1배 향상(97s vs 207s/img),
+VRAM은 동일(15.56GB, 양자화 레벨만 다름 — Q4_K_S vs base의 Q5_K_M). 아래 2~4번(정식
+bench_cost.py 측정, 24프롬프트 전체 생성+spec/CSD 채점, 비교표)은 아직 미실행.
 
 ```
 [배경]
