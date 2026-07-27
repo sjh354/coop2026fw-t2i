@@ -109,3 +109,25 @@ LLaVA-Video, InternVideo2-CLIP 등 무관한 백엔드가 없는 의존성(`llav
 
 가중치는 `HF_HOME`에 자동 다운로드(`Qwen/Qwen2.5-VL-7B-Instruct`, ~16GB). VRAM 실측치는
 `scripts/judge.py` 스모크 테스트 결과 참고(README.md "채점 모듈" 절).
+
+## 2차 judge 전용 env: t2i-judge2 (TASK-C, 자기 계열 선호 검증용)
+
+`scripts/judge_spec.py --judge-model unsloth/gemma-3-12b-it-bnb-4bit`용. Qwen2.5-VL이 아닌
+judge를 붙여 자기 계열 선호(self-enhancement bias)를 확인하려는 목적이라 `t2i-judge`
+(torch 2.5.1 고정, Qwen2.5-VL 작동 버전)를 건드리지 않고 별도 env로 분리했다 — Gemma-3
+계열 체크포인트가 transformers 내부적으로 `torch>=2.6`을 요구해서 같은 env에 못 넣는다
+(2026-07-27 확인, `create_causal_mask`가 `ValueError: ... require torch>=2.6`로 죽음).
+
+    conda create -n t2i-judge2 python=3.11 -y
+    conda activate t2i-judge2
+    pip install torch --index-url https://download.pytorch.org/whl/cu124
+    pip install pyyaml python-frontmatter safetensors sentencepiece protobuf \
+        "transformers>=4.55.0" accelerate bitsandbytes
+    pip install torchvision --index-url https://download.pytorch.org/whl/cu124
+    # cu121 인덱스는 torch 2.5.1이 최신이라 torch>=2.6 요구를 못 채운다 — cu124 필수.
+    # streamlit 등 나머지 requirements-common.txt 패키지는 이 env에서 안 쓰여서 뺐다.
+
+가중치는 `unsloth/gemma-3-12b-it-bnb-4bit`(사전 4bit 양자화, ~7.3GB, ungated) 사용 —
+`google/gemma-3-12b-it` 원본(bf16, ~22.7GB, gated)은 서버 여유 디스크에 안 들어간다.
+스냅샷: `envs/t2i-judge2.txt`. VRAM 실측: 파일럿 3장 기준 vram_peak=7.57GB
+(`scripts/sweeps/pilot_judge_gemma3.sh`, 2026-07-27).

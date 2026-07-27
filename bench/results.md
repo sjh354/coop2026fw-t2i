@@ -90,3 +90,36 @@ lumina2 + r9-smoke3(apple/cat/book)로 생성, 육안 확인(`v223~v226_lumina2`
 
 - **leakage**: 4개 전부 없음 — "a book" 케이스 포함, 스타일 문구 명사가 객체로 새어나오는 현상 미관찰. R9 통과로 4개 전부 `status: validated` 처리.
 - **별도 발견(R9 스코프 밖)**: `observational`, `storybook-scene` 두 프리셋은 교육용 프레젠테이션에 쓰기엔 스타일이 지나치게 고퀄리티/복잡하다는 지적. leakage 문제가 아니라 문구의 디테일/톤 설계 문제라 이번 스모크 테스트로는 막지 않고, 본 실험(VQAScore 등 채점)에 그대로 포함해서 결과로 판단하기로 함. 필요시 추후 문구 단순화 후 R9 재실행.
+
+## TASK-C · judge 신뢰성 검증 — 2차 judge(Gemma-3-12B 4bit) 파일럿 (2026-07-27)
+
+Qwen2.5-VL-7B(현재 judge)이 Qwen 계열 소스 프롬프트(qwen2.5-vl이 작성)나 Qwen-Image 평가 대상에
+자기 계열 선호(self-enhancement bias)를 보이는지 확인하려고, 비-Qwen judge를 붙여 사람 손 채점
+(v243 파일럿 3장, spec item 29건)과 각각 비교했다. `scripts/judge_agreement.py`로 전체 및
+prompt_source(claude/chatgpt/qwen)별 Cohen's κ 계산.
+
+| 비교 | 전체 n | 전체 일치율 | 전체 κ | claude κ | chatgpt κ | qwen κ |
+|---|---|---|---|---|---|---|
+| 사람 vs Qwen2.5-VL-7B (기존 judge) | 29 | 0.76 | 0.55 | 0.55 | 0.29 | 0.55 |
+| 사람 vs Gemma-3-12B-4bit (신규 judge) | 29 | 0.66 | 0.31 | 0.17 | 0.40 | 0.17 |
+
+**핵심 발견:**
+- 두 judge 모두 κ<0.6 — TASK-C 검증 기준상 **둘 다 이 규모(파일럿 29건)에서는 신뢰할 수 없다.**
+  spec item 채점 체계 자체(문구 애매함, yes/no 경계 판단) 또는 파일럿 표본 크기 문제일 수 있어,
+  이 결론을 "어느 judge를 쓸지"의 근거로 쓰기 전에 표본을 늘려 재검증 필요(TASK-C의 "사람 손 채점
+  30장 이상 확보" 기준에 이제 막 도달한 수준).
+- **자기 계열 선호 가설은 이 파일럿에서 지지되지 않음**: Qwen judge가 qwen 소스에서 특별히 후한
+  것도 아니고(claude와 동일 κ=0.55), Gemma-3도 qwen 소스에서 특별히 나쁜 것도 아님(claude와
+  동일 κ=0.17). 오히려 두 judge 모두 **chatgpt 소스에서 claude/qwen 소스와 다른 방향으로
+  치우침**(Qwen judge: chatgpt가 가장 낮음/0.29, Gemma-3: chatgpt가 가장 높음/0.40) — 이는
+  계열 편향보다 chatgpt 소스 spec item 문구의 모호성 문제일 가능성을 시사(`bench/results.md`
+  위쪽 "ChatGPT 소스 spec item은 기준이 모호할 수 있음" 계열 관찰과 연결지어 재확인 필요).
+- Gemma-3-12B-4bit(`unsloth/gemma-3-12b-it-bnb-4bit`) VRAM 실측: 7.57GB peak(3장 기준) — 16GB
+  예산에 충분히 들어간다.
+
+**인프라 메모**: Gemma-3 계열 체크포인트가 transformers 내부적으로 `torch>=2.6`을 요구해서
+기존 `t2i-judge`(torch 2.5.1 고정, Qwen2.5-VL 작동 버전) env를 건드리지 않고 `t2i-judge2`
+(torch 2.6.0+cu124)를 새로 만들어 분리했다 — 자세한 내용/설치 명령은 `envs/README.md` 참고.
+
+**다음 단계**: 사람 손 채점을 30장 이상으로 늘려 재검증하기 전까지는 두 judge 결과 모두
+"참고용"으로만 쓰고, spec item 채점 결과를 모델 비교의 최종 근거로 확정하지 말 것.
