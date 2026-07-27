@@ -175,7 +175,30 @@ judge_spec.py에 --mode {yesno,probe} 인자를 추가한다.
 
 ---
 
-## STAGE 2 — count / attribute 축을 CV로 라우팅
+## STAGE 2 — count / attribute 축을 CV로 라우팅 ✅ 파일럿 완료 (2026-07-27, structured_worksheet_template만)
+
+> **결과**: `scripts/measure_cv.py` 신규 — `count_regions`(연결요소 기반 개수 세기),
+> `region_colors`(색상 이름 매핑), `polygon_sides`(변 개수, 아직 미사용) 3개 측정기만 구현.
+> spec item에 `"measurer": "cv"` 필드 추가, structured_worksheet_template의 박스 개수(s1)/핀
+> 개수(s3) 6개(3 entry × 2 item)만 CV 라우팅 대상으로 지정 — 문서 스코프대로 인물 카운트는
+> 손대지 않음.
+>
+> 초기 구현은 `findContours`+계층 구조(RETR_CCOMP)로 박스=10개/핀=1개로 완전히 잘못 셈(실제는
+> 박스 7개, 핀 6개) — 원인은 (1) 칸 위쪽 여백이 모든 칸에 걸쳐 하나로 이어져 있어 계층 구조상
+> 분리가 안 됨, (2) 핀의 aspect_range가 실제 teardrop 비율과 안 맞음. `findContours` 계층 대신
+> `connectedComponentsWithStats`로 바꾸고, 박스는 칸이 분리되는 세로 구간(0.3~0.7 높이)만 잘라서
+> 보는 `row_band`를 추가, 핀은 aspect_range/min_area를 재조정해 해결.
+>
+> **CV vs 사람 라벨 검증(같은 6개 데이터포인트, structured_worksheet_template s1/s3 × 3 이미지)**:
+> **6/6 완전 일치** (claude/qwen s1=7≠6→no, s3=6=6→yes, chatgpt s1=3≠6→no, s3=3≠6→no — 전부
+> 사람 라벨과 일치). 같은 6개 항목에서 VLM(yesno/probe 모두 동일)은 4/6만 일치했었음
+> (claude/qwen의 s1 "7개를 6개로" 오답은 STAGE 1에서도 안 고쳐졌던 바로 그 오차). CV가 VLM보다
+> 명백히 우수 — 문서 기준대로 count 항목은 CV 라우팅을 유지.
+>
+> **범위 제한**: 검증은 structured_worksheet_template 카테고리(파일럿 3장, count 항목만)로
+> 한정됨. Data Visualization Chart / Labeled Science Diagram / Geometric Shape Set과 attribute
+> 축(색상 구분 등)으로의 확장, 그리고 폴리곤 변 개수(polygon_sides)는 이번 세션에서 구현/검증하지
+> 않음 — 다음 세션 작업 대상으로 남김.
 
 ```
 [대상 범위]

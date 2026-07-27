@@ -1,0 +1,7 @@
+prompt_id,item_id,type,measurer,measured_value,expected_value,verdict
+structured_worksheet_template_claude,s1,count,cv,7,6,no
+structured_worksheet_template_claude,s3,count,cv,6,6,yes
+structured_worksheet_template_chatgpt,s1,count,cv,3,6,no
+structured_worksheet_template_chatgpt,s3,count,cv,3,6,no
+structured_worksheet_template_qwen,s1,count,cv,7,6,no
+structured_worksheet_template_qwen,s3,count,cv,6,6,yes
