@@ -55,24 +55,40 @@ JUDGE_SYSTEM = (
 _model_cache = {}
 
 
-def _load_judge_model():
-    if "model" not in _model_cache:
+def _load_judge_model(model_repo=JUDGE_MODEL_REPO, quant4bit=False):
+    """model_repo에 'qwen'이 들어있으면 Qwen2.5-VL 전용 클래스로, 아니면
+    transformers의 범용 AutoModelForImageTextToText로 로드한다(Gemma-3 등).
+    두 백엔드가 서로 다른 채팅 템플릿/입력 처리 방식을 쓰므로 _call_judge_vlm에서
+    같은 model_repo 기준으로 분기한다."""
+    key = (model_repo, quant4bit)
+    if key not in _model_cache:
         import torch
-        from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
+        from transformers import AutoProcessor
 
-        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-            JUDGE_MODEL_REPO, torch_dtype=torch.bfloat16, device_map="cuda"
-        )
-        processor = AutoProcessor.from_pretrained(JUDGE_MODEL_REPO)
-        _model_cache["model"] = model
-        _model_cache["processor"] = processor
-    return _model_cache["model"], _model_cache["processor"]
+        if "qwen" in model_repo.lower():
+            from transformers import Qwen2_5_VLForConditionalGeneration
+            model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+                model_repo, torch_dtype=torch.bfloat16, device_map="cuda"
+            )
+        else:
+            from transformers import AutoModelForImageTextToText
+            kwargs = {"torch_dtype": torch.bfloat16, "device_map": "cuda"}
+            if quant4bit:
+                from transformers import BitsAndBytesConfig
+                kwargs = {
+                    "quantization_config": BitsAndBytesConfig(
+                        load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16
+                    ),
+                    "device_map": "cuda",
+                }
+            model = AutoModelForImageTextToText.from_pretrained(model_repo, **kwargs)
+        processor = AutoProcessor.from_pretrained(model_repo)
+        _model_cache[key] = (model, processor)
+    return _model_cache[key]
 
 
-def _call_judge_vlm(image_path, user_text, system=JUDGE_SYSTEM):
-    from qwen_vl_utils import process_vision_info
-
-    model, processor = _load_judge_model()
+def _call_judge_vlm(image_path, user_text, system=JUDGE_SYSTEM, model_repo=JUDGE_MODEL_REPO, quant4bit=False):
+    model, processor = _load_judge_model(model_repo, quant4bit)
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": [
@@ -80,10 +96,17 @@ def _call_judge_vlm(image_path, user_text, system=JUDGE_SYSTEM):
             {"type": "text", "text": user_text},
         ]},
     ]
-    text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    image_inputs, video_inputs = process_vision_info(messages)
-    inputs = processor(text=[text], images=image_inputs, videos=video_inputs,
-                        padding=True, return_tensors="pt").to(model.device)
+    if "qwen" in model_repo.lower():
+        from qwen_vl_utils import process_vision_info
+        text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        image_inputs, video_inputs = process_vision_info(messages)
+        inputs = processor(text=[text], images=image_inputs, videos=video_inputs,
+                            padding=True, return_tensors="pt").to(model.device)
+    else:
+        inputs = processor.apply_chat_template(
+            messages, tokenize=True, add_generation_prompt=True,
+            return_dict=True, return_tensors="pt",
+        ).to(model.device)
     generated = model.generate(**inputs, max_new_tokens=400)
     trimmed = [out[len(inp):] for inp, out in zip(inputs.input_ids, generated)]
     return processor.batch_decode(trimmed, skip_special_tokens=True,

@@ -78,8 +78,9 @@ def _eval_expect(answer, expect):
     raise ValueError(f"알 수 없는 expect mode: {mode}")
 
 
-def _judge_probe_item(image_path, item, stats):
-    raw = _call_judge_vlm(image_path, item["probe"], system=PROBE_SYSTEM)
+def _judge_probe_item(image_path, item, stats, model_repo, quant4bit):
+    raw = _call_judge_vlm(image_path, item["probe"], system=PROBE_SYSTEM,
+                           model_repo=model_repo, quant4bit=quant4bit)
     try:
         answer = _parse_answer(raw)
     except (ValueError, json.JSONDecodeError, KeyError):
@@ -123,9 +124,10 @@ def _parse_verdict(raw):
     return verdict
 
 
-def _judge_spec_item(image_path, check_text, stats):
+def _judge_spec_item(image_path, check_text, stats, model_repo, quant4bit):
     user_text = f"조건: {check_text}"
-    raw = _call_judge_vlm(image_path, user_text, system=JUDGE_SYSTEM)
+    raw = _call_judge_vlm(image_path, user_text, system=JUDGE_SYSTEM,
+                           model_repo=model_repo, quant4bit=quant4bit)
     try:
         return _parse_verdict(raw)
     except (ValueError, json.JSONDecodeError, KeyError):
@@ -133,7 +135,8 @@ def _judge_spec_item(image_path, check_text, stats):
         return "unclear"
 
 
-def judge_images(images_dir, spec_by_id, limit=None, mode="yesno"):
+def judge_images(images_dir, spec_by_id, limit=None, mode="yesno",
+                  model_repo="Qwen/Qwen2.5-VL-7B-Instruct", quant4bit=False):
     images_dir = pathlib.Path(images_dir)
     rows = []
     stats = {"parse_errors": 0, "unparseable": 0}
@@ -157,9 +160,9 @@ def judge_images(images_dir, spec_by_id, limit=None, mode="yesno"):
         passed = 0
         for item in items:
             if mode == "probe" and "probe" in item and "expect" in item:
-                verdict = _judge_probe_item(img_path, item, stats)
+                verdict = _judge_probe_item(img_path, item, stats, model_repo, quant4bit)
             else:
-                verdict = _judge_spec_item(img_path, item["check"], stats)
+                verdict = _judge_spec_item(img_path, item["check"], stats, model_repo, quant4bit)
             if verdict == "yes":
                 passed += 1
             rows.append({
@@ -193,13 +196,27 @@ def main():
     ap.add_argument("--limit", type=int, help="채점할 이미지 수 제한 (파일럿용, 예: 3)")
     ap.add_argument("--mode", choices=["yesno", "probe"], default="yesno",
                     help="probe: probe/expect가 있는 항목은 추출형 질문으로 채점, 없으면 기존 yes/no로 폴백")
+    ap.add_argument("--judge-model", default="Qwen/Qwen2.5-VL-7B-Instruct",
+                    help="판정에 쓸 VLM repo id (기본: Qwen2.5-VL-7B-Instruct). "
+                         "'qwen'이 안 들어간 repo는 AutoModelForImageTextToText로 로드한다(Gemma-3 등)")
+    ap.add_argument("--judge-quant4bit", action="store_true",
+                    help="judge 모델을 4bit(bitsandbytes)로 로드 (Qwen 백엔드에는 미적용)")
     args = ap.parse_args()
 
+    import torch
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()
+
     spec_by_id = load_spec(args.spec)
-    rows = judge_images(args.images, spec_by_id, limit=args.limit, mode=args.mode)
+    rows = judge_images(args.images, spec_by_id, limit=args.limit, mode=args.mode,
+                         model_repo=args.judge_model, quant4bit=args.judge_quant4bit)
     if rows:
         write_csv(rows, args.out)
         print(f"{len(rows)}행 -> {args.out}")
+
+    if torch.cuda.is_available():
+        vram_peak_gb = round(torch.cuda.max_memory_allocated() / 1024**3, 2)
+        print(f"judge_model={args.judge_model} vram_peak={vram_peak_gb}GB")
 
 
 if __name__ == "__main__":
