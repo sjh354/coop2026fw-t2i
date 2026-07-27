@@ -36,9 +36,10 @@ def slug(text):
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
-def load_items():
-    """vlm-prompts.json을 (type, source, prompt) 24개 리스트로 편다."""
-    categories = json.loads(PROMPTS_JSON.read_text(encoding="utf-8"))
+def load_items(prompts_json=PROMPTS_JSON):
+    """vlm-prompts.json(또는 scripts/rewrite.py가 만든 동일 형식 JSON)을
+    (type, source, prompt) 24개 리스트로 편다."""
+    categories = json.loads(prompts_json.read_text(encoding="utf-8"))
     items = []
     for cat in categories:
         for source in ("claude", "chatgpt", "qwen2.5-vl-7b-instruct"):
@@ -93,11 +94,13 @@ def write_note(vdir, model, items, image_names):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True, help="configs/models/<name>.yaml")
+    ap.add_argument("--prompts-json", type=pathlib.Path, default=PROMPTS_JSON,
+                     help="기본값은 vlm-prompts.json. scripts/rewrite.py 출력 JSON도 받을 수 있다")
     args = ap.parse_args()
 
     model = yaml.safe_load((ROOT / "configs" / "models" / f"{args.model}.yaml")
                             .read_text(encoding="utf-8"))
-    items = load_items()
+    items = load_items(args.prompts_json)
 
     version = next_version()
     vdir = OUT / f"{version}_{model['name']}-lecture24"
