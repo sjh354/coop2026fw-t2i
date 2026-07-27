@@ -253,7 +253,15 @@ spec item의 type이 count 또는 attribute이고 measurer 필드가 "cv"인 것
 
 ---
 
-## STAGE 3 — 라벨 확대 + 정식 신뢰도 지표 ⏳ 진행 중 (2026-07-27, 이미지 재생성 후 재시작)
+## STAGE 3 — 라벨 확대 + 정식 신뢰도 지표 ✅ 완료 (2026-07-27)
+
+> **완료 요약**: 부정문 spec 문구 19개 정리 → worklist 재생성 → 사람 손 채점 125건
+> (`stage3_manual_v2.csv`) → 서버 23 디스크 확보(HunyuanImage-2.1 캐시 삭제, 사용자 확인 완료)
+> → `t2i-judge` env 재생성 → 새 이미지 72장 rsync → `scripts/sweeps/stage3_auto_judge.sh`(신규)로
+> v246/v247/v249 Qwen2.5-VL-7B 자동 채점(`stage3_auto_v2.csv`) → `judge_agreement.py`로 κ 계산까지
+> 전부 완료. 결과는 `bench/results.md` STAGE 3 완료 항목 참고 — **전체 κ=0.37, 소스별 전부 κ<0.6로
+> Qwen2.5-VL-7B judge는 이 규모에서도 신뢰할 수 없다는 결론**. 불일치 32건은
+> `bench/scores/stage3_disagreement_v2.csv`에 기록.
 
 > **현황**: v243/v244/v245 프롬프트 드리프트 발견으로 v246/v247/v249로 재생성 완료(`bench/results.md`
 > 참고), STAGE 0~2에서 만든 라벨은 전부 옛 이미지 기준이라 무효. `scripts/sample_stage3.py`로
@@ -359,13 +367,12 @@ prompt_source별로 쪼개서 κ를 출력하라. 프롬프트 일부를 Qwen2.5
    VLM보다 나쁜 축은 되돌려졌다.                                  → ⚠️ 부분 충족 — n=6짜리 파일럿
    비교만 있고(κ 계산 불가 표본), 정식 κ는 STAGE 3 라벨 확대가 있어야 나옴.
 4. 최종 채점 CSV에 measurer 컬럼이 남아 있어 추적 가능하다.        → ✅ 충족 (measure_cv.py 출력)
-5. κ < 0.6인 조합이 리포트에 unvalidated로 표기되어 있다.          → ❌ 미충족 — STAGE 3 라벨
-   (축당 25건 이상, 100~150건)이 있어야 κ를 축별로 낼 수 있고, 그게 나와야 unvalidated
-   표기가 의미를 가진다. 이 라벨링은 사람이 해야 하는 작업(문서 STAGE 3 "하지 말 것" 참고 —
-   VLM으로 대체 금지)이라 이번 세션에서 대신 하지 않았다.
+5. κ < 0.6인 조합이 리포트에 unvalidated로 표기되어 있다.          → ✅ 충족 (2026-07-27) — 전체
+   κ=0.37, claude/chatgpt/qwen 소스 전부 κ<0.6로 `bench/results.md`에 unvalidated 명시.
 
-**요약**: STAGE 0/1/2는 완료·커밋·양쪽 서버 동기화까지 끝났다. STAGE 3(라벨 확대)은 사용자의
-수작업이 선행돼야 하는 게이트라 여기서 멈춘다. STAGE 4는 STAGE 3 결과에 따라 조건부 실행.
+**요약**: STAGE 0~3 전부 완료·커밋·세 곳(로컬+서버 157+서버 23) 동기화까지 끝났다. STAGE 3에서
+κ<0.6이 확정됐으므로, 결론이 이 spec item 축에 필수적이라면 STAGE 4(대체 judge 삼각비교)를
+검토할 것 — 아직 실행 안 함.
 
 전체 신규 코드는 triage_disagreement.py / measure_cv.py / judge_agreement.py 확장
 세 개, 400줄 안쪽이다. 이보다 커지면 설계가 과하다.

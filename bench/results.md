@@ -42,6 +42,26 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
     structured_worksheet_template 이미지에 맞춰 튜닝된 값이다. 새 프롬프트로 레이아웃이 달라졌을
     수 있으니, v246 이미지로 CV 카운팅을 다시 돌릴 때 6/6 일치가 그대로 재현되는지 먼저 확인할 것 —
     안 되면 상수를 새로 맞춰야 한다.
+  - **✅ 2026-07-27 — STAGE 3 완료(자동 채점 + κ 계산)**: HunyuanImage-2.1 캐시(18G) 삭제로 서버 23
+    디스크를 확보하고 `t2i-judge` env(`envs/t2i-judge.txt`)를 재생성, 새 이미지 72장을 rsync한 뒤
+    `scripts/sweeps/stage3_auto_judge.sh`(신규, `alert.py` 연동)로 v246/v247/v249 세 모델을
+    Qwen2.5-VL-7B(mode=yesno, 사람 손 채점과 동일 기준)로 자동 채점하고 `judge_agreement.py`로
+    `stage3_manual_v2.csv`(125건) 대비 κ를 계산했다. 결과: `bench/scores/stage3_auto_v2.csv`,
+    `bench/scores/stage3_disagreement_v2.csv`(불일치 32건).
+
+    | 구분 | n | 일치율 | κ |
+    |---|---|---|---|
+    | 전체 | 125 | 0.74 | 0.37 |
+    | claude 소스 | 49 | 0.78 | 0.41 |
+    | chatgpt 소스 | 40 | 0.78 | 0.39 |
+    | qwen 소스 | 36 | 0.67 | 0.33 |
+
+    전부 κ<0.6 — **Qwen2.5-VL-7B judge는 125건 규모에서도 여전히 신뢰할 수 없다.** 이전 3장짜리
+    파일럿(κ=0.55)보다도 낮아졌다. 소스별로도 자기 계열 선호(self-enhancement bias) 가설과 반대
+    방향으로, qwen 소스에서 오히려 가장 낮은 일치율(κ=0.33)을 보였다 — spec item 채점 결과를 모델
+    비교의 최종 근거로 쓰지 말 것. 다음 단계는 judge 자체를 재검토(TASK-C의 다른 judge 후보 재시도,
+    또는 probe 모드로 count류 항목만 분리)하거나, spec item 채점 대신 CV/VQAScore 등 다른 지표
+    비중을 높이는 방향을 검토하는 것.
 
 | 모델 | 3090에서 동작 | 16GB 가능? | 결론 | 삽질 메모 |
 |---|---|---|---|---|
