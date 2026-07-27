@@ -1,5 +1,6 @@
 # --- 생성물 (용량 큼, 재현 가능) ---
 image-prompts/*/images/
+bench/cost_images/
 refs/
 # 노트(frontmatter)는 추적한다 — 실험 기록이 여기 남음
 !image-prompts/*/*.md

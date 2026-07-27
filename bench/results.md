@@ -132,6 +132,31 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
 
 **남은 삽질:** `flux2.py`의 fp8 분기(`quantization: fp8`)는 실제로는 `quant_backend="bitsandbytes_4bit"` + `bnb_4bit_quant_type: "nf4"`를 그대로 재사용하는 스텁이라 값과 무관하게 NF4가 적용됨 — 이번 라운드는 NF4가 더 강한 압축이라 fp8을 별도 구현하지 않고 보류. fp8이 필요해지면 torchao 설치 + `PipelineQuantizationConfig(quant_backend="torchao", ...)` 경로를 새로 붙여야 함.
 
+## TASK-D · VRAM/latency 실측 테이블 (2026-07-27, 서버 157)
+
+`scripts/bench_cost.py`로 확정 후보 3개(pixart-sigma, lumina2, flux2-klein-4b-nf4) +
+FLUX.2-klein-4b 교란 제거용 2개 조건(distilled bf16, non-distilled/50-step bf16, 둘 다
+양자화 없음)을 같은 방식(warmup 2장 버리고 10장 측정)으로 실측. 원본: `bench/cost/vram_latency.csv`.
+
+| model | vram(torch/smi) GB | steps | p50_s | p90_s |
+|---|---|---|---|---|
+| flux2-klein-4b-nf4 | 7.8 / 8.16 | 4 | 11.35 | 12.11 |
+| flux2-klein-4b (bf16) | 17.32 / 19.67 | 4 | 2.77 | 2.78 |
+| flux2-klein-4b-base (bf16) | 17.33 / 19.67 | 50 | 63.0 | 63.32 |
+| lumina2 | 12.28 / 14.9 | 30 | 29.48 | 29.54 |
+| pixart-sigma | 14.46 / 16.54 | 20 | 5.8 | 5.85 |
+
+- **위 "flux2-klein-4b 16GB 진입 시도" 절의 미해결 질문에 답함 — NF4 dequant 오버헤드가 실제 원인.**
+  같은 distilled 체크포인트·같은 4-step에서 NF4가 bf16보다 **4.1배 느림**(11.35s vs 2.77s). 시드
+  고정 육안 비교(`bench/cost_images/`, `a_cat` 예시) 결과 두 출력이 사실상 동일 — 품질 손해 없이
+  순전히 속도만 손해. 다만 bf16은 VRAM 19.67GB로 위 절에서 이미 확인한 대로 16GB 예산을 넘으므로,
+  **지금 예산에서는 NF4 유지가 맞다.** 예산이 ~20GB로 늘어나는 결정이 나오면 bf16으로 전환 검토.
+- **pixart-sigma가 16GB 예산에 거의 다 참**: nvidia-smi 실측 16.54GB(torch 할당 14.46GB보다
+  2GB 더 높음). 다른 프로세스가 같은 GPU를 쓰면 OOM 위험 — 실서빙 시 여유를 두고 잡을 것.
+- **model_load_s는 이번 측정에서 신뢰 불가**: lumina2(1244s)/flux2-klein-4b-base(824s)/
+  pixart-sigma(409s)는 첫 다운로드 포함으로 보이고 캐시돼 있던 나머지 두 조건(61.6s/12.14s)과
+  조건이 다르다. warm-cache 로드 시간을 별도 재측정하기 전까지 모델 간 비교에 쓰지 말 것.
+
 ## v2 스타일 프리셋 R9 스모크 테스트 (2026-07-19)
 
 `scripts/preset_smoke_test.sh`로 4개 프리셋(edu-flat-v2/observational/playful-soft/storybook-scene)을

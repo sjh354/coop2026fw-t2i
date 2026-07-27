@@ -301,6 +301,43 @@ distilled bf16이 8.4GB면 16GB 예산에 이미 들어오므로 NF4를 쓸 이�
 - 속도를 위해 모델 코드에 패치를 넣지 마라. 체크포인트/설정 교체만 한다.
 ```
 
+**진행 상황 (2026-07-27, 서버 157, 완료)**
+
+- `scripts/bench_cost.py` 신규 + `scripts/sweeps/bench_cost_candidates.sh`(디스크 부족 시 캐시
+  자동 정리 로직 포함). 5개 조건 측정 완료: `pixart-sigma`, `lumina2`, `flux2-klein-4b-nf4`
+  (현재 후보 3개) + FLUX.2-klein-4b 교란 제거용 2개(`flux2-klein-4b` bf16 distilled,
+  `flux2-klein-4b-base` bf16 non-distilled/50-step). 결과: `bench/cost/vram_latency.csv`.
+
+| model | dtype/quant | steps | vram(torch/smi) GB | load_s | p50_s | p90_s |
+|---|---|---|---|---|---|---|
+| flux2-klein-4b-nf4 | bf16/nf4 | 4 | 7.8 / 8.16 | 61.6 | **11.35** | 12.11 |
+| flux2-klein-4b | bf16/none | 4 | 17.32 / **19.67** | 12.14 | **2.77** | 2.78 |
+| flux2-klein-4b-base | bf16/none | 50 | 17.33 / 19.67 | 824.34 | 63.0 | 63.32 |
+| lumina2 | bf16/none | 30 | 12.28 / 14.9 | 1244.34 | 29.48 | 29.54 |
+| pixart-sigma | fp16/none | 20 | 14.46 / **16.54** | 409.84 | 5.8 | 5.85 |
+
+- **핵심 발견 — NF4 dequant 오버헤드 가설이 실측으로 확인됨**: 같은 distilled 체크포인트,
+  같은 4-step 설정에서 NF4가 bf16보다 **4.1배 느림**(11.35s vs 2.77s/img). 같은 시드로 뽑은
+  `a_cat` 이미지를 육안 비교한 결과 NF4/bf16 두 출력이 사실상 동일 — **품질 차이 없이 순전히
+  속도 손해만 있음**(bnb NF4가 Ampere sm_86에 fused kernel이 없어서인 것으로 추정, 배경에 적힌
+  가설과 일치). 다만 bf16은 VRAM 19.67GB로 16GB 예산을 초과하므로, **VRAM 제약이 없다면 bf16이
+  전략적으로 우월하지만 지금 예산(16GB)에서는 NF4를 유지해야 한다.**
+- **pixart-sigma가 16GB 예산에 거의 다 참**: nvidia-smi 실측 16.54GB로 torch 할당량(14.46GB)보다
+  2GB 더 많이 잡힘 — allocator 밖 CUDA context/cuDNN workspace 오버헤드가 이 모델에서 특히 크다.
+  다른 프로세스가 GPU를 같이 쓰면 OOM 위험이 있다는 뜻이므로 실서빙 시 여유를 두고 잡을 것.
+- **model_load_s는 이번 실행에서 비교 지표로 신뢰할 수 없음**: lumina2(1244s)/flux2-klein-4b-base
+  (824s)/pixart-sigma(409s)는 첫 다운로드가 포함된 시간으로 보이고, 이미 캐시돼 있던
+  flux2-klein-4b-nf4(61.6s)/flux2-klein-4b(12.14s)와 조건이 다르다. 정상 상태(warm cache) 로드
+  시간을 별도로 재측정하기 전까지는 load_s 열을 모델 간 비교에 쓰지 말 것.
+- `bench/cost_images/`(조건별 10장, 시드 고정)를 `.gitignore`에 추가(재생성 가능한 대용량 산출물
+  — 기존 `image-prompts/*/images/` 규칙과 동일하게 처리). 로컬에서 육안 비교는 완료했으나 파일
+  자체는 커밋하지 않았다 — 재확인이 필요하면 `scripts/bench_cost.py`로 재생성.
+
+**다음 단계**: distilled bf16(19.67GB)이 NF4(8.16GB)보다 4배 빠르므로, 16GB 예산을 소폭
+초과하더라도(예: 20GB급 GPU로 서빙 범위를 넓히는 결정이 나온다면) NF4를 버리고 bf16으로
+바꾸는 게 이득이라는 근거가 됐다 — 이건 서빙 하드웨어 범위에 대한 프로젝트 차원의 결정이
+필요한 사항이라 여기 기록만 해두고 실행하지 않음.
+
 ---
 
 ### TASK-E · 프롬프트 리라이팅 harness (2 백엔드 비교)
