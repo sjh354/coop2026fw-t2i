@@ -17,7 +17,7 @@
             {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
             {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
             {"id": "s8", "type": "style", "check": "the outline strokes are colored solid black rather than gray or another color"},
-            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"},
+            {"id": "s9", "type": "text", "check": "the image is entirely free of text or letters"},
             {"id": "s10", "type": "style", "check": "the outline strokes are as thick as a bold marker or pen, not a thin 1px hairline"}
         ]
     },
@@ -38,8 +38,8 @@
             {"id": "s5", "type": "spatial", "check": "each box is connected to one pin by a vertical stroke"},
             {"id": "s6", "type": "attribute", "check": "the writing areas inside the boxes are blank"},
             {"id": "s7", "type": "style", "check": "outlines are thick and black"},
-            {"id": "s8", "type": "style", "check": "the plain background area surrounding the boxes and pins (not just inside the boxes) is solid white, with no colorful decorative graphics, borders, or clutter filling that space"},
-            {"id": "s9", "type": "spatial", "check": "the horizontal gaps between adjacent boxes are visibly similar in width to one another, with no box crowded tightly against a neighbor while others have much wider gaps"}
+            {"id": "s8", "type": "style", "check": "the plain background area surrounding the boxes and pins (not just inside the boxes) is solid, uniform white space, free of colorful decorative graphics, borders, or clutter"},
+            {"id": "s9", "type": "spatial", "check": "the horizontal gaps between adjacent boxes are visibly similar and evenly spaced from one another"}
         ]
     },
     {
@@ -60,7 +60,7 @@
             {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
             {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
             {"id": "s8", "type": "style", "check": "the outline strokes are colored solid black rather than gray or another color"},
-            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"},
+            {"id": "s9", "type": "text", "check": "the image is entirely free of text or letters"},
             {"id": "s10", "type": "style", "check": "the outline strokes are as thick as a bold marker or pen, not a thin 1px hairline"}
         ]
     },
@@ -78,7 +78,7 @@
             {"id": "s6", "type": "attribute", "check": "the orange bar is the shortest bar"},
             {"id": "s7", "type": "spatial", "check": "thin horizontal gridlines appear behind the bars"},
             {"id": "s8", "type": "spatial", "check": "a vertical axis line appears on the left side"},
-            {"id": "s9", "type": "text", "check": "no numbers, labels, or text appear anywhere in the image"}
+            {"id": "s9", "type": "text", "check": "the image is entirely free of numbers, labels, or text"}
         ]
     },
     {
@@ -121,14 +121,14 @@
         "spec_items": [
             {"id": "s1", "type": "count", "check": "exactly one human figure is depicted"},
             {"id": "s2", "type": "spatial", "check": "only the upper body of the figure is shown"},
-            {"id": "s3", "type": "attribute", "check": "the figure has a dark beard along the jawline with no mustache"},
+            {"id": "s3", "type": "attribute", "check": "the figure has a dark beard along the jawline with a clean-shaven upper lip"},
             {"id": "s4", "type": "attribute", "check": "the figure wears a black formal coat and bow tie"},
             {"id": "s5", "type": "attribute", "check": "the figure's expression is calm/smiling"},
             {"id": "s6", "type": "spatial", "check": "the figure faces slightly to one side, not directly forward"},
             {"id": "s7", "type": "spatial", "check": "a striped and starred flag hangs behind the figure's right shoulder"},
             {"id": "s8", "type": "spatial", "check": "a rolled parchment scroll appears near the figure's left side"},
             {"id": "s9", "type": "style", "check": "the background is plain white"},
-            {"id": "s10", "type": "text", "check": "no text appears in the image"}
+            {"id": "s10", "type": "text", "check": "the image is free of text"}
         ]
     },
     {
@@ -154,13 +154,13 @@
         "prompt": "A cartoon-style portrait of Abraham Lincoln, showing the upper body only and facing slightly to the left. He has a dark beard running along his jawline without a mustache, and wears a black formal coat with a white shirt and a dark bow tie. His tall hat has been removed and his expression is calm and smiling. Behind his right shoulder hangs an American flag with red and white stripes and white stars on a blue field. Near his left side rests a rolled parchment scroll in a pale cream tone. The background is plain white, and the overall style is simple and colorful with soft edges and minimal shading. There is no text in the image.",
         "spec_items": [
             {"id": "s1", "type": "count", "check": "exactly one human figure is depicted"},
-            {"id": "s2", "type": "attribute", "check": "the figure resembles Abraham Lincoln (dark jawline beard, no mustache, no hat)"},
+            {"id": "s2", "type": "attribute", "check": "the figure resembles Abraham Lincoln (dark jawline beard, clean-shaven upper lip, bare head)"},
             {"id": "s3", "type": "attribute", "check": "the figure wears a black formal coat, white shirt, and dark bow tie"},
             {"id": "s4", "type": "spatial", "check": "only the upper body is shown, facing slightly left"},
             {"id": "s5", "type": "spatial", "check": "an American-style striped and starred flag hangs behind the right shoulder"},
             {"id": "s6", "type": "spatial", "check": "a rolled parchment scroll rests near the left side"},
             {"id": "s7", "type": "style", "check": "the background is plain white"},
-            {"id": "s8", "type": "text", "check": "no text appears in the image"}
+            {"id": "s8", "type": "text", "check": "the image is free of text"}
         ]
     },
     {
@@ -177,7 +177,7 @@
             {"id": "s6", "type": "attribute", "check": "one girl on the right is seated in a wheelchair"},
             {"id": "s7", "type": "attribute", "check": "the children have cheerful/smiling expressions"},
             {"id": "s8", "type": "style", "check": "the classroom background is simple and plain"},
-            {"id": "s9", "type": "text", "check": "no text appears in the image"}
+            {"id": "s9", "type": "text", "check": "the image is free of text"}
         ]
     },
     {
@@ -225,7 +225,7 @@
             {"id": "s7", "type": "attribute", "check": "the child wears a red hoodie"},
             {"id": "s8", "type": "spatial", "check": "a floor lamp with a green shade is behind the sofa"},
             {"id": "s9", "type": "attribute", "check": "a wooden side table with a potted plant is visible"},
-            {"id": "s10", "type": "text", "check": "no text appears in the image"}
+            {"id": "s10", "type": "text", "check": "the image is free of text"}
         ]
     },
     {
@@ -273,8 +273,8 @@
             {"id": "s5", "type": "attribute", "check": "the fabric being sewn is pink and white checkered"},
             {"id": "s6", "type": "spatial", "check": "both of the woman's hands are guiding the fabric under the needle"},
             {"id": "s7", "type": "spatial", "check": "only the upper body and table are shown, nothing below the table"},
-            {"id": "s8", "type": "style", "check": "the background is a flat, solid pale blue rounded shape with no scenery"},
-            {"id": "s9", "type": "text", "check": "no text appears in the image"}
+            {"id": "s8", "type": "style", "check": "the background is a flat, solid pale blue rounded shape containing only plain color"},
+            {"id": "s9", "type": "text", "check": "the image is free of text"}
         ]
     },
     {
@@ -286,7 +286,7 @@
             {"id": "s1", "type": "count", "check": "exactly one character is depicted"},
             {"id": "s2", "type": "attribute", "check": "the character is using a hands-on tool (e.g. sewing machine) at a table"},
             {"id": "s3", "type": "spatial", "check": "only the upper body and work surface are shown, nothing below"},
-            {"id": "s4", "type": "style", "check": "the background is a flat, solid-color shape with no scenery"},
+            {"id": "s4", "type": "style", "check": "the background is a flat, solid-color shape containing only plain color"},
             {"id": "s5", "type": "style", "check": "colors are soft pastel tones"},
             {"id": "s6", "type": "attribute", "check": "the character's hands are interacting directly with the tool/object"}
         ]
@@ -303,7 +303,7 @@
             {"id": "s4", "type": "attribute", "check": "the fabric is pink and white checkered"},
             {"id": "s5", "type": "spatial", "check": "both hands guide the fabric under the needle"},
             {"id": "s6", "type": "spatial", "check": "nothing is shown below the table"},
-            {"id": "s7", "type": "style", "check": "the background is a flat pale blue shape with no gradient"}
+            {"id": "s7", "type": "style", "check": "the background is a flat pale blue shape with uniform, solid color throughout"}
         ]
     },
     {
@@ -321,7 +321,7 @@
             {"id": "s7", "type": "style", "check": "outlines are thin and black throughout"},
             {"id": "s8", "type": "attribute", "check": "light gray fill appears only inside the organelles, not across the whole cell"},
             {"id": "s9", "type": "style", "check": "the background is white"},
-            {"id": "s10", "type": "text", "check": "no text, letters, or arrows appear anywhere in the image"}
+            {"id": "s10", "type": "text", "check": "the image is entirely free of text, letters, or arrows"}
         ]
     },
     {
@@ -350,7 +350,7 @@
             {"id": "s3", "type": "text", "check": "a title reading \"Animal Cell\" (or equivalent) appears at the top"},
             {"id": "s4", "type": "text", "check": "labels for the cell parts are legible"},
             {"id": "s5", "type": "style", "check": "the background is white"},
-            {"id": "s6", "type": "text", "check": "no text appears other than the labels and title"}
+            {"id": "s6", "type": "text", "check": "the only text in the image is the labels and title"}
         ]
     },
     {
@@ -365,9 +365,9 @@
             {"id": "s4", "type": "attribute", "check": "a rhombus standing on one corner is present"},
             {"id": "s5", "type": "attribute", "check": "a trapezoid with the shorter side on top is present"},
             {"id": "s6", "type": "attribute", "check": "a regular pentagon is present and distinguishable from the hexagon"},
-            {"id": "s7", "type": "style", "check": "shapes have thin black outlines with no fill"},
+            {"id": "s7", "type": "style", "check": "shapes have thin black outlines with plain, unfilled interiors"},
             {"id": "s8", "type": "spatial", "check": "shapes are evenly spaced with clear white space around each"},
-            {"id": "s9", "type": "text", "check": "no text, numbers, or shading appear in the image"}
+            {"id": "s9", "type": "text", "check": "the image is entirely free of text, numbers, or shading"}
         ]
     },
     {
