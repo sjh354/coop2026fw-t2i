@@ -103,13 +103,6 @@ def region_colors(img, min_area=200):
     return [name for _, name in blobs]
 
 
-def polygon_sides(contour, circle_vertex_threshold=8):
-    epsilon = 0.02 * cv2.arcLength(contour, True)
-    approx = cv2.approxPolyDP(contour, epsilon, True)
-    n = len(approx)
-    return "circle" if n >= circle_vertex_threshold else n
-
-
 def _measure_item(img, item):
     if item["type"] == "count":
         mode = "holes" if "box" in item["check"].lower() else "blobs"

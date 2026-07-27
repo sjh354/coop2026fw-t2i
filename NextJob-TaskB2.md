@@ -119,8 +119,8 @@ judge_spec.py를 재실행해 일치율을 다시 잰다.
 > 프롬프트의 "JSON으로 답하라"는 지시가 충돌해 모델이 JSON 없이 순수 값만("6") 반환. JSON 파싱
 > 실패 시 원문을 그대로 answer로 쓰는 폴백을 추가해 해결 (unparseable은 진짜 빈 응답일 때만 남음).
 >
-> **일치율/방향 비교(29건, server 23 재실행)**: yesno 모드 22/27 일치·κ=0.55 vs probe 모드
-> 22/27 일치·κ=0.55 — **완전히 동일**. s1/s3의 실제 검증 결과, claude/qwen 두 이미지 모두 probe
+> **일치율/방향 비교(29건, server 23 재실행)**: yesno 모드 22/29 일치·κ=0.55 vs probe 모드
+> 22/29 일치·κ=0.55 — **완전히 동일**. s1/s3의 실제 검증 결과, claude/qwen 두 이미지 모두 probe
 > 모드에서도 박스/핀 개수를 여전히 6으로 오답(실제는 7개)해 관대 방향 오답이 그대로 재현됨.
 > 불일치 방향은 auto관대(yes/no) 6건 / auto엄격(no/yes) 0건 — 관대 편향 비율 100%로 0.8을 훨씬 초과.
 >
@@ -178,7 +178,9 @@ judge_spec.py에 --mode {yesno,probe} 인자를 추가한다.
 ## STAGE 2 — count / attribute 축을 CV로 라우팅 ✅ 파일럿 완료 (2026-07-27, structured_worksheet_template만)
 
 > **결과**: `scripts/measure_cv.py` 신규 — `count_regions`(연결요소 기반 개수 세기),
-> `region_colors`(색상 이름 매핑), `polygon_sides`(변 개수, 아직 미사용) 3개 측정기만 구현.
+> `region_colors`(색상 이름 매핑) 2개 측정기 구현. `polygon_sides`(Geometric Shape Set용 변 개수)는
+> 이번 세션에서 호출하는 곳이 없어 투기적 코드로 남기지 않고 뺐다 — Geometric Shape Set에 CV
+> 라우팅을 실제로 붙일 때 추가할 것.
 > spec item에 `"measurer": "cv"` 필드 추가, structured_worksheet_template의 박스 개수(s1)/핀
 > 개수(s3) 6개(3 entry × 2 item)만 CV 라우팅 대상으로 지정 — 문서 스코프대로 인물 카운트는
 > 손대지 않음.
@@ -191,9 +193,12 @@ judge_spec.py에 --mode {yesno,probe} 인자를 추가한다.
 >
 > **CV vs 사람 라벨 검증(같은 6개 데이터포인트, structured_worksheet_template s1/s3 × 3 이미지)**:
 > **6/6 완전 일치** (claude/qwen s1=7≠6→no, s3=6=6→yes, chatgpt s1=3≠6→no, s3=3≠6→no — 전부
-> 사람 라벨과 일치). 같은 6개 항목에서 VLM(yesno/probe 모두 동일)은 4/6만 일치했었음
-> (claude/qwen의 s1 "7개를 6개로" 오답은 STAGE 1에서도 안 고쳐졌던 바로 그 오차). CV가 VLM보다
-> 명백히 우수 — 문서 기준대로 count 항목은 CV 라우팅을 유지.
+> 사람 라벨과 일치). 같은 6개 항목에서 VLM(yesno/probe 모두 동일)은 4/6만 일치했었음.
+> n=6짜리 단일 카테고리 비교라 kappa를 계산할 만한 표본은 아니고, VLM의 2건 오답도 사실은
+> "7개를 6개로" 라는 동일한 오차가 claude/qwen 두 유사 이미지에 반복된 것 — 즉 STAGE 1(질문
+> 형식 교체)로도 안 고쳐졌던 바로 그 체계적 오차 하나가 두 번 나타난 것이다. 그래도 CV가 그
+> 오차를 정확히 잡아냈다는 점에서 count 항목은 CV 라우팅을 유지하는 것이 타당하나, 표본이 작아
+> STAGE 3(축당 25건 이상)에서 재확인이 필요하다.
 >
 > **범위 제한**: 검증은 structured_worksheet_template 카테고리(파일럿 3장, count 항목만)로
 > 한정됨. Data Visualization Chart / Labeled Science Diagram / Geometric Shape Set과 attribute
@@ -308,15 +313,22 @@ prompt_source별로 쪼개서 κ를 출력하라. 프롬프트 일부를 Qwen2.5
 
 ---
 
-## 전체 완료 조건
+## 전체 완료 조건 — 현재 상태 (2026-07-27)
 
 ```
-1. STAGE 0의 9건 분류표가 존재한다.
-2. yesno 모드와 probe 모드의 일치율·κ가 나란히 비교된 표가 있다.
+1. STAGE 0의 9건 분류표가 존재한다.                              → ✅ 충족 (triage.csv)
+2. yesno 모드와 probe 모드의 일치율·κ가 나란히 비교된 표가 있다.   → ✅ 충족 (STAGE 1, 둘 다 동일)
 3. CV 라우팅된 축 각각에 대해 (CV vs 사람) κ가 보고되어 있고,
-   VLM보다 나쁜 축은 되돌려졌다.
-4. 최종 채점 CSV에 measurer 컬럼이 남아 있어 어느 축이 무엇으로 측정됐는지 추적 가능하다.
-5. κ < 0.6인 조합이 리포트에 unvalidated로 표기되어 있다.
+   VLM보다 나쁜 축은 되돌려졌다.                                  → ⚠️ 부분 충족 — n=6짜리 파일럿
+   비교만 있고(κ 계산 불가 표본), 정식 κ는 STAGE 3 라벨 확대가 있어야 나옴.
+4. 최종 채점 CSV에 measurer 컬럼이 남아 있어 추적 가능하다.        → ✅ 충족 (measure_cv.py 출력)
+5. κ < 0.6인 조합이 리포트에 unvalidated로 표기되어 있다.          → ❌ 미충족 — STAGE 3 라벨
+   (축당 25건 이상, 100~150건)이 있어야 κ를 축별로 낼 수 있고, 그게 나와야 unvalidated
+   표기가 의미를 가진다. 이 라벨링은 사람이 해야 하는 작업(문서 STAGE 3 "하지 말 것" 참고 —
+   VLM으로 대체 금지)이라 이번 세션에서 대신 하지 않았다.
+
+**요약**: STAGE 0/1/2는 완료·커밋·양쪽 서버 동기화까지 끝났다. STAGE 3(라벨 확대)은 사용자의
+수작업이 선행돼야 하는 게이트라 여기서 멈춘다. STAGE 4는 STAGE 3 결과에 따라 조건부 실행.
 
 전체 신규 코드는 triage_disagreement.py / measure_cv.py / judge_agreement.py 확장
 세 개, 400줄 안쪽이다. 이보다 커지면 설계가 과하다.
