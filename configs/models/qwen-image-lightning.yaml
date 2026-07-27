@@ -1,0 +1,18 @@
+name: qwen-image-lightning
+adapter: generic
+env: t2i-qwen           # base qwen-image와 동일 env 재사용 (동일 아키텍처, LoRA는 GGUF에 이미 fuse됨)
+repo: Qwen/Qwen-Image
+dtype: bfloat16
+steps: 8                # lightx2v 8-step Lightning LoRA 공식 권장값
+guidance: 1.0           # distilled 체크포인트 공식 권장 true_cfg_scale=1.0 (CFG 사실상 off)
+supports_negative: true
+quantization: gguf-q4_k_s
+gguf_repo: OzzyGT/qwen-image-lighting-gguf
+gguf_file: qwen-image-lighting-8steps-V1.0-Q4_K_S.gguf
+gguf_transformer_class: QwenImageTransformer2DModel
+notes: >
+  Qwen-Image-Lightning(8-step distilled) LoRA를 transformer에 미리 fuse해둔 비공식
+  GGUF(OzzyGT/qwen-image-lighting-gguf) 사용 — 공식 방법은 아니라고 업로더가 명시.
+  base qwen-image(Q5_K_M, 50 steps)와 양자화 레벨(Q4_K_S)이 달라 VRAM/latency는
+  step수 차이뿐 아니라 양자화 차이도 섞여있음 — 결과 해석 시 유의.
+  서버157 디스크 여유(14GB) 고려해 Q5_K_S(14.1G) 대신 Q4_K_S(11.5G) 선택.
