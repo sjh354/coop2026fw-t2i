@@ -197,3 +197,51 @@ prompt_source(claude/chatgpt/qwen)별 Cohen's κ 계산.
 
 **다음 단계**: 사람 손 채점을 30장 이상으로 늘려 재검증하기 전까지는 두 judge 결과 모두
 "참고용"으로만 쓰고, spec item 채점 결과를 모델 비교의 최종 근거로 확정하지 말 것.
+
+## TASK-C · judge 신뢰성 검증 — STAGE 3 규모 재검증 (2026-07-27, 서버 23, 125건)
+
+위 파일럿(29건)의 "사람 손 채점을 30장 이상으로 늘려 재검증" 지시에 따라, TASK-B2 STAGE 3
+손 라벨링(v246/v247/v249, 125건)과 같은 표본으로 Gemma-3-12B-4bit를 재실행.
+`scripts/sweeps/stage3_gemma3_judge.sh`.
+
+| 비교 | n | 일치율 | 전체 κ | claude κ | chatgpt κ | qwen κ |
+|---|---|---|---|---|---|---|
+| 사람 vs Qwen2.5-VL-7B (TASK-B2 STAGE 3) | 125 | 0.74 | 0.37 | 0.41 | 0.39 | 0.33 |
+| 사람 vs Gemma-3-12B-4bit | 125 | 0.67 | **0.19** | 0.34 | -0.04 | 0.22 |
+| Qwen2.5-VL-7B vs Gemma-3-12B-4bit | 588 | 0.83 | **0.35** | 0.35 | 0.20 | 0.47 |
+
+**핵심 발견:**
+- 표본을 29건→125건으로 4배 이상 늘려도 **세 비교 전부 κ<0.6** — 파일럿의 "신뢰 불가" 결론이
+  표본 크기 문제가 아니었음이 확정됨. spec item VLM 채점은 judge 모델을 바꿔도, 표본을
+  늘려도 사람 라벨과 충분히 일치하지 않는다.
+- **자기 계열 선호 가설, STAGE 3 규모에서도 지지되지 않음**: qwen 소스 프롬프트에서 Qwen judge가
+  더 후하거나 Gemma-3가 더 박한 패턴이 없고, 오히려 Qwen vs Gemma-3 교차비교에서 qwen 소스가
+  가장 일치율이 높음(κ=0.47, 세 소스 중 최고). 두 judge가 서로 잘 맞는 소스가 자기 계열
+  소스라는 게 아니라 — 그냥 chatgpt 소스가 유독 안 맞는다.
+- **chatgpt 소스 문제가 표본 확대 후 더 뚜렷해짐**: 사람 vs Gemma-3 비교에서 chatgpt 소스
+  κ=-0.04(무작위보다 나쁨). 파일럿 때부터 있던 패턴(위 파일럿 표에서도 chatgpt가 유독 갈림)이
+  표본이 커지자 방향이 뒤집히지 않고 더 악화됨 — judge 문제가 아니라 **chatgpt 소스 spec item
+  문구 자체의 모호성**이 원인일 가능성이 높다는 쪽으로 결론이 기움.
+- 결과: `bench/scores/stage3_auto_gemma3_v2.csv`,
+  `bench/scores/stage3_disagreement_manual_vs_gemma3_v2.csv`(사람 vs Gemma-3 불일치 41건),
+  `bench/scores/stage3_disagreement_qwen_vs_gemma3_v2.csv`(Qwen vs Gemma-3 불일치 102건).
+
+**다음 단계**: judge 모델 교체로는 해결되지 않는 문제로 결론. spec item 채점을 모델 비교의
+주 근거로 계속 쓸지, VQAScore/CSD 등 다른 지표로 무게중심을 옮길지 프로젝트 차원의 결정
+필요(`NextJob.md` TASK-C/TASK-E 섹션 참고, 아직 미결정).
+
+## TASK-E · 리라이팅 3조건 실제 생성 (2026-07-27, 서버 157, flux2-klein-4b-nf4)
+
+`scripts/sweeps/rewrite_generate_flux2klein.sh`로 리라이팅 3백엔드(passthrough/wan_style/
+promptenhancer) × 24프롬프트를 bench_v1 종합 1위 후보 flux2-klein-4b-nf4로 실제 생성.
+
+| backend | 버전 | vram_peak | sec/img |
+|---|---|---|---|
+| passthrough (대조군) | v250 | 7.8GB | 10.92 |
+| wan_style | v251 | 7.8GB | 10.72 |
+| promptenhancer | v252 | 7.8GB | 10.10 |
+
+- 72장(3조건×24) 생성 완료, VRAM/속도 조건 간 차이는 미미(±1s/img 이내).
+- 원래 계획한 최종 판정 기준(spec 통과율)이 같은 세션의 TASK-B2/TASK-C 결과(κ<0.6 확정)로
+  근거가 흔들림 — 채점 방법론 결정 전까지는 이 3조건 이미지에 대한 spec 채점을 최종 판정으로
+  쓰지 말 것.

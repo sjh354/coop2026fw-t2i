@@ -263,6 +263,35 @@ v246/v247/v249 자동 채점 → `judge_agreement.py`로 κ 계산.
 
 **다음 단계**: 사람 손 채점 규모를 30장 이상으로 늘려 재검증 필요.
 
+**STAGE 3 규모 재검증 완료 (2026-07-27, 서버 23, `unsloth/gemma-3-12b-it-bnb-4bit`, 125건)**
+
+TASK-B2 STAGE 3(손 라벨링 125건, v246/v247/v249)와 같은 표본으로 Gemma-3 judge를 재실행.
+`scripts/sweeps/stage3_gemma3_judge.sh`.
+
+| 비교 | n | 일치율 | 전체 κ | claude κ | chatgpt κ | qwen κ |
+|---|---|---|---|---|---|---|
+| 사람 vs Gemma-3-12B-4bit | 125 | 0.67 | **0.19** | 0.34 | -0.04 | 0.22 |
+| Qwen2.5-VL-7B vs Gemma-3-12B-4bit | 588 | 0.83 | **0.35** | 0.35 | 0.20 | 0.47 |
+
+(참고: 사람 vs Qwen2.5-VL-7B는 STAGE 3에서 이미 κ=0.37로 나옴 — TASK-B2 섹션 참조)
+
+- 표본을 30장→125장으로 늘려도 **두 judge 모두, 두 judge 간 교차 비교도 전부 κ<0.6** —
+  파일럿(v243, 29건)에서 나온 "이 규모에서는 신뢰 불가" 결론이 표본을 키운 뒤에도 그대로
+  유지됨. spec item VLM 채점은 이 상태로는 모델 비교의 최종 근거로 쓸 수 없다는 결론이 확정.
+- **자기 계열 선호 가설, 이번에도 지지되지 않음**: qwen 소스 프롬프트에서 Qwen judge가
+  유독 후하지도(사람 vs Qwen κ=qwen 소스 낮은 편), Gemma-3가 qwen 소스에 유독 박하지도
+  않음 — 오히려 Qwen vs Gemma-3 비교에서 qwen 소스가 가장 일치율 높음(κ=0.47, 최고치).
+  대신 **chatgpt 소스가 사람-Gemma3 비교에서 κ=-0.04로 최악** — 파일럿에서 봤던 "chatgpt
+  소스 spec item 문구 자체가 모호하다"는 가설이 표본 확대 후 더 뚜렷해짐.
+- 결과: `bench/scores/stage3_auto_gemma3_v2.csv`,
+  `bench/scores/stage3_disagreement_manual_vs_gemma3_v2.csv`,
+  `bench/scores/stage3_disagreement_qwen_vs_gemma3_v2.csv`.
+
+**다음 단계**: judge 신뢰성 문제는 judge 모델 교체로 해결되지 않는 것으로 결론.
+근본 원인은 spec item 문구(특히 chatgpt 소스) 쪽일 가능성이 높음 — spec 문구 자체를
+사람이 재검토하거나, spec 채점을 모델 비교의 보조 지표로 격하하고 VQAScore/CSD 등
+다른 지표를 주 근거로 삼는 방향 전환이 필요. 여기까지 기록만 하고 실행은 보류.
+
 ---
 
 ### TASK-D · VRAM / latency 실측 테이블
@@ -424,6 +453,27 @@ scripts/rewrite.py 신규. 인자 --in (프롬프트 JSON), --backend {passthrou
 명시돼 있었음 — False만 완료). 157번(생성 전용) 서버에서
 `python -m scripts.lecture_generate --model <candidate> --prompts-json image-prompts/rewrite/<backend>.json`
 로 3조건×24개 실제 이미지 생성 → TASK-B spec 채점 파이프라인으로 최종 판정, 아직 미실행.
+
+**이미지 생성 완료 (2026-07-27, 서버 157, flux2-klein-4b-nf4)**
+
+`scripts/sweeps/rewrite_generate_flux2klein.sh`로 3조건 × 24프롬프트 생성 완료.
+모델은 bench_v1 종합 1위 후보 flux2-klein-4b-nf4로 결정(사용자 확인).
+
+| backend | 버전 | vram_peak | sec/img |
+|---|---|---|---|
+| passthrough (대조군) | v250 | 7.8GB | 10.92 |
+| wan_style | v251 | 7.8GB | 10.72 |
+| promptenhancer | v252 | 7.8GB | 10.10 |
+
+- 24장씩 총 72장 생성 완료. 노트(`image-prompts/v25{0,1,2}_flux2-klein-4b-nf4-lecture24/*.md`)
+  커밋 완료. 이미지(`images/`)는 gitignored — 채점하려면 서버 23으로 rsync/scp 필요.
+- **평가 방법론 재검토 필요**: 원래 계획("최종 판정은 TASK-B의 spec 통과율로 한다")이 이제
+  근거가 흔들림 — 같은 세션에서 TASK-B2 STAGE 3(κ=0.37)와 TASK-C 재검증(κ=0.19~0.35)이
+  모두 spec item VLM 채점을 "0.6 미만, 신뢰 불가"로 확정했기 때문. spec 통과율 단독으로
+  이 3조건(passthrough/wan_style/promptenhancer)을 최종 판정하면 TASK-B2 결론과 모순됨.
+  대안: VQAScore/CSD를 주 지표로 쓰고 spec 통과율은 보조 지표로 내리거나, photo-word
+  키워드 매칭(이미 TASK-E 1차 결과에 있음) 같은 규칙 기반 지표를 병행 — **아직 미결정,
+  다음 채점 실행 전에 방향을 정해야 함**.
 
 ---
 
