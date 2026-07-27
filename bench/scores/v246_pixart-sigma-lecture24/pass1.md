@@ -1,0 +1,28 @@
+# 채점 요약 (24장)
+
+| run | model | item_id | image | vqascore | custom_cv |
+|---|---|---|---|---|---|
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_00_structured_worksheet_template_claude.png | 0.4267 | 0.7491 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_01_structured_worksheet_template_chatgpt.png | 0.449 | 0.731 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_02_structured_worksheet_template_qwen.png | 0.4267 | 0.7491 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_03_data_visualization_chart_claude.png | 0.7934 | 0.753 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_04_data_visualization_chart_chatgpt.png | 0.7288 | 0.6895 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_05_data_visualization_chart_qwen.png | 0.8242 | 0.7228 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_06_historical_figure_portrait_claude.png | 0.9239 | 0.6666 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_07_historical_figure_portrait_chatgpt.png | 0.7175 | 0.6956 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_08_historical_figure_portrait_qwen.png | 0.9012 | 0.7547 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_09_multi_character_classroom_collaboration_claude.png | 0.9271 | 0.6807 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_10_multi_character_classroom_collaboration_chatgpt.png | 0.8274 | 0.6855 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_11_multi_character_classroom_collaboration_qwen.png | 0.8842 | 0.6906 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_12_intergenerational_indoor_scene_claude.png | 0.923 | 0.6623 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_13_intergenerational_indoor_scene_chatgpt.png | 0.7446 | 0.6952 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_14_intergenerational_indoor_scene_qwen.png | 0.9348 | 0.6976 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_15_single_character_cutout_claude.png | 0.9114 | 0.6827 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_16_single_character_cutout_chatgpt.png | 0.749 | 0.7481 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_17_single_character_cutout_qwen.png | 0.9456 | 0.6985 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_18_labeled_science_diagram_claude.png | 0.7063 | 0.7312 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_19_labeled_science_diagram_chatgpt.png | 0.5653 | 0.7139 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_20_labeled_science_diagram_qwen.png | 0.7652 | 0.5984 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_21_geometric_shape_set_claude.png | 0.9442 | 0.7558 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_22_geometric_shape_set_chatgpt.png | 0.572 | 0.7301 |
+| v246_pixart-sigma-lecture24 | pixart-sigma | None | v246_23_geometric_shape_set_qwen.png | 0.8688 | 0.7314 |

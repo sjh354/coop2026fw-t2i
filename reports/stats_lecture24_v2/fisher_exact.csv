@@ -1,0 +1,13 @@
+axis,model_a,model_b,a_pass,a_fail,b_pass,b_fail,odds_ratio,p_value
+content_present,flux2-klein-4b-nf4,pixart-sigma,0,0,0,0,,
+text_legibility,flux2-klein-4b-nf4,pixart-sigma,0,0,0,0,,
+layout_structure,flux2-klein-4b-nf4,pixart-sigma,0,0,0,0,,
+educational_fit,flux2-klein-4b-nf4,pixart-sigma,0,0,0,0,,
+content_present,flux2-klein-4b-nf4,qwen-image,0,0,0,0,,
+text_legibility,flux2-klein-4b-nf4,qwen-image,0,0,0,0,,
+layout_structure,flux2-klein-4b-nf4,qwen-image,0,0,0,0,,
+educational_fit,flux2-klein-4b-nf4,qwen-image,0,0,0,0,,
+content_present,pixart-sigma,qwen-image,0,0,0,0,,
+text_legibility,pixart-sigma,qwen-image,0,0,0,0,,
+layout_structure,pixart-sigma,qwen-image,0,0,0,0,,
+educational_fit,pixart-sigma,qwen-image,0,0,0,0,,

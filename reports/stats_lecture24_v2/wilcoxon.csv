@@ -1,0 +1,7 @@
+metric,model_a,model_b,n,n_ties,statistic,p_value,effect_r
+vqascore,flux2-klein-4b-nf4,pixart-sigma,24,0,34.0,0.000918,0.6766
+vqascore,flux2-klein-4b-nf4,qwen-image,24,1,46.0,0.005137,0.5712
+vqascore,pixart-sigma,qwen-image,24,0,11.0,7.1e-05,0.8107
+csd_target,flux2-klein-4b-nf4,pixart-sigma,24,0,54.0,0.006088,0.5599
+csd_target,flux2-klein-4b-nf4,qwen-image,24,0,138.0,0.731693,0.07
+csd_target,pixart-sigma,qwen-image,24,0,59.0,0.009319,0.5307

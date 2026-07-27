@@ -1,0 +1,13 @@
+model,axis,n_total,n_na_excluded,n_evaluable,n_pass,pass_rate,ci_low,ci_high,emission_rate
+flux2-klein-4b-nf4,content_present,0,0,0,0,,,,
+flux2-klein-4b-nf4,text_legibility,0,0,0,0,,,,
+flux2-klein-4b-nf4,layout_structure,0,0,0,0,,,,
+flux2-klein-4b-nf4,educational_fit,0,0,0,0,,,,
+pixart-sigma,content_present,0,0,0,0,,,,
+pixart-sigma,text_legibility,0,0,0,0,,,,
+pixart-sigma,layout_structure,0,0,0,0,,,,
+pixart-sigma,educational_fit,0,0,0,0,,,,
+qwen-image,content_present,0,0,0,0,,,,
+qwen-image,text_legibility,0,0,0,0,,,,
+qwen-image,layout_structure,0,0,0,0,,,,
+qwen-image,educational_fit,0,0,0,0,,,,

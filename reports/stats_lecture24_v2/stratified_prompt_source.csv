@@ -1,0 +1,10 @@
+prompt_source,model,n,vqascore_mean,custom_cv_mean,csd_target_mean,content_present_pass_rate,text_legibility_pass_rate,layout_structure_pass_rate,educational_fit_pass_rate
+chatgpt,flux2-klein-4b-nf4,8,0.7043,0.7354,0.6246,,,,
+claude,flux2-klein-4b-nf4,8,0.8936,0.7354,0.5575,,,,
+qwen,flux2-klein-4b-nf4,8,0.8991,0.7297,0.7084,,,,
+chatgpt,pixart-sigma,8,0.6692,0.7111,0.512,,,,
+claude,pixart-sigma,8,0.8195,0.7102,0.5403,,,,
+qwen,pixart-sigma,8,0.8188,0.7054,0.5399,,,,
+chatgpt,qwen-image,8,0.8004,0.7815,0.6745,,,,
+claude,qwen-image,8,0.894,0.7618,0.5285,,,,
+qwen,qwen-image,8,0.9158,0.7643,0.6928,,,,

@@ -1,0 +1,7 @@
+track,model,n,vqascore_mean,custom_cv_mean,csd_target_mean,content_present_pass_rate,text_legibility_pass_rate,layout_structure_pass_rate,educational_fit_pass_rate
+illustration,flux2-klein-4b-nf4,12,0.8804,0.7123,0.6133,,,,
+structural,flux2-klein-4b-nf4,12,0.7843,0.7547,0.6471,,,,
+illustration,pixart-sigma,12,0.8658,0.6965,0.6078,,,,
+structural,pixart-sigma,12,0.6726,0.7213,0.4536,,,,
+illustration,qwen-image,12,0.8962,0.7599,0.6224,,,,
+structural,qwen-image,12,0.8439,0.7786,0.6414,,,,
