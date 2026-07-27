@@ -15,6 +15,14 @@
 
 set -u
 
+for conda_sh in "$HOME/miniconda3/etc/profile.d/conda.sh" "$HOME/anaconda3/etc/profile.d/conda.sh"; do
+  if [ -f "$conda_sh" ]; then
+    # shellcheck disable=SC1090
+    source "$conda_sh"
+    break
+  fi
+done
+
 ENV=t2i-judge
 TASK="stage3_auto_judge.sh"
 MANUAL_CSV="bench/scores/stage3_manual_v2.csv"
