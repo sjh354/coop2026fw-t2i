@@ -19,6 +19,8 @@ OUT_CSV=bench/cost/vram_latency.csv
 LOG_DIR="logs/$(date +%Y%m%d_%H%M%S)_bench_cost"
 mkdir -p "$LOG_DIR"
 
+# flux2-klein-4b-nf4/flux2-klein-4b는 이미 캐시된 FLUX.2-klein-4B 가중치를 공유해서
+# 먼저 돌리고, flux2-klein-4b-base/lumina2/pixart-sigma는 새로 다운로드가 필요해 뒤에 둔다.
 MODELS=(
   flux2-klein-4b-nf4
   flux2-klein-4b
@@ -26,6 +28,25 @@ MODELS=(
   lumina2
   pixart-sigma
 )
+
+# 모델별 다운로드 필요 여부를 repo 기준 카운트해서, 같은 repo를 쓰는 모든 모델의
+# 벤치가 끝난 뒤에만(더 이상 필요 없을 때) 디스크가 부족하면 그 repo 캐시를 지운다.
+HF_HUB_DIR="$HOME/.cache/huggingface/hub"
+DISK_THRESHOLD_GB=15
+declare -A repo_remaining
+for model in "${MODELS[@]}"; do
+  repo=$(grep '^repo:' "configs/models/${model}.yaml" | awk '{print $2}')
+  repo_remaining[$repo]=$(( ${repo_remaining[$repo]:-0} + 1 ))
+done
+
+free_gb() {
+  df --output=avail -BG / | tail -1 | tr -dc '0-9'
+}
+
+cache_dir_for_repo() {
+  local repo="$1"
+  echo "${HF_HUB_DIR}/models--${repo//\//--}"
+}
 
 fail=0
 for model in "${MODELS[@]}"; do
@@ -44,6 +65,21 @@ for model in "${MODELS[@]}"; do
     fail=1
     python "$(dirname "$0")/../alert.py" --task "$TASK" --status fail \
       --message "${model} 실패: $(tail -5 "$log" | tr '\n' ' ' | cut -c1-300)"
+  fi
+
+  repo=$(grep '^repo:' "configs/models/${model}.yaml" | awk '{print $2}')
+  repo_remaining[$repo]=$(( repo_remaining[$repo] - 1 ))
+  if [ "${repo_remaining[$repo]}" -le 0 ]; then
+    avail=$(free_gb)
+    if [ -n "$avail" ] && [ "$avail" -lt "$DISK_THRESHOLD_GB" ]; then
+      cdir=$(cache_dir_for_repo "$repo")
+      if [ -d "$cdir" ]; then
+        echo "    디스크 여유 ${avail}G < ${DISK_THRESHOLD_GB}G — ${repo} 캐시 삭제 (${cdir})"
+        rm -rf "$cdir"
+        python "$(dirname "$0")/../alert.py" --task "$TASK" --status ok \
+          --message "디스크 확보: ${repo} 캐시 삭제 (삭제 전 여유 ${avail}G)"
+      fi
+    fi
   fi
 done
 
