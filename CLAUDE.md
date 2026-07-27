@@ -110,10 +110,15 @@ generation + scoring model caches on the same 97GB disk):
   env는 `t2i` 하나만 유지 — 지금 확정된 3개 후보(lumina2, pixart-sigma, flux2-klein-4b-nf4)가
   전부 이 env를 씀. `t2i-score`/`t2i-judge`/`t2i-qwen`/`t2i-ideogram` 같은 채점·비후보 모델 env는
   여기 만들지 않는다 — 디스크(97GB)가 금방 찬다.
-- `ubuntu@172.10.5.23` — repo at `/home/ubuntu/t2i` — **채점(scoring) 전용.**
-  env는 `t2i-score`(VQAScore/CSD/custom_cv, `src/scoring.py`)와 `t2i-judge`(로컬 Qwen2.5-VL-7B-Instruct
-  VLM-judge, `scripts/judge.py`) 둘만 유지. T2I 생성 모델 env(`t2i` 등)나 그 가중치 캐시를
-  여기 두지 않는다.
+- `ubuntu@172.10.5.23` — repo at `/home/ubuntu/t2i` — **채점(scoring) + 프롬프트 리라이팅(rewrite) 전용.**
+  env는 `t2i-score`(VQAScore/CSD/custom_cv, `src/scoring.py`), `t2i-judge`(로컬 Qwen2.5-VL-7B-Instruct
+  VLM-judge, `scripts/judge.py`), `t2i-rewrite`(로컬 LLM 기반 프롬프트 리라이터 backend,
+  `scripts/rewrite.py` — 2026-07-27 TASK-E 추가) 이렇게 유지. T2I 생성 모델 env(`t2i` 등)나
+  그 가중치 캐시를 여기 두지 않는다.
+  **디스크 여유가 30GB 이상 필요한 큰 모델(예: PromptEnhancer-7B, 대체 judge 모델)을 새로
+  받기 전에는 반드시 `df -h /`로 먼저 확인** — 채점/리라이팅 env가 여러 개 쌓이면 97GB가
+  금방 찬다. 안 쓰는 env는 지우기 전에 `pip freeze > envs/<name>.txt`로 먼저 백업하고
+  커밋한 뒤 지울 것 (재현 가능하게).
 
 **두 서버 다 새 역할과 맞지 않는 env/모델 캐시를 발견하면 바로 지운다** (예: 157에 `t2i-score` env가
 생겼거나, 23에 T2I 생성 모델 가중치가 캐시돼 있으면) — 역할이 섞이기 시작하면 다시 디스크가 찬다.
