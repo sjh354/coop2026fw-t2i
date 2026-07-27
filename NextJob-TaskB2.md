@@ -107,7 +107,26 @@ judge_spec.py를 재실행해 일치율을 다시 잰다.
 
 ---
 
-## STAGE 1 — yes/no를 추출형 질문으로 교체
+## STAGE 1 — yes/no를 추출형 질문으로 교체 ✅ 완료 (2026-07-27)
+
+> **결과**: `configs/benchmarks/vlm-prompts-spec.json`의 count 항목(s1 박스 개수, s3 핀 개수, claude/chatgpt/qwen
+> 3개 entry 전부)에 `probe`/`expect`(mode=int_eq) 필드 추가. `judge_spec.py --mode probe` 구현 —
+> probe/expect가 있는 항목만 추출형으로 채점하고 없는 항목(spatial/style/text, 그리고 고정 정답이
+> 없는 attribute)은 기존 yes/no 경로로 폴백. `compare_judge_spec.py`에 Cohen's kappa, 불일치 방향
+> 분포 출력 추가.
+>
+> 첫 실행에서 probe 응답 6/6건 unparseable — probe 문구의 "정수만 답하라"는 지시와 시스템
+> 프롬프트의 "JSON으로 답하라"는 지시가 충돌해 모델이 JSON 없이 순수 값만("6") 반환. JSON 파싱
+> 실패 시 원문을 그대로 answer로 쓰는 폴백을 추가해 해결 (unparseable은 진짜 빈 응답일 때만 남음).
+>
+> **일치율/방향 비교(29건, server 23 재실행)**: yesno 모드 22/27 일치·κ=0.55 vs probe 모드
+> 22/27 일치·κ=0.55 — **완전히 동일**. s1/s3의 실제 검증 결과, claude/qwen 두 이미지 모두 probe
+> 모드에서도 박스/핀 개수를 여전히 6으로 오답(실제는 7개)해 관대 방향 오답이 그대로 재현됨.
+> 불일치 방향은 auto관대(yes/no) 6건 / auto엄격(no/yes) 0건 — 관대 편향 비율 100%로 0.8을 훨씬 초과.
+>
+> **결론**: yes/no 형식의 acquiescence bias가 원인이 아니라, 7B VLM의 순수 시각적 개수 세기
+> 지각 한계임이 확인됨. 질문 형식을 바꿔도 해소되지 않으므로 문서 규칙대로 STAGE 2(CV 라우팅)로
+> 진행 — count 항목은 결정론적 컨투어 카운팅으로 대체해야 함.
 
 ```
 [근거]
