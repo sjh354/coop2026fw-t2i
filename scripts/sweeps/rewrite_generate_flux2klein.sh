@@ -10,6 +10,14 @@
 #     bash scripts/sweeps/rewrite_generate_flux2klein.sh
 set -euo pipefail
 
+for conda_sh in "$HOME/miniconda3/etc/profile.d/conda.sh" "$HOME/anaconda3/etc/profile.d/conda.sh"; do
+  if [ -f "$conda_sh" ]; then
+    # shellcheck disable=SC1090
+    source "$conda_sh"
+    break
+  fi
+done
+
 MODEL=flux2-klein-4b-nf4
 BACKENDS=(passthrough wan_style promptenhancer)
 
