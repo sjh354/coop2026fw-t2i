@@ -147,6 +147,62 @@ content_present / text_legibility / layout_structure / educational_fit 4축 pass
 
 ---
 
+### TASK-B2 · VLM judge 관대성 편향 제거 ✅ STAGE 0~3 완료 (2026-07-27)
+
+```
+[배경]
+TASK-B의 spec item judge(Qwen2.5-VL-7B-Instruct) 검증 중 사람 손 채점 27건 대비 일치율
+0.67, 불일치 9건이 전부 VLM이 더 관대한 방향으로 나타남. count/attribute 축에 집중된
+축 특이적 체계 편향으로 판단, "judge를 더 똑똑하게" 대신 "측정 가능한 축은 결정론적으로
+잰다"는 전략으로 STAGE 0~4를 설계해 진행함.
+```
+
+**STAGE 0 — 불일치 9건 triage**: `scripts/triage_disagreement.py`로 9건 분류(A 지각오류 5,
+B 문구모호 4, C 사람오류 0). B≥3 게이트 발동 → spec 문구 재작성(주관적 형용사 제거, s8/s10
+분리) 후 재채점, 일치율 0.67→0.76(22/29)로 개선. 남은 불일치(chatgpt s8/s9)는 문구가 아니라
+chatgpt 소스 이미지의 생성 실패 자체가 원인으로 확인.
+
+**STAGE 1 — yes/no → 추출형 질문(probe) 전환**: count 항목에 `probe`/`expect`(int_eq) 필드
+추가, `judge_spec.py --mode probe` 구현. 결과: yesno와 probe 모드 일치율·κ가 **완전히 동일**
+(22/29, κ=0.55) — 원인이 yes/no 형식의 acquiescence bias가 아니라 7B VLM의 순수 시각적
+개수 세기 지각 한계임을 확인. STAGE 2로 진행.
+
+**STAGE 2 — count/attribute 축 CV 라우팅 (파일럿)**: `scripts/measure_cv.py` 신규
+(`count_regions`, `region_colors`). structured_worksheet_template의 박스/핀 개수(s1/s3)만
+파일럿 라우팅 — CV가 사람 라벨과 **6/6 완전 일치**, 같은 6건에서 VLM은 4/6만 일치. n=6이라
+정식 κ는 못 냄, STAGE 3에서 재검증 필요. Data Viz/과학 다이어그램/도형 카테고리와
+polygon_sides는 이번 세션 범위 밖으로 남김.
+
+**STAGE 3 — 라벨 확대(125건) + 정식 κ 계산**: 도중 프롬프트 드리프트(커밋 778d5dd)로
+v243/v244/v245가 무효화되어 v246/v247/v249로 재생성(→ baseline 문서는 `bench/results.md`
+참고), STAGE 0~2 라벨은 전부 재작업 대상이 됨. 부정문 spec 19개 item 긍정문으로 정리 →
+`sample_stage3.py` 재실행(worklist_v2, 125건, 축당 25건) → 사람 손 채점(`stage3_manual_v2.csv`)
+→ 서버 23 디스크 확보(HunyuanImage-2.1 캐시 18G 삭제, 사용자 확인 후) → `t2i-judge` env
+재생성 + 이미지 72장 rsync → `scripts/sweeps/stage3_auto_judge.sh`(신규, alert.py 연동)로
+v246/v247/v249 자동 채점 → `judge_agreement.py`로 κ 계산.
+
+**최종 결과**:
+
+| 구분 | n | 일치율 | κ |
+|---|---|---|---|
+| 전체 | 125 | 0.74 | 0.37 |
+| claude 소스 | 49 | 0.78 | 0.41 |
+| chatgpt 소스 | 40 | 0.78 | 0.39 |
+| qwen 소스 | 36 | 0.67 | 0.33 |
+
+전부 κ<0.6 — **Qwen2.5-VL-7B judge는 이 규모에서도 신뢰할 수 없음**(unvalidated,
+`bench/results.md`에 명시). 자기 계열 선호 가설은 지지되지 않음(오히려 qwen 소스에서
+가장 낮은 κ). 불일치 32건은 `bench/scores/stage3_disagreement_v2.csv`.
+
+**STAGE 4 (조건부, 미실행)**: STAGE 1~3 이후에도 κ<0.6이고 그 축이 결론에 필수적일 때만
+실행 — 비-Qwen judge(InternVL3-8B/Gemma-3-12B 4bit 등)와 삼각 비교. spec item 채점이
+최종 모델 비교에 꼭 필요한지부터 판단 후 착수할 것.
+
+전체 신규 코드: `triage_disagreement.py` / `measure_cv.py` / `judge_agreement.py` /
+`sample_stage3.py` / `stage3_auto_judge.sh`.
+
+---
+
 ### TASK-C · judge 신뢰성 검증 (교차 judge + Cohen's κ)
 
 ```
