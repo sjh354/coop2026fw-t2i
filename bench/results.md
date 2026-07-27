@@ -3,6 +3,16 @@
 generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결론과 삽질만** 적는다.
 (숫자를 손으로 옮겨적지 말 것 — Streamlit Compare 탭이 표로 보여줌)
 
+## Baseline: lecture24 (`configs/benchmarks/vlm-prompts.json`)
+
+**2026-07-24부터 이 테스트를 프로젝트 Baseline으로 고정한다.** 실제 교과서 이미지를 VLM(Claude/ChatGPT/Qwen2.5-VL)에 넣어 뽑아낸 8개 카테고리 × 3개 VLM 소스 = 24개 완성 프롬프트(`configs/benchmarks/vlm-prompts.json`, 소스: `MEMO.md` 로드맵의 Task 1 방법)를 모델에 그대로 흘려 생성 → 채점한 결과다. `bench_v1`(키워드+스타일 조합, 수량/공간/속성 축)과는 별도 트랙이며 서로 대체하지 않는다 — bench_v1은 축별 실패모드 진단용, lecture24는 실제 교육 콘텐츠에 가까운 완성 프롬프트 기준 종합 비교용.
+
+- 대상 run: `v243_pixart-sigma-lecture24`, `v244_flux2-klein-4b-nf4-lecture24`, `v245_qwen-image-lecture24` (`scripts/lecture_generate.py`로 생성).
+- 채점: pass1(vqascore+cv) + `scripts/score_csd_target.py`(카테고리당 참조 1장, provisional) + `scripts/judge_lecture24.py`(content_present/text_legibility/layout_structure/educational_fit 4축).
+- 종합 리포트: `reports/lecture24-v243-v244-v245/index.html`.
+- **앞으로 프롬프트/모델/채점 방식을 바꿀 때는 이 baseline 대비 개선 여부로 판단한다** — `configs/benchmarks/vlm-prompts.json`은 `configs/keywords/*`처럼 비교 기준이므로 함부로 편집하지 않는다(내용을 바꾸려면 새 파일로 분리).
+- **알려진 한계**: csd_target은 카테고리당 참조 이미지 1장(원본 교과서 이미지)만 쓰는 provisional 신호다 — 정식 golden set(카테고리당 15~25장) 수집 전까지는 "그 한 장과 얼마나 닮았는가"에 가까운 약한 신호로만 참고할 것.
+
 | 모델 | 3090에서 동작 | 16GB 가능? | 결론 | 삽질 메모 |
 |---|---|---|---|---|
 | pixart-sigma | ✅ | | | |

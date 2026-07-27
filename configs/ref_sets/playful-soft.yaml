@@ -7,33 +7,33 @@ stats:
   std: 0.0473
 outliers: []
 images:
-- path: refs/playful-soft/replicate-prediction-11wg2fmdwxrmt0czfztsphad7m.png
+- path: refs/golden-set/playful-soft/replicate-prediction-11wg2fmdwxrmt0czfztsphad7m.png
   sha256: b283fa71b7c2c5081e010aa0de3cb9e2ef30f376ce3eadd650fca85a75c6849d
   mean_similarity: 0.7294
-- path: refs/playful-soft/replicate-prediction-1snaq95rd9rmt0czfztsqts7n8.png
+- path: refs/golden-set/playful-soft/replicate-prediction-1snaq95rd9rmt0czfztsqts7n8.png
   sha256: 4ebf7b5987d458c96e18f3f48688fba50fd8a8d0a053cd4bbb5190169c8f6e92
   mean_similarity: 0.7246
-- path: refs/playful-soft/replicate-prediction-38tp461cy1rmt0czfzva3xt3n4.png
+- path: refs/golden-set/playful-soft/replicate-prediction-38tp461cy1rmt0czfzva3xt3n4.png
   sha256: 00c667bc9ab6fc9c0495e64aad8ceb48e0ff74d5afb5c1d78fd4b0f80dbca134
   mean_similarity: 0.6677
-- path: refs/playful-soft/replicate-prediction-65r1eyv2vnrmt0czfztrpzfe1c.png
+- path: refs/golden-set/playful-soft/replicate-prediction-65r1eyv2vnrmt0czfztrpzfe1c.png
   sha256: bcf6a0288596b27425cfac1bf512ccf7aef9cb12e77aaf0fc74e1b08a6042193
   mean_similarity: 0.7005
-- path: refs/playful-soft/replicate-prediction-6dj6xmhq7drmy0czfztvzecxx0.png
+- path: refs/golden-set/playful-soft/replicate-prediction-6dj6xmhq7drmy0czfztvzecxx0.png
   sha256: 248a6f07526d5c883d5b722c93ca94e904d6fba031579a533ce1dfae2cd1822e
   mean_similarity: 0.6862
-- path: refs/playful-soft/replicate-prediction-8x7mwjay09rmy0czfzt9mgpycc.png
+- path: refs/golden-set/playful-soft/replicate-prediction-8x7mwjay09rmy0czfzt9mgpycc.png
   sha256: f8b2b08de370a31bcd7fd5b38021a1b2b55c5d0dc1dd5a35fc7efef68d5899a2
   mean_similarity: 0.7341
-- path: refs/playful-soft/replicate-prediction-ax4fmg70wsrmr0czfztsfydthg.png
+- path: refs/golden-set/playful-soft/replicate-prediction-ax4fmg70wsrmr0czfztsfydthg.png
   sha256: 514125ed1c30d651bfcde1091a8cf26e8dc99791a6af74175595daaedeb8bb96
   mean_similarity: 0.6927
-- path: refs/playful-soft/replicate-prediction-d1rfdxc659rmr0czfzt9n95je4.png
+- path: refs/golden-set/playful-soft/replicate-prediction-d1rfdxc659rmr0czfzt9n95je4.png
   sha256: 210789c560050b9e6bb5ff231308c0eb068af5e5b9483e3ae0b2b2e02930d625
   mean_similarity: 0.737
-- path: refs/playful-soft/replicate-prediction-gez57c5kfnrmw0czfzt8gk4exr.png
+- path: refs/golden-set/playful-soft/replicate-prediction-gez57c5kfnrmw0czfzt8gk4exr.png
   sha256: d15215579102899430ed4e617ad837d27ca855ac011325308c0469ae21368a40
   mean_similarity: 0.7328
-- path: refs/playful-soft/replicate-prediction-xp8jmszkshrmy0czfzt89crxnc.png
+- path: refs/golden-set/playful-soft/replicate-prediction-xp8jmszkshrmy0czfzt89crxnc.png
   sha256: a0fa1516ffc1b147efc60fad60aa258ff10dd9562e8a14a63c154582b217fe10
   mean_similarity: 0.7328

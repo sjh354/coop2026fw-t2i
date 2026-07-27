@@ -127,8 +127,8 @@ A cottage with a thatched roof surrounded by a small vegetable garden, warm narr
 ## 사용 순서
 
 1. 위 코드블록의 프롬프트를 한 줄씩 그대로 복붙해서 프론티어 모델에 입력해 이미지 생성.
-2. 생성물 중 스타일이 가장 잘 맞는 15~25장만 골라 `refs/<preset>/`에 저장
+2. 생성물 중 스타일이 가장 잘 맞는 15~25장만 골라 `refs/golden-set/<preset>/`에 저장
    (기존 v231~v242 유래 파일은 전부 교체 — 자기참조 문제 해결).
-3. `PYTHONPATH=vendor python -m scripts.validate_ref_set --preset <preset> --dir refs/<preset>`
+3. `PYTHONPATH=vendor python -m scripts.validate_ref_set --preset <preset> --dir refs/golden-set/<preset>`
    로 pairwise CSD 검증, outlier 있으면 해당 이미지만 재생성/교체.
 4. `docs/eval_runbook.md` 3~5번(csd 패스 → merge)으로 이어서 진행.

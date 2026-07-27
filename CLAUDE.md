@@ -31,6 +31,7 @@ Every run is a combination of **model × experiment (style) × keyword set**, ea
 - `configs/models/<name>.yaml` — repo id, adapter name, conda env, dtype, steps, guidance, `supports_negative`, quantization
 - `configs/experiments/<name>.yaml` — style/negative prompt text, seed, and which keyword set to use
 - `configs/keywords/<name>.yaml` — a fixed benchmark keyword list (e.g. `basic30`) — this is the comparison baseline across models, so don't edit it casually
+- `configs/benchmarks/vlm-prompts.json` — 24 complete prompts (8 categories × 3 VLM sources) extracted from real textbook images. As of 2026-07-24 this is the project's fixed **Baseline** test ("lecture24" runs, see `bench/results.md`) — don't edit casually, same rule as keyword sets above
 
 `src/generate.py` combines them as `f"{keyword}, {exp['style']}"` and writes one image per keyword. **Prompts are never passed via CLI or hardcoded** — that's the point of this structure. To try a new style, copy the experiment file to a new name (don't overwrite — overwriting breaks traceability of what a past version's prompt was) and change `--exp`:
 

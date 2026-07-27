@@ -33,11 +33,11 @@ GPU: `t2i-score` env, 단독 사용 권장(생성 프로세스와 동시 로드 
 ## 2. 정식 ref_set 수집 후 validate_ref_set 재실행
 
 `bench/style-presets-v2.md`의 "5. CSD ref_set 수집 기준"에 따라 프리셋별
-`refs/<preset>/`에 15~25장 수집(gitignored — 원본은 여기 두고 수동 관리).
+`refs/golden-set/<preset>/`에 15~25장 수집(gitignored — 원본은 여기 두고 수동 관리).
 
 ```bash
 for preset in edu-flat-v2 observational playful-soft storybook-scene; do
-  PYTHONPATH=vendor python -m scripts.validate_ref_set --preset "$preset" --dir "refs/$preset"
+  PYTHONPATH=vendor python -m scripts.validate_ref_set --preset "$preset" --dir "refs/golden-set/$preset"
 done
 ```
 
@@ -92,3 +92,33 @@ python -m scripts.merge_results \
 `bench/scores/merged.csv` + `bench/scores/merged.md`(모델별 컴포넌트 평균, 모델×축
 pass율 표)가 최종 산출물. csd 결측이면 `missing_components` 컬럼에 표시되고 harmonic은
 나머지 값들로만 계산된다 — 3번을 건너뛰고 먼저 실행해도 문제없다.
+
+## 6. lecture24 baseline (`vlm-prompts.json`) — 위와 별도 트랙
+
+위 1~5번은 `bench_v1`(키워드+스타일 조합, 축별 rubric) 파이프라인 기준이다. **Baseline으로
+고정된 lecture24**(`configs/benchmarks/vlm-prompts.json`, 상세는 `bench/results.md`의
+"Baseline: lecture24" 절)는 완성 프롬프트를 그대로 흘리는 별도 스크립트 세트를 쓴다:
+
+```bash
+# 생성 (모델 1개당 24장)
+python -m scripts.lecture_generate --model <model>
+
+# 채점 — pass1은 1번과 동일한 src.scoring 사용
+conda activate t2i-score
+python -m src.scoring --dir image-prompts/vNNN_<model>-lecture24/images \
+  --out bench/scores/vNNN_<model>-lecture24/pass1.csv --components vqascore,cv
+
+# csd_target — 정식 ref_set(2번) 대신 카테고리당 참조 이미지 1장(refs/lecture24/vlm-target/)과 비교하는
+# provisional 경로. 카테고리별 golden set 보강 후에는 --components csd로 전환 예정.
+python -m scripts.score_csd_target --dir image-prompts/vNNN_<model>-lecture24/images \
+  --out bench/scores/vNNN_<model>-lecture24/csd_target.csv
+
+# judge — bench_v1의 counting/spatial/attribute 대신 lecture24 전용 4축(content_present/
+# text_legibility/layout_structure/educational_fit)
+conda activate t2i-judge
+python -m scripts.judge_lecture24 --runs image-prompts/vNNN_<model>-lecture24
+```
+
+종합 리포트는 `reports/lecture24-v243-v244-v245/index.html`(수동/1회성 생성, `merge_results.py`
+같은 고정 생성 스크립트는 아직 없음). 새 모델을 이 baseline에 추가할 때도 같은 4단계를
+반복하고 리포트를 새로 만든다.

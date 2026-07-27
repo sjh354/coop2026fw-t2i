@@ -4,7 +4,7 @@ pairwise CSD 유사도 통계를 내고 manifest를 만든다.
 수집 기준: bench/style-presets-v2.md의 "5. CSD ref_set 수집 기준" 절 참고
 (프리셋별 15~25장, 피사체 다양·스타일 균일).
 
-    python -m scripts.validate_ref_set --preset edu-flat-v2 --dir refs/edu-flat-v2
+    python -m scripts.validate_ref_set --preset edu-flat-v2 --dir refs/golden-set/edu-flat-v2
 
 출력:
     configs/ref_sets/{preset}.yaml   — manifest (경로/sha256/통계/status)

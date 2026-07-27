@@ -10,3 +10,4 @@ protobuf
 numpy
 huggingface_hub
 bitsandbytes
+requests

@@ -118,6 +118,8 @@
   | pixart-sigma | 0.805 | 0.740 | 0.429 | 0.810 | 0.580 |
 
   judge 축별 pass율: pixart-sigma가 counting에서 66%(21/32)로 세 모델 중 유독 낮음(lumina2 94%, flux2-klein 81%) — 방언 파일럿에서 이미 나온 "lumina2가 복합 프롬프트 전 축에서 가장 안정적" 결론과 일치. spatial/attribute는 세 모델 다 80~100%대지만, judge 자체의 spatial/attribute 판정 정확도가 파일럿에서 낮게 나온 바 있어(위 "채점 모듈" 절) 액면 그대로 신뢰하지 않고 이미지 직접 확인이 필요.
+- [x] **lecture24 baseline 확정**: 실제 교과서 이미지 기반 완성 프롬프트 24개(`vlm-prompts.json`, 8카테고리×3 VLM 소스)로 3모델(pixart-sigma/flux2-klein-4b-nf4/qwen-image) 생성+채점 완료(v243~v245). **2026-07-24부터 이 테스트를 프로젝트 Baseline으로 고정** — 앞으로 프롬프트/모델/채점 방식 변경은 이 baseline 대비 개선 여부로 판단한다. 상세·리포트 링크는 `bench/results.md`의 "Baseline: lecture24" 절. csd_target은 카테고리당 참조 1장뿐인 provisional 신호라 정식 golden set(카테고리당 15~25장) 보강이 다음 항목.
+- [ ] **CSD golden set 보강(lecture24 8카테고리)**: `score_csd_target.py`가 지금 카테고리당 참조 이미지 1장으로만 비교 중 — `bench/style-presets-v2.md`의 "5. CSD ref_set 수집 기준"과 동일한 방식(피사체 다양·스타일 균일, 15~25장/카테고리)으로 8개 카테고리 각각 golden set을 모아 `scripts/validate_ref_set.py`로 검증 후 `src/scoring.py --components csd`(정식 ref_set 경로)로 전환.
 - [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.) 위 1차 비교 결과대로면 pixart-sigma의 counting 약점이 우선 조사 대상 — judge 오탐인지 실제 모델 한계인지 이미지 직접 확인 필요.
 
 ## 실행
@@ -135,6 +137,8 @@
                     archive/presets-v1/ 폐기된 구 프리셋 — 과거 실험 노트가 참조하므로 보존만
       keywords/     고정 벤치마크 키워드셋 — 모델 비교의 기준이므로 함부로 안 바꾼다
       benchmarks/   3단계 파이프라인 전체용 rubric 프롬프트셋(v1, 40개) — bench_v1.yaml
+                    vlm-prompts.json — 실제 교과서 이미지를 VLM으로 역추출한 완성 프롬프트 24개(8카테고리×3소스, "lecture24").
+                    2026-07-24부터 프로젝트 Baseline으로 고정, bench_v1처럼 함부로 편집하지 않는다. 상세는 bench/results.md.
     src/
       generate.py   모델 × 실험 조합 하나를 생성. 공통 엔트리포인트.
       adapters/     모델별 pipeline 로딩. lazy import (env가 다르므로 필수).

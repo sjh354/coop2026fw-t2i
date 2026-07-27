@@ -7,33 +7,33 @@ stats:
   std: 0.1033
 outliers: []
 images:
-- path: refs/storybook-scene/replicate-prediction-21b9rqedn5rmr0czfzwbtnymhc.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-21b9rqedn5rmr0czfzwbtnymhc.png
   sha256: f420f1530a7e628a2c519061170247de4242a6804dfc7c3087637554db87a7f9
   mean_similarity: 0.6113
-- path: refs/storybook-scene/replicate-prediction-6w8ywny46drmw0czfzws84sqww.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-6w8ywny46drmw0czfzws84sqww.png
   sha256: c82f111a965e1950f3e10c066c07c07ba417146f21704b870655db2936c04fdd
   mean_similarity: 0.6573
-- path: refs/storybook-scene/replicate-prediction-7rgwgs65zxrmw0czfzvt3wfj2r.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-7rgwgs65zxrmw0czfzvt3wfj2r.png
   sha256: 53e5c26a54a132179a38dc31a76b68ee1df5914ccfc301f4052060079369276e
   mean_similarity: 0.6517
-- path: refs/storybook-scene/replicate-prediction-awv4jfm5t9rmr0czfzw91xpgf8.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-awv4jfm5t9rmr0czfzw91xpgf8.png
   sha256: ea75418e76e0920904bb466cf86f0988646e90742dbca1dcc0cbb7f5bc656482
   mean_similarity: 0.6174
-- path: refs/storybook-scene/replicate-prediction-dtxndh4vx1rmr0czfzvsvs1sk0.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-dtxndh4vx1rmr0czfzvsvs1sk0.png
   sha256: e71b3f4094f9dabd1015f25b6af08586087f30f6c990059195258820e699bd11
   mean_similarity: 0.4792
-- path: refs/storybook-scene/replicate-prediction-j2hpjc8pjxrmr0czfzvsgwm1c4.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-j2hpjc8pjxrmr0czfzvsgwm1c4.png
   sha256: f2463730f6e2022d47a8f668cd5488ee1792e3cad09dc12ea4170b8b707602ba
   mean_similarity: 0.6439
-- path: refs/storybook-scene/replicate-prediction-w3gcqf385nrmt0czfzwvp4ry8r.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-w3gcqf385nrmt0czfzwvp4ry8r.png
   sha256: 41d04e56213bf807850326dfd07ba3a53819c455a6cbb81bdd1488216787f73e
   mean_similarity: 0.568
-- path: refs/storybook-scene/replicate-prediction-y3hwhbznbdrmy0czfzvvvjgr40.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-y3hwhbznbdrmy0czfzvvvjgr40.png
   sha256: 0215a4b88a731d5af93fef533a76ee4959dc66ceff3b30f5bbd864ba157e3468
   mean_similarity: 0.5469
-- path: refs/storybook-scene/replicate-prediction-y77aakf97drmy0czfzvah60efg.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-y77aakf97drmy0czfzvah60efg.png
   sha256: d982f3a7df80af5f3a1e15f891546b7f6046ffaaf85627ffaaba69db7a95d96a
   mean_similarity: 0.6014
-- path: refs/storybook-scene/replicate-prediction-y99qx3jkjnrmy0czfzvtdynt98.png
+- path: refs/golden-set/storybook-scene/replicate-prediction-y99qx3jkjnrmy0czfzvtdynt98.png
   sha256: 63a25381a9d7b661dedde79b2c3ab7c1a6bbcf14aa8b3c78aabf96a8371d6ae4
   mean_similarity: 0.5432

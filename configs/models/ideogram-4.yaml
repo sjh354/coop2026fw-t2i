@@ -9,4 +9,4 @@ sampler_preset: V4_QUALITY_48   # steps/guidance 대신 preset이 num_steps+CFG 
 supports_negative: false        # ideogram4 파이프라인은 negative_prompt 인자 자체가 없음
 quantization: nf4        # 9.3B, bf16 ~19GB → nf4 사전양자화 repo
 prequantized: true       # repo 자체가 nf4로 이미 양자화됨 → BitsAndBytesConfig 재적용 안 함
-notes: 라이선스 조항 미확인. 텍스트/레이아웃 강점 확인용. magic-prompt(LLM 캡션 확장)는 꺼서 원문 프롬프트 그대로 사용.
+notes: 텍스트/레이아웃 강점 확인용. magic-prompt(LLM 캡션 확장)는 꺼서 원문 프롬프트 그대로 사용.

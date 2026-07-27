@@ -18,6 +18,16 @@ ROOT = pathlib.Path(__file__).parent.parent / "image-prompts"
 REFS_ROOT = pathlib.Path(__file__).parent.parent / "refs"
 
 
+def resolve_ref_name(name):
+    """experiment 이름 == golden-set 프리셋 이름인 경우를 위한 fallback.
+
+    refs/<name>/ 이 없고 refs/golden-set/<name>/ 이 있으면 그쪽 경로를 쓴다.
+    """
+    if name and not (REFS_ROOT / name).exists() and (REFS_ROOT / "golden-set" / name).exists():
+        return f"golden-set/{name}"
+    return name
+
+
 def list_versions():
     return sorted(d for d in ROOT.iterdir()
                   if d.is_dir() and (d / f"{d.name}.md").exists())
@@ -104,7 +114,7 @@ if mode == "Browse / Rate":
 
     st.subheader("Scoring")
     ref_name = st.text_input("Ref set (refs/<name>/) — 비워두면 golden set 없이 채점",
-                              post.get("experiment", ""))
+                              resolve_ref_name(post.get("experiment", "")))
     sc1, sc2 = st.columns(2)
     if sc1.button("➕ Add best picks to golden set"):
         if not best:
@@ -152,7 +162,7 @@ else:  # Compare — 같은 키워드를 모델별로 가로 비교
                "rating": posts[n].get("rating"),
                "harmonic": posts[n].get("harmonic_mean")} for n in picks])
 
-    default_ref = posts[picks[0]].get("experiment", "")
+    default_ref = resolve_ref_name(posts[picks[0]].get("experiment", ""))
     ref_name = st.sidebar.text_input("Ref set (refs/<name>/)", default_ref)
     ref_dir = REFS_ROOT / ref_name if ref_name else None
 

@@ -1,5 +1,5 @@
 """수업용 lecture24 벤치 전용 CSD 채점 — 카테고리당 정식 ref_set(15~25장) 대신
-refs/vlm-target/의 단일 참조 이미지(그 카테고리 프롬프트를 뽑아낸 원본) 하나와
+refs/lecture24/vlm-target/의 단일 참조 이미지(그 카테고리 프롬프트를 뽑아낸 원본) 하나와
 비교한다. src/scoring.py의 --components csd(검증된 ref_set 전제)와는 별개 경로라
 CLI를 건드리지 않고 별도 스크립트로 뺐다.
 
@@ -20,7 +20,7 @@ ROOT = pathlib.Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 from src.scoring import load_csd_model, csd_style_embedding  # noqa: E402
 
-REFS_DIR = ROOT / "refs" / "vlm-target"
+REFS_DIR = ROOT / "refs" / "lecture24" / "vlm-target"
 
 # 파일명이 카테고리 type과 문자 그대로 일치하지 않는 2건 — 이미지 내용을 직접 봐서
 # 확정한 매핑(vlm-prompts.json 채우던 세션에서 결정).
