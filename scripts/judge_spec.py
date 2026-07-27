@@ -48,12 +48,18 @@ PROBE_SYSTEM = (
 
 def _parse_answer(raw):
     start, end = raw.find("{"), raw.rfind("}")
-    if start == -1 or end == -1:
-        raise ValueError(f"JSON 객체를 찾을 수 없음: {raw[:200]!r}")
-    parsed = json.loads(raw[start:end + 1])
-    if "answer" not in parsed:
-        raise ValueError(f"answer 필드가 없음: {parsed}")
-    return str(parsed["answer"])
+    if start != -1 and end != -1:
+        try:
+            parsed = json.loads(raw[start:end + 1])
+            if "answer" in parsed:
+                return str(parsed["answer"])
+        except json.JSONDecodeError:
+            pass
+    # 모델이 JSON 없이 값만 바로 답한 경우 (probe 문구의 "정수만 답하라" 지시를 따른 것) 그대로 사용
+    stripped = raw.strip()
+    if stripped:
+        return stripped
+    raise ValueError(f"빈 응답: {raw[:200]!r}")
 
 
 def _eval_expect(answer, expect):
