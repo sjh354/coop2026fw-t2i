@@ -30,10 +30,12 @@ NAMED_COLORS = {
 }
 
 
-def count_regions(img, min_area, aspect_range, mode="blobs"):
+def count_regions(img, min_area, aspect_range, mode="blobs", row_band=None):
     """mode='blobs': 채도 있는 덩어리(핀 등)를 연결요소로 분리해 센다.
     mode='holes': 흰/밝은 내부 영역(박스 등)을 연결요소로 분리해 센다 —
-    이미지 테두리에 닿는 가장 큰 연결요소(그림 바깥 배경)는 제외한다."""
+    이미지 테두리에 닿는 가장 큰 연결요소(그림 바깥 배경)는 제외한다.
+    row_band=(lo, hi)는 세로 비율(0~1) 구간만 잘라서 본다 — 칸을 나누는
+    세로선 위/아래로 칸끼리 흰 여백이 이어져 하나로 뭉치는 것을 막는 용도."""
     h_img, w_img = img.shape[:2]
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     sat, val = hsv[:, :, 1], hsv[:, :, 2]
@@ -42,6 +44,11 @@ def count_regions(img, min_area, aspect_range, mode="blobs"):
         mask = ((sat > 60) & (val > 60)).astype(np.uint8) * 255
     else:
         mask = ((sat < 30) & (val > 200)).astype(np.uint8) * 255
+
+    if row_band:
+        lo, hi = int(row_band[0] * h_img), int(row_band[1] * h_img)
+        mask[:lo, :] = 0
+        mask[hi:, :] = 0
 
     n_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
     border_labels = set(labels[0, :]) | set(labels[-1, :]) | set(labels[:, 0]) | set(labels[:, -1])
@@ -106,8 +113,10 @@ def polygon_sides(contour, circle_vertex_threshold=8):
 def _measure_item(img, item):
     if item["type"] == "count":
         mode = "holes" if "box" in item["check"].lower() else "blobs"
-        aspect_range = (1.5, 10.0) if mode == "holes" else (0.5, 2.0)
-        measured = count_regions(img, min_area=300, aspect_range=aspect_range, mode=mode)
+        aspect_range = (0.8, 15.0) if mode == "holes" else (0.8, 3.0)
+        row_band = (0.3, 0.7) if mode == "holes" else None
+        min_area = 300 if mode == "holes" else 1500
+        measured = count_regions(img, min_area=min_area, aspect_range=aspect_range, mode=mode, row_band=row_band)
         expected = item["expect"]["value"]
         verdict = "yes" if measured == expected else "no"
         return measured, expected, verdict
@@ -146,11 +155,16 @@ def measure_images(images_dir, spec_by_id, out_dir=None):
 
 def _save_debug_overlay(img, item, out_path):
     mode = "holes" if item["type"] == "count" and "box" in item["check"].lower() else "blobs"
-    aspect_range = (1.5, 10.0) if mode == "holes" else (0.5, 2.0)
+    aspect_range = (0.8, 15.0) if mode == "holes" else (0.8, 3.0)
+    min_area = 300 if mode == "holes" else 1500
     h_img, w_img = img.shape[:2]
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     sat, val = hsv[:, :, 1], hsv[:, :, 2]
     mask = (((sat > 60) & (val > 60)) if mode == "blobs" else ((sat < 30) & (val > 200))).astype(np.uint8) * 255
+    if mode == "holes":
+        lo, hi = int(0.3 * h_img), int(0.7 * h_img)
+        mask[:lo, :] = 0
+        mask[hi:, :] = 0
     n_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
     border_labels = set(labels[0, :]) | set(labels[-1, :]) | set(labels[:, 0]) | set(labels[:, -1])
 
@@ -159,7 +173,7 @@ def _save_debug_overlay(img, item, out_path):
         if mode == "holes" and label in border_labels:
             continue
         area = stats[label, cv2.CC_STAT_AREA]
-        if area < 300 or area > 0.5 * h_img * w_img:
+        if area < min_area or area > 0.5 * h_img * w_img:
             continue
         x, y, w, h = stats[label, cv2.CC_STAT_LEFT], stats[label, cv2.CC_STAT_TOP], \
             stats[label, cv2.CC_STAT_WIDTH], stats[label, cv2.CC_STAT_HEIGHT]
