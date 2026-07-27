@@ -12,6 +12,7 @@ generate.py가 노트에 vram/latency를 자동 기록하므로, 여기엔 **결
 - 종합 리포트: `reports/lecture24-v243-v244-v245/index.html`.
 - **앞으로 프롬프트/모델/채점 방식을 바꿀 때는 이 baseline 대비 개선 여부로 판단한다** — `configs/benchmarks/vlm-prompts.json`은 `configs/keywords/*`처럼 비교 기준이므로 함부로 편집하지 않는다(내용을 바꾸려면 새 파일로 분리).
 - **알려진 한계**: csd_target은 카테고리당 참조 이미지 1장(원본 교과서 이미지)만 쓰는 provisional 신호다 — 정식 golden set(카테고리당 15~25장) 수집 전까지는 "그 한 장과 얼마나 닮았는가"에 가까운 약한 신호로만 참고할 것.
+- **⚠️ 2026-07-27 발견 — v243/v244/v245는 프롬프트 드리프트로 무효화됨**: 커밋 `778d5dd`("backup", 07-27 10:41)가 `vlm-prompts.json`의 24개 중 15개(카테고리×소스) 프롬프트를 고정 baseline 규칙을 어기고 재작성했다. 그런데 `v243/v244/v245` 이미지는 그 전날(07-21)에 **옛 프롬프트**로 이미 생성돼 있었고, `vlm-prompts-spec.json`(TASK-B2 spec item 채점 체계)은 그 뒤(07-27 12:30)에 **새 프롬프트** 기준으로 작성됐다 — 즉 지금 채점 중이던 spec item 문구와 실제 이미지가 15개 카테고리에서 서로 다른 프롬프트를 가리키고 있었다. 새 프롬프트가 더 낫다고 판단해 **새 프롬프트를 baseline으로 확정**하고, `v243/v244/v245`는 `scripts/lecture_generate.sh` + `--model qwen-image`로 재생성하기로 함(새 버전 번호로 생성됨, v243~v245는 그대로 두고 새 버전이 baseline을 대체). TASK-B2 STAGE 0~3에서 만든 라벨(파일럿 29건 + `bench/scores/stage3_manual.csv` 96건)은 옛 이미지 기준이라 재생성 후 다시 라벨링해야 한다.
 
 | 모델 | 3090에서 동작 | 16GB 가능? | 결론 | 삽질 메모 |
 |---|---|---|---|---|
