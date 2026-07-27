@@ -256,7 +256,7 @@ distilled bf16이 8.4GB면 16GB 예산에 이미 들어오므로 NF4를 쓸 이�
 비교 대상 두 백엔드:
   (1) Wan2.2 계열 prompt_extend.py 구조 (인터페이스만 차용, 시스템 프롬프트는 교체)
   (2) PromptEnhancer-7B (Tencent HunyuanImage, CVPR 2026)
-GPU: RTX 3090 24GB.
+GPU: RTX 3090 24GB.(ubuntu@172.10.5.23 사용)
 
 [중요한 사전 지식 — 그대로 반영할 것]
 - Wan2.2의 원본 시스템 프롬프트는 영상 생성용이라 움직임/카메라워크 어휘를 강제로 붙인다.
@@ -289,6 +289,48 @@ scripts/rewrite.py 신규. 인자 --in (프롬프트 JSON), --backend {passthrou
 - 백엔드를 추상 클래스로 감싸지 마라. if/elif 3개면 충분하다.
 - 리라이터 출력을 자동으로 검증/재시도하는 루프를 만들지 마라.
 ```
+
+**진행 상황 (2026-07-27, 3개 조건 리라이팅 완료 / 이미지 생성 전)**
+
+- `scripts/rewrite.py` 신규 — `--in/--backend/--system-prompt/--out`, backend 3개
+  (`passthrough`/`wan_style`/`promptenhancer`)를 if/elif로 구현. 미리보기 3개 stdout 출력,
+  photo-word 키워드 리포트 포함. 시스템 프롬프트는 `configs/rewrite/wan_style.txt`,
+  `configs/rewrite/promptenhancer.txt`로 분리.
+- `wan_style`은 Qwen2.5-7B-Instruct에 Wan2.2 `prompt_extend.py` 인터페이스 구조만 차용
+  (내용은 새 시스템 프롬프트로 교체). `promptenhancer`는 `tencent/HunyuanImage-2.1`의
+  `reprompt` 서브폴더(실측 bf16 ~18GB) — `trust_remote_code=True`인데 커스텀 코드
+  (`tokenization_hy.py`)가 리포 루트에서만 조회돼 `subfolder=`가 안 먹어서
+  `snapshot_download`로 로컬에 받은 뒤 그 경로로 로드하도록 우회. `tiktoken` 의존성 누락도
+  발견해 설치.
+- `scripts/lecture_generate.py`에 `--prompts-json` 옵션 한 줄 추가(기본값 불변, surgical) —
+  `scripts/rewrite.py` 출력을 그대로 흘려보낼 수 있게 함.
+- `ubuntu@172.10.5.23`을 채점 겸 리라이팅 서버로 확장(CLAUDE.md 갱신) — 디스크가 95%
+  차 있어서 `t2i-judge`/`t2i-judge2`/`t2i-score` env와 채점용 모델 캐시(Qwen2.5-VL-7B,
+  Gemma-3-12B-4bit, CLIP)를 **freeze 커밋 후 삭제**해서 50GB 확보, 그 위에 `t2i-rewrite`
+  env를 새로 만듦. PromptEnhancer-7B 첫 다운로드는 shard 2/3이 죽어서(dead connection)
+  `hf download` + Xet 고성능 전송으로 재시도해 해결.
+- 채점 파이프라인을 다시 쓰려면 `envs/t2i-judge.txt`/`t2i-judge2.txt`/`t2i-score.txt`로
+  env 재생성 + 모델 재다운로드 필요 (지금 23번엔 채점 모델 캐시가 없음).
+
+**핵심 결과** (`image-prompts/rewrite/{passthrough,wan_style,promptenhancer}.json`, 24개
+벤치마크 프롬프트 × 3조건, photo-word 키워드 단순 매칭):
+
+| backend | photo-word 검출 | 비고 |
+|---|---|---|
+| passthrough (대조군) | 0 | |
+| wan_style | 0 | 수량/공간관계 보존 양호 |
+| promptenhancer (enable_thinking=False) | `cinematic`×4, `photorealistic`×3 (나머지 `photo` 히트는 "no photographic qualities" 부정문이라 오탐) | 명시적으로 금지한 시스템 프롬프트를 줬는데도 새어나옴 |
+
+- **핵심 발견**: PromptEnhancer-7B는 "사진/영상 어휘 금지"를 시스템 프롬프트에 명시해도
+  24개 중 최소 7개에서 사실적 어휘가 샌다. wan_style(Qwen2.5-7B, 인터페이스만 차용)은
+  0건 — 같은 제약을 줬을 때 base 모델 자체의 "사진처럼 보정하려는" 편향이 더 강한 걸로 보임.
+  단, 이건 단순 키워드 매칭 기준이라 오탐(부정문)이 섞여 있고, 최종 판정 기준(TASK-B spec
+  통과율)으로는 아직 검증 안 됨.
+
+**다음 단계**: `enable_thinking=True` 조건은 아직 안 돌림(사전지식에 "두 설정 다 실험"
+명시돼 있었음 — False만 완료). 157번(생성 전용) 서버에서
+`python -m scripts.lecture_generate --model <candidate> --prompts-json image-prompts/rewrite/<backend>.json`
+로 3조건×24개 실제 이미지 생성 → TASK-B spec 채점 파이프라인으로 최종 판정, 아직 미실행.
 
 ---
 
