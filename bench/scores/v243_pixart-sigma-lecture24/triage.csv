@@ -1,0 +1,10 @@
+image,prompt_id,item_id,type,check,auto_verdict,manual_verdict,classification
+v243_00_structured_worksheet_template_claude.png,structured_worksheet_template_claude,s1,count,exactly 6 rectangular boxes are present,yes,no,A
+v243_00_structured_worksheet_template_claude.png,structured_worksheet_template_claude,s4,attribute,the pins are different colors from one another,yes,no,A
+v243_00_structured_worksheet_template_claude.png,structured_worksheet_template_claude,s8,style,the outlines are thick and black,yes,no,B
+v243_01_structured_worksheet_template_chatgpt.png,structured_worksheet_template_chatgpt,s4,attribute,the pins are differently colored,yes,no,A
+v243_01_structured_worksheet_template_chatgpt.png,structured_worksheet_template_chatgpt,s8,style,the background is white,yes,no,B
+v243_01_structured_worksheet_template_chatgpt.png,structured_worksheet_template_chatgpt,s9,spatial,spacing between elements looks balanced/even,yes,no,B
+v243_02_structured_worksheet_template_qwen.png,structured_worksheet_template_qwen,s1,count,exactly 6 rectangular boxes are present,yes,no,A
+v243_02_structured_worksheet_template_qwen.png,structured_worksheet_template_qwen,s4,attribute,the pins are different colors from one another,yes,no,A
+v243_02_structured_worksheet_template_qwen.png,structured_worksheet_template_qwen,s8,style,the outlines are thick and black,yes,no,B

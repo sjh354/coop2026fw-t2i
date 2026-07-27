@@ -12,7 +12,7 @@
             {"id": "s5", "type": "spatial", "check": "the pins are placed along a single horizontal line at the bottom"},
             {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
             {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
-            {"id": "s8", "type": "style", "check": "the outlines are thick and black"},
+            {"id": "s8", "type": "style", "check": "the outline strokes look like they were drawn with a bold marker or thick pen, not a thin 1px pencil line, and are colored solid black rather than gray or another color"},
             {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"}
         ]
     },
@@ -29,8 +29,8 @@
             {"id": "s5", "type": "spatial", "check": "each box is connected to one pin by a vertical stroke"},
             {"id": "s6", "type": "attribute", "check": "the writing areas inside the boxes are blank"},
             {"id": "s7", "type": "style", "check": "outlines are thick and black"},
-            {"id": "s8", "type": "style", "check": "the background is white"},
-            {"id": "s9", "type": "spatial", "check": "spacing between elements looks balanced/even"}
+            {"id": "s8", "type": "style", "check": "the plain background area surrounding the boxes and pins (not just inside the boxes) is solid white, with no colorful decorative graphics, borders, or clutter filling that space"},
+            {"id": "s9", "type": "spatial", "check": "the horizontal gaps between adjacent boxes are visibly similar in width to one another, with no box crowded tightly against a neighbor while others have much wider gaps"}
         ]
     },
     {
@@ -46,7 +46,7 @@
             {"id": "s5", "type": "spatial", "check": "the pins are placed along a single horizontal line at the bottom"},
             {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
             {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
-            {"id": "s8", "type": "style", "check": "the outlines are thick and black"},
+            {"id": "s8", "type": "style", "check": "the outline strokes look like they were drawn with a bold marker or thick pen, not a thin 1px pencil line, and are colored solid black rather than gray or another color"},
             {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"}
         ]
     },
