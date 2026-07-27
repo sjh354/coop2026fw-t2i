@@ -171,8 +171,41 @@ content_present / text_legibility / layout_structure / educational_fit 4축 pass
 
 [하지 말 것]
 - judge 여러 개를 앙상블해서 하나의 점수로 합치지 마라. 각각 따로 보고한다.
-- 새 모델을 받기 위해 기존 환경의 transformers 버전을 올리지 마라. 별도 venv를 써라.
+- 새 모델을 받기 위해 기존 환경의 transformers 버전을 올리지 마라. 환경은 conda env로 관리하라.
 ```
+
+**진행 상황 (2026-07-27, 파일럿 규모 완료)**
+
+- `scripts/judge_spec.py`에 `--judge-model`/`--judge-quant4bit` 추가, `scripts/judge.py`를
+  Qwen 전용 백엔드 + 범용(`AutoModelForImageTextToText`) 백엔드로 일반화.
+- `scripts/judge_agreement.py` 신규 — `--a/--b/--out`, 전체 + prompt_source(claude/chatgpt/qwen)별
+  Cohen's κ·일치율·불일치 목록 출력. 로컬에서 기존 pilot CSV로 검증 완료.
+- 2차 judge로 `unsloth/gemma-3-12b-it-bnb-4bit`(사전 4bit, ~7.3GB, ungated) 채택 —
+  `google/gemma-3-12b-it` 원본(bf16 22.7GB, gated)은 서버 여유 디스크에 안 들어감.
+- **인프라 이슈**: 이 체크포인트가 transformers 내부적으로 `torch>=2.6`을 요구하는데
+  `t2i-judge`(Qwen2.5-VL 작동 버전)는 torch 2.5.1 고정 — 건드리지 않고 `t2i-judge2`
+  (torch 2.6.0+cu124, transformers 5.14.1) 신규 env로 분리. 설치 중 서버 디스크가
+  92%까지 참 → pip/conda 캐시 정리로 확보(`envs/README.md` 참고).
+- 실행 스크립트 `scripts/sweeps/pilot_judge_gemma3.sh` 신규, `alert.py` 연동으로
+  Discord 알림 확인됨.
+
+**핵심 결과** (v243 파일럿 3장, spec item 29건, `bench/results.md`에 상세):
+
+| 비교 | 일치율 | 전체 κ | claude κ | chatgpt κ | qwen κ |
+|---|---|---|---|---|---|
+| 사람 vs Qwen2.5-VL-7B (기존) | 0.76 | 0.55 | 0.55 | 0.29 | 0.55 |
+| 사람 vs Gemma-3-12B-4bit (신규) | 0.66 | 0.31 | 0.17 | 0.40 | 0.17 |
+
+- 두 judge 모두 κ<0.6 — **이 규모에서는 둘 다 신뢰할 수 없음.** 사람 손 채점 30장 이상
+  확보 기준에 이제 막 도달한 수준이라, 표본을 늘려 재검증하기 전까지 spec item 채점
+  결과를 모델 비교의 최종 근거로 쓰지 말 것.
+- **자기 계열 선호(self-enhancement bias) 가설은 이 파일럿에서 지지되지 않음**: Qwen
+  judge가 qwen 소스에 유독 후하지 않고(claude와 동일 κ=0.55), Gemma-3도 qwen 소스에
+  유독 박하지 않음(claude와 동일 κ=0.17). 대신 두 judge 모두 **chatgpt 소스에서 서로
+  반대 방향으로 튐**(Qwen: chatgpt 최저 0.29 / Gemma-3: chatgpt 최고 0.40) — 계열 편향보다
+  chatgpt 소스 spec item 문구의 모호성 문제일 가능성.
+
+**다음 단계**: 사람 손 채점 규모를 30장 이상으로 늘려 재검증 필요.
 
 ---
 
