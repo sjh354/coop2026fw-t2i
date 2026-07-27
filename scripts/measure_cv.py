@@ -31,23 +31,29 @@ NAMED_COLORS = {
 
 
 def count_regions(img, min_area, aspect_range, mode="blobs"):
-    """mode='blobs': 색이 있는 덩어리(핀 등)를 흰 배경에서 분리해 센다.
-    mode='holes': 검은 잉크 선으로 둘러싸인 흰 내부(박스 등)를 센다."""
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    """mode='blobs': 채도 있는 덩어리(핀 등)를 연결요소로 분리해 센다.
+    mode='holes': 흰/밝은 내부 영역(박스 등)을 연결요소로 분리해 센다 —
+    이미지 테두리에 닿는 가장 큰 연결요소(그림 바깥 배경)는 제외한다."""
+    h_img, w_img = img.shape[:2]
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    sat, val = hsv[:, :, 1], hsv[:, :, 2]
+
     if mode == "blobs":
-        _, binary = cv2.threshold(gray, 245, 255, cv2.THRESH_BINARY_INV)
-        contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        mask = ((sat > 60) & (val > 60)).astype(np.uint8) * 255
     else:
-        _, ink = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY_INV)
-        contours, hierarchy = cv2.findContours(ink, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-        contours = [c for c, h in zip(contours, hierarchy[0]) if h[3] != -1] if contours else []
+        mask = ((sat < 30) & (val > 200)).astype(np.uint8) * 255
+
+    n_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    border_labels = set(labels[0, :]) | set(labels[-1, :]) | set(labels[:, 0]) | set(labels[:, -1])
 
     count = 0
-    for c in contours:
-        area = cv2.contourArea(c)
-        if area < min_area:
+    for label in range(1, n_labels):
+        if mode == "holes" and label in border_labels:
             continue
-        _, _, w, h = cv2.boundingRect(c)
+        area = stats[label, cv2.CC_STAT_AREA]
+        if area < min_area or area > 0.5 * h_img * w_img:
+            continue
+        w, h = stats[label, cv2.CC_STAT_WIDTH], stats[label, cv2.CC_STAT_HEIGHT]
         aspect = h / w if w else 0
         if aspect_range[0] <= aspect <= aspect_range[1]:
             count += 1
@@ -100,7 +106,8 @@ def polygon_sides(contour, circle_vertex_threshold=8):
 def _measure_item(img, item):
     if item["type"] == "count":
         mode = "holes" if "box" in item["check"].lower() else "blobs"
-        measured = count_regions(img, min_area=300, aspect_range=(0.3, 8.0), mode=mode)
+        aspect_range = (1.5, 10.0) if mode == "holes" else (0.5, 2.0)
+        measured = count_regions(img, min_area=300, aspect_range=aspect_range, mode=mode)
         expected = item["expect"]["value"]
         verdict = "yes" if measured == expected else "no"
         return measured, expected, verdict
@@ -139,16 +146,26 @@ def measure_images(images_dir, spec_by_id, out_dir=None):
 
 def _save_debug_overlay(img, item, out_path):
     mode = "holes" if item["type"] == "count" and "box" in item["check"].lower() else "blobs"
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    if mode == "holes":
-        _, ink = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY_INV)
-        contours, hierarchy = cv2.findContours(ink, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-        contours = [c for c, h in zip(contours, hierarchy[0]) if h[3] != -1] if contours else []
-    else:
-        _, binary = cv2.threshold(gray, 245, 255, cv2.THRESH_BINARY_INV)
-        contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    aspect_range = (1.5, 10.0) if mode == "holes" else (0.5, 2.0)
+    h_img, w_img = img.shape[:2]
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    sat, val = hsv[:, :, 1], hsv[:, :, 2]
+    mask = (((sat > 60) & (val > 60)) if mode == "blobs" else ((sat < 30) & (val > 200))).astype(np.uint8) * 255
+    n_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    border_labels = set(labels[0, :]) | set(labels[-1, :]) | set(labels[:, 0]) | set(labels[:, -1])
+
     overlay = img.copy()
-    cv2.drawContours(overlay, contours, -1, (0, 0, 255), 2)
+    for label in range(1, n_labels):
+        if mode == "holes" and label in border_labels:
+            continue
+        area = stats[label, cv2.CC_STAT_AREA]
+        if area < 300 or area > 0.5 * h_img * w_img:
+            continue
+        x, y, w, h = stats[label, cv2.CC_STAT_LEFT], stats[label, cv2.CC_STAT_TOP], \
+            stats[label, cv2.CC_STAT_WIDTH], stats[label, cv2.CC_STAT_HEIGHT]
+        aspect = h / w if w else 0
+        color = (0, 0, 255) if aspect_range[0] <= aspect <= aspect_range[1] else (255, 0, 0)
+        cv2.rectangle(overlay, (x, y), (x + w, y + h), color, 2)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     cv2.imwrite(str(out_path), overlay)
 
