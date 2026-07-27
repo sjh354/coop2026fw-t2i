@@ -69,13 +69,17 @@ def build_rewrite_fn(backend, system_prompt, enable_thinking):
 
     if backend == "promptenhancer":
         import torch
+        from huggingface_hub import snapshot_download
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
-        model_id = "tencent/HunyuanImage-2.1"
-        tok = AutoTokenizer.from_pretrained(
-            model_id, subfolder="reprompt", trust_remote_code=True)
+        # trust_remote_code 커스텀 코드(tokenization_hy.py)는 리포 루트에서만 찾으므로
+        # subfolder= 인자로는 안 되고, reprompt/ 하위를 로컬로 통째로 받아 그 경로에서 로드해야 한다.
+        local_dir = snapshot_download(
+            "tencent/HunyuanImage-2.1", allow_patterns=["reprompt/*"])
+        model_path = f"{local_dir}/reprompt"
+        tok = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         model = AutoModelForCausalLM.from_pretrained(
-            model_id, subfolder="reprompt", trust_remote_code=True,
+            model_path, trust_remote_code=True,
             torch_dtype=torch.bfloat16, device_map="cuda")
 
         def rewrite_fn(prompt):
