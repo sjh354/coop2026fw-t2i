@@ -1,0 +1,388 @@
+[
+    {
+        "id": "structured_worksheet_template_claude",
+        "type": "Structured Worksheet Template",
+        "source": "claude",
+        "prompt": "A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six small teardrop-shaped location pins in different colors placed along that line, each box connected to one pin by a thin vertical stroke, thick black outlines, all boxes completely empty with white interiors, plain white background, no text, no letters.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 6 rectangular boxes are present"},
+            {"id": "s2", "type": "spatial", "check": "the boxes are arranged in two staggered rows"},
+            {"id": "s3", "type": "count", "check": "exactly 6 teardrop-shaped pins are present"},
+            {"id": "s4", "type": "attribute", "check": "the pins are different colors from one another"},
+            {"id": "s5", "type": "spatial", "check": "the pins are placed along a single horizontal line at the bottom"},
+            {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
+            {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
+            {"id": "s8", "type": "style", "check": "the outlines are thick and black"},
+            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"}
+        ]
+    },
+    {
+        "id": "structured_worksheet_template_chatgpt",
+        "type": "Structured Worksheet Template",
+        "source": "chatgpt",
+        "prompt": "Create a printable elementary school worksheet template containing six large empty rectangular boxes arranged in two staggered rows above a single horizontal baseline. Place six small colored teardrop-shaped location pins along that baseline and connect each box to one pin with a thin vertical stroke, leaving the writing areas completely blank. Use a clean vector layout, thick black outlines, white background, balanced spacing, and a classroom-friendly printable design.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 6 rectangular boxes are present"},
+            {"id": "s2", "type": "spatial", "check": "the boxes are arranged in two staggered rows above a baseline"},
+            {"id": "s3", "type": "count", "check": "exactly 6 teardrop-shaped pins are present"},
+            {"id": "s4", "type": "attribute", "check": "the pins are differently colored"},
+            {"id": "s5", "type": "spatial", "check": "each box is connected to one pin by a vertical stroke"},
+            {"id": "s6", "type": "attribute", "check": "the writing areas inside the boxes are blank"},
+            {"id": "s7", "type": "style", "check": "outlines are thick and black"},
+            {"id": "s8", "type": "style", "check": "the background is white"},
+            {"id": "s9", "type": "spatial", "check": "spacing between elements looks balanced/even"}
+        ]
+    },
+    {
+        "id": "structured_worksheet_template_qwen",
+        "type": "Structured Worksheet Template",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six small teardrop-shaped location pins in different colors placed along that line, each box connected to one pin by a thin vertical stroke, thick black outlines, all boxes completely empty with white interiors, plain white background, no text, no letters.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 6 rectangular boxes are present"},
+            {"id": "s2", "type": "spatial", "check": "the boxes are arranged in two staggered rows"},
+            {"id": "s3", "type": "count", "check": "exactly 6 teardrop-shaped pins are present"},
+            {"id": "s4", "type": "attribute", "check": "the pins are different colors from one another"},
+            {"id": "s5", "type": "spatial", "check": "the pins are placed along a single horizontal line at the bottom"},
+            {"id": "s6", "type": "spatial", "check": "each box is connected to exactly one pin by a thin vertical stroke"},
+            {"id": "s7", "type": "attribute", "check": "the box interiors are white/empty, not filled with content"},
+            {"id": "s8", "type": "style", "check": "the outlines are thick and black"},
+            {"id": "s9", "type": "text", "check": "no text or letters appear anywhere in the image"}
+        ]
+    },
+    {
+        "id": "data_visualization_chart_claude",
+        "type": "Data Visualization Chart",
+        "source": "claude",
+        "prompt": "A simple vertical bar chart on white background, six bars of equal width standing on a horizontal baseline, a small toy icon centered below each bar, the bars colored in left-to-right order yellow, blue, orange, red, brown and green, the blue bar tallest and the orange bar shortest, thin horizontal gridlines behind the bars, a plain vertical axis line on the left, no numbers, no labels, no text.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 6 bars are present"},
+            {"id": "s2", "type": "attribute", "check": "all bars have equal width"},
+            {"id": "s3", "type": "count", "check": "exactly 6 toy icons are present, one centered below each bar"},
+            {"id": "s4", "type": "attribute", "check": "the bars are colored yellow, blue, orange, red, brown, green in left-to-right order"},
+            {"id": "s5", "type": "attribute", "check": "the blue bar is the tallest bar"},
+            {"id": "s6", "type": "attribute", "check": "the orange bar is the shortest bar"},
+            {"id": "s7", "type": "spatial", "check": "thin horizontal gridlines appear behind the bars"},
+            {"id": "s8", "type": "spatial", "check": "a vertical axis line appears on the left side"},
+            {"id": "s9", "type": "text", "check": "no numbers, labels, or text appear anywhere in the image"}
+        ]
+    },
+    {
+        "id": "data_visualization_chart_chatgpt",
+        "type": "Data Visualization Chart",
+        "source": "chatgpt",
+        "prompt": "Create a printable elementary school worksheet featuring a colorful bar graph comparing six favorite-toy categories with different colored bars and a small toy icon below each category. Include a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout. Use vector graphics, high readability, white background, and a classroom-friendly printable worksheet design.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 6 bars/toy categories are present"},
+            {"id": "s2", "type": "attribute", "check": "each bar has a distinct color"},
+            {"id": "s3", "type": "count", "check": "each bar has a matching toy icon below it"},
+            {"id": "s4", "type": "text", "check": "a worksheet title is present"},
+            {"id": "s5", "type": "text", "check": "the axes are labeled"},
+            {"id": "s6", "type": "text", "check": "numbered comprehension questions are present"},
+            {"id": "s7", "type": "spatial", "check": "blank answer lines are present"},
+            {"id": "s8", "type": "style", "check": "the overall layout is clean and readable"}
+        ]
+    },
+    {
+        "id": "data_visualization_chart_qwen",
+        "type": "Data Visualization Chart",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A bar graph worksheet titled 'bar graphs'. The graph displays the favorite toys of Grade 1 learners, with each bar representing a different toy. The toys are represented by icons at the bottom: a doll, a robot, a basketball, a dinosaur, a truck, and a teddy bear. The six bars are colored yellow, blue, orange, red, brown, and green in that order. The y-axis is labeled with numbers from 1 to 12, indicating the count of learners who prefer each toy. The worksheet includes questions asking students to identify which toy is most liked, least liked, and how many learners like specific combinations of toys. The background is white, and the text is black, with a beige header section. There is no text in the image other than the title, labels, and questions.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 6 bars are present"},
+            {"id": "s2", "type": "text", "check": "a title reading something like \"bar graphs\" is present"},
+            {"id": "s3", "type": "count", "check": "6 distinct toy icons appear at the bottom (doll, robot, basketball, dinosaur, truck, teddy bear)"},
+            {"id": "s4", "type": "attribute", "check": "the bars are colored yellow, blue, orange, red, brown, green in that order"},
+            {"id": "s5", "type": "text", "check": "the y-axis shows numbers from 1 to 12"},
+            {"id": "s6", "type": "text", "check": "questions about the most-liked/least-liked toy are present"},
+            {"id": "s7", "type": "attribute", "check": "the header section has a beige background"},
+            {"id": "s8", "type": "style", "check": "the background is white and the text is black"}
+        ]
+    },
+    {
+        "id": "historical_figure_portrait_claude",
+        "type": "Historical Figure Portrait",
+        "source": "claude",
+        "prompt": "A friendly cartoon portrait illustration of a nineteenth-century American statesman, tall dark hat removed, dark beard along the jawline without a mustache, black formal coat and bow tie, calm smiling expression, upper body only facing slightly left, a striped and starred flag hanging behind his right shoulder, a rolled parchment scroll placed near his left side, plain white background, no text.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one human figure is depicted"},
+            {"id": "s2", "type": "spatial", "check": "only the upper body of the figure is shown"},
+            {"id": "s3", "type": "attribute", "check": "the figure has a dark beard along the jawline with no mustache"},
+            {"id": "s4", "type": "attribute", "check": "the figure wears a black formal coat and bow tie"},
+            {"id": "s5", "type": "attribute", "check": "the figure's expression is calm/smiling"},
+            {"id": "s6", "type": "spatial", "check": "the figure faces slightly to one side, not directly forward"},
+            {"id": "s7", "type": "spatial", "check": "a striped and starred flag hangs behind the figure's right shoulder"},
+            {"id": "s8", "type": "spatial", "check": "a rolled parchment scroll appears near the figure's left side"},
+            {"id": "s9", "type": "style", "check": "the background is plain white"},
+            {"id": "s10", "type": "text", "check": "no text appears in the image"}
+        ]
+    },
+    {
+        "id": "historical_figure_portrait_chatgpt",
+        "type": "Historical Figure Portrait",
+        "source": "chatgpt",
+        "prompt": "Create an educational illustration showing a single historical political figure in a friendly cartoon style. Display the upper body only, wearing formal historical clothing with distinctive facial hair and hairstyle appropriate for the period. Place a national flag on one side and a rolled parchment scroll on the other as symbolic props. Use a plain white background, balanced composition, clean educational illustration style, and soft muted colors.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one figure is depicted"},
+            {"id": "s2", "type": "spatial", "check": "only the upper body is shown"},
+            {"id": "s3", "type": "attribute", "check": "the figure wears formal historical-period clothing"},
+            {"id": "s4", "type": "attribute", "check": "the figure has distinctive facial hair/hairstyle for the period"},
+            {"id": "s5", "type": "spatial", "check": "a flag appears on one side of the figure"},
+            {"id": "s6", "type": "spatial", "check": "a rolled parchment scroll appears on the other side"},
+            {"id": "s7", "type": "style", "check": "the background is plain white"},
+            {"id": "s8", "type": "style", "check": "the colors are soft/muted"}
+        ]
+    },
+    {
+        "id": "historical_figure_portrait_qwen",
+        "type": "Historical Figure Portrait",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A cartoon-style portrait of Abraham Lincoln, showing the upper body only and facing slightly to the left. He has a dark beard running along his jawline without a mustache, and wears a black formal coat with a white shirt and a dark bow tie. His tall hat has been removed and his expression is calm and smiling. Behind his right shoulder hangs an American flag with red and white stripes and white stars on a blue field. Near his left side rests a rolled parchment scroll in a pale cream tone. The background is plain white, and the overall style is simple and colorful with soft edges and minimal shading. There is no text in the image.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one human figure is depicted"},
+            {"id": "s2", "type": "attribute", "check": "the figure resembles Abraham Lincoln (dark jawline beard, no mustache, no hat)"},
+            {"id": "s3", "type": "attribute", "check": "the figure wears a black formal coat, white shirt, and dark bow tie"},
+            {"id": "s4", "type": "spatial", "check": "only the upper body is shown, facing slightly left"},
+            {"id": "s5", "type": "spatial", "check": "an American-style striped and starred flag hangs behind the right shoulder"},
+            {"id": "s6", "type": "spatial", "check": "a rolled parchment scroll rests near the left side"},
+            {"id": "s7", "type": "style", "check": "the background is plain white"},
+            {"id": "s8", "type": "text", "check": "no text appears in the image"}
+        ]
+    },
+    {
+        "id": "multi_character_classroom_collaboration_claude",
+        "type": "Multi-Character Classroom Collaboration",
+        "source": "claude",
+        "prompt": "Four elementary school students sitting around a shared classroom table seen from a slight front angle, two girls on the left side and one boy and one girl on the right side, the girl at the front left holding up a folded paper booklet with both hands, the boy holding a marker pen, colored drawings of a park and pencils scattered on the table surface, the girl on the right seated in a wheelchair, bright cheerful expressions, simple plain classroom background, no text.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 4 children are present"},
+            {"id": "s2", "type": "spatial", "check": "two girls are seated on the left side and a boy and girl on the right side"},
+            {"id": "s3", "type": "attribute", "check": "one girl holds a folded paper booklet with both hands"},
+            {"id": "s4", "type": "attribute", "check": "the boy holds a marker pen"},
+            {"id": "s5", "type": "attribute", "check": "colored park drawings and pencils are scattered on the table"},
+            {"id": "s6", "type": "attribute", "check": "one girl on the right is seated in a wheelchair"},
+            {"id": "s7", "type": "attribute", "check": "the children have cheerful/smiling expressions"},
+            {"id": "s8", "type": "style", "check": "the classroom background is simple and plain"},
+            {"id": "s9", "type": "text", "check": "no text appears in the image"}
+        ]
+    },
+    {
+        "id": "multi_character_classroom_collaboration_chatgpt",
+        "type": "Multi-Character Classroom Collaboration",
+        "source": "chatgpt",
+        "prompt": "Create a Korean elementary school textbook illustration showing four students sitting around a shared classroom table and sharing their creative projects. Each student presents a different work such as a park drawing, booklet, or poster while smiling and talking. The student on the right uses a wheelchair. Include speech bubbles above each student. Use soft pastel colors, a clean educational illustration style, a simple classroom background, balanced composition, and child-friendly textbook artwork.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 4 students are present"},
+            {"id": "s2", "type": "attribute", "check": "each student is presenting a different kind of work (drawing/booklet/poster)"},
+            {"id": "s3", "type": "attribute", "check": "the student on the right uses a wheelchair"},
+            {"id": "s4", "type": "spatial", "check": "a speech bubble appears above each student"},
+            {"id": "s5", "type": "style", "check": "colors are soft pastel tones"},
+            {"id": "s6", "type": "style", "check": "the classroom background is simple"},
+            {"id": "s7", "type": "attribute", "check": "the students appear to be interacting and smiling"}
+        ]
+    },
+    {
+        "id": "multi_character_classroom_collaboration_qwen",
+        "type": "Multi-Character Classroom Collaboration",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A group of four children sitting at a shared classroom table, each engaged in drawing or reading about a park they have drawn. The girl on the front left is holding an open folded booklet showing a drawing of a park, while the other three children are focused on their drawings. The girl in the wheelchair on the right has a completed drawing of a park. Each child has a speech bubble above their head with Korean text expressing their thoughts about the park. The setting is a classroom with a simple wooden table and chairs. The overall style is cartoonish and colorful, suitable for a children's illustration. There is no text in the image itself, only the speech bubbles containing text.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 4 children are present"},
+            {"id": "s2", "type": "attribute", "check": "the girl at front-left holds an open booklet showing a park drawing"},
+            {"id": "s3", "type": "attribute", "check": "the girl in the wheelchair is on the right side"},
+            {"id": "s4", "type": "count", "check": "each of the 4 children has a speech bubble above them"},
+            {"id": "s5", "type": "text", "check": "the speech bubbles contain legible Korean text"},
+            {"id": "s6", "type": "attribute", "check": "a wooden table and chairs are visible"},
+            {"id": "s7", "type": "style", "check": "the overall style is cartoonish and colorful"}
+        ]
+    },
+    {
+        "id": "intergenerational_indoor_scene_claude",
+        "type": "Intergenerational Indoor Scene",
+        "source": "claude",
+        "prompt": "An elderly couple with gray hair sitting side by side on a beige fabric sofa in a living room, the grandmother wearing a magenta cardigan and yellow scarf gesturing with one hand, the grandfather in a light blue shirt smiling, a young child in a red hoodie kneeling on the floor in the foreground with their back to the viewer, writing on a small notepad with a pencil, a floor lamp with a green shade behind the sofa, a wooden side table with a small potted plant, soft green rug, no text.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 3 people are present (two elderly, one child)"},
+            {"id": "s2", "type": "spatial", "check": "the elderly couple sits side by side on a sofa"},
+            {"id": "s3", "type": "attribute", "check": "the grandmother wears a magenta cardigan and yellow scarf"},
+            {"id": "s4", "type": "attribute", "check": "the grandfather wears a light blue shirt"},
+            {"id": "s5", "type": "spatial", "check": "the child kneels in the foreground with their back to the viewer"},
+            {"id": "s6", "type": "attribute", "check": "the child is writing on a notepad with a pencil"},
+            {"id": "s7", "type": "attribute", "check": "the child wears a red hoodie"},
+            {"id": "s8", "type": "spatial", "check": "a floor lamp with a green shade is behind the sofa"},
+            {"id": "s9", "type": "attribute", "check": "a wooden side table with a potted plant is visible"},
+            {"id": "s10", "type": "text", "check": "no text appears in the image"}
+        ]
+    },
+    {
+        "id": "intergenerational_indoor_scene_chatgpt",
+        "type": "Intergenerational Indoor Scene",
+        "source": "chatgpt",
+        "prompt": "Create an elementary school textbook illustration showing a child interviewing two grandparents in a cozy living room. The child kneels on the floor in the foreground with their back to the viewer, writing notes on a small notepad, while the grandparents sit side by side on a beige sofa and answer questions with friendly expressions. Include simple furniture such as a green-shaded floor lamp, a wooden side table, and a small potted plant. Use soft pastel colors, clean educational illustration style, minimal background details, and warm family atmosphere.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 3 people are present"},
+            {"id": "s2", "type": "spatial", "check": "the child kneels in the foreground with their back to the viewer"},
+            {"id": "s3", "type": "attribute", "check": "the child is writing notes on a notepad"},
+            {"id": "s4", "type": "spatial", "check": "the two grandparents sit side by side on a sofa"},
+            {"id": "s5", "type": "attribute", "check": "the grandparents have friendly/warm expressions"},
+            {"id": "s6", "type": "attribute", "check": "a green-shaded floor lamp is present"},
+            {"id": "s7", "type": "attribute", "check": "a wooden side table with a small potted plant is present"},
+            {"id": "s8", "type": "style", "check": "colors are soft pastel tones"}
+        ]
+    },
+    {
+        "id": "intergenerational_indoor_scene_qwen",
+        "type": "Intergenerational Indoor Scene",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A cozy living room scene featuring three characters. On the left, an elderly woman sits on a beige fabric sofa wearing a magenta cardigan, gray pants, and a yellow scarf. She has glasses and is smiling. Beside her on the same sofa sits an elderly man, dressed in a light blue shirt and dark pants. He also has a friendly smile. In the foreground, a child in a red hoodie kneels on the floor with their back to the viewer, holding a small notepad and pencil, seemingly taking notes. The background includes a green floor lamp with a light shade, a wooden side table with a small potted plant, and a soft green rug. The overall style is cartoonish and warm-toned, with soft pastel colors dominating the scene.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 3 people are present"},
+            {"id": "s2", "type": "attribute", "check": "the elderly woman wears a magenta cardigan, gray pants, yellow scarf, and glasses"},
+            {"id": "s3", "type": "attribute", "check": "the elderly man wears a light blue shirt and dark pants"},
+            {"id": "s4", "type": "spatial", "check": "the elderly woman and man sit together on the same sofa"},
+            {"id": "s5", "type": "attribute", "check": "the child wears a red hoodie and kneels with their back to the viewer"},
+            {"id": "s6", "type": "attribute", "check": "the child holds a notepad and pencil"},
+            {"id": "s7", "type": "attribute", "check": "a green floor lamp and wooden side table with a potted plant appear in the background"},
+            {"id": "s8", "type": "style", "check": "the overall tone is warm and uses soft pastel colors"}
+        ]
+    },
+    {
+        "id": "single_character_cutout_claude",
+        "type": "Single-Character Cutout",
+        "source": "claude",
+        "prompt": "An elderly woman with gray hair tied in a bun and round glasses, wearing a white long-sleeve blouse and green vest, seated at an old black treadle sewing machine mounted on a wooden table, both hands guiding a folded pink and white checkered cloth under the needle, gentle focused smile, upper body and table only with nothing below, isolated on a flat pale blue rounded background shape, no text.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one person is depicted"},
+            {"id": "s2", "type": "attribute", "check": "the woman has gray hair tied in a bun and wears round glasses"},
+            {"id": "s3", "type": "attribute", "check": "the woman wears a white blouse and green vest"},
+            {"id": "s4", "type": "attribute", "check": "a black treadle sewing machine sits on a wooden table"},
+            {"id": "s5", "type": "attribute", "check": "the fabric being sewn is pink and white checkered"},
+            {"id": "s6", "type": "spatial", "check": "both of the woman's hands are guiding the fabric under the needle"},
+            {"id": "s7", "type": "spatial", "check": "only the upper body and table are shown, nothing below the table"},
+            {"id": "s8", "type": "style", "check": "the background is a flat, solid pale blue rounded shape with no scenery"},
+            {"id": "s9", "type": "text", "check": "no text appears in the image"}
+        ]
+    },
+    {
+        "id": "single_character_cutout_chatgpt",
+        "type": "Single-Character Cutout",
+        "source": "chatgpt",
+        "prompt": "Create an educational cutout illustration showing a single character using a hands-on tool such as a sewing machine at a work table. Display only the upper body and the work surface, cropping everything below the table. Place the character on a simple flat solid-color background shape without additional scenery. Use clean educational illustration style, soft pastel colors, balanced composition, and clear object interaction.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one character is depicted"},
+            {"id": "s2", "type": "attribute", "check": "the character is using a hands-on tool (e.g. sewing machine) at a table"},
+            {"id": "s3", "type": "spatial", "check": "only the upper body and work surface are shown, nothing below"},
+            {"id": "s4", "type": "style", "check": "the background is a flat, solid-color shape with no scenery"},
+            {"id": "s5", "type": "style", "check": "colors are soft pastel tones"},
+            {"id": "s6", "type": "attribute", "check": "the character's hands are interacting directly with the tool/object"}
+        ]
+    },
+    {
+        "id": "single_character_cutout_qwen",
+        "type": "Single-Character Cutout",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A cartoon-style elderly woman is sitting at a treadle sewing machine, working on a piece of fabric. She has gray hair tied in a bun, wears round glasses, and is dressed in a white long-sleeve blouse with a green vest. The sewing machine is black with silver accents and is mounted on a wooden table, and she guides the fabric under the needle with both hands. The fabric she is sewing is pink and white checkered. The background is a flat pale blue rounded shape, and nothing is shown below the table. The overall style is simple and colorful, with soft edges and minimal shading.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one elderly woman is depicted"},
+            {"id": "s2", "type": "attribute", "check": "she has gray hair in a bun, round glasses, a white blouse, and a green vest"},
+            {"id": "s3", "type": "attribute", "check": "the sewing machine is black with silver accents on a wooden table"},
+            {"id": "s4", "type": "attribute", "check": "the fabric is pink and white checkered"},
+            {"id": "s5", "type": "spatial", "check": "both hands guide the fabric under the needle"},
+            {"id": "s6", "type": "spatial", "check": "nothing is shown below the table"},
+            {"id": "s7", "type": "style", "check": "the background is a flat pale blue shape with no gradient"}
+        ]
+    },
+    {
+        "id": "labeled_science_diagram_claude",
+        "type": "Labeled Science Diagram",
+        "source": "claude",
+        "prompt": "A black and white line drawing of an animal cell for a science worksheet, one large oval cell outlined with a thin double membrane line, a single large circle in the center representing the nucleus, four oval organelles with internal wavy stripes distributed around the nucleus, a cluster of short curved ribbon shapes on the left side, two plain empty ovals on the right and lower left, everything drawn in thin black outlines with light gray fill only inside the organelles, white background, no text, no letters, no arrows.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly one large oval cell outline is present"},
+            {"id": "s2", "type": "attribute", "check": "the cell outline is drawn as a double membrane line"},
+            {"id": "s3", "type": "count", "check": "exactly one large circle (nucleus) is at the center"},
+            {"id": "s4", "type": "count", "check": "exactly four oval organelles with internal wavy stripes surround the nucleus"},
+            {"id": "s5", "type": "spatial", "check": "a cluster of short curved ribbon shapes appears on the left side"},
+            {"id": "s6", "type": "count", "check": "exactly two plain empty ovals appear, on the right and lower-left"},
+            {"id": "s7", "type": "style", "check": "outlines are thin and black throughout"},
+            {"id": "s8", "type": "attribute", "check": "light gray fill appears only inside the organelles, not across the whole cell"},
+            {"id": "s9", "type": "style", "check": "the background is white"},
+            {"id": "s10", "type": "text", "check": "no text, letters, or arrows appear anywhere in the image"}
+        ]
+    },
+    {
+        "id": "labeled_science_diagram_chatgpt",
+        "type": "Labeled Science Diagram",
+        "source": "chatgpt",
+        "prompt": "Create a printable elementary science worksheet showing a simplified animal cell diagram with labeled organelles. Include the cell membrane, cytoplasm, nucleus, mitochondria, and vacuole connected to their labels using straight leader lines. Add a worksheet title, short educational descriptions for each organelle, and a color key at the bottom. Use black vector outlines, grayscale fills, clean typography, white background, and a classroom-friendly printable layout.",
+        "spec_items": [
+            {"id": "s1", "type": "attribute", "check": "the cell diagram shows membrane, cytoplasm, nucleus, mitochondria, and vacuole"},
+            {"id": "s2", "type": "spatial", "check": "straight leader lines connect labels to their structures"},
+            {"id": "s3", "type": "text", "check": "a worksheet title is present"},
+            {"id": "s4", "type": "text", "check": "short descriptions for each organelle are present"},
+            {"id": "s5", "type": "text", "check": "a color key appears at the bottom"},
+            {"id": "s6", "type": "style", "check": "outlines are black vector lines with grayscale fills"},
+            {"id": "s7", "type": "style", "check": "the background is white"}
+        ]
+    },
+    {
+        "id": "labeled_science_diagram_qwen",
+        "type": "Labeled Science Diagram",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A detailed diagram of an animal cell labeled with various cellular components. The whole cell is drawn as a thin black line drawing with light gray fills. The cell membrane is a thin double outline, the nucleus is a large circle at the center, and the mitochondria, vacuole, and cytoplasm are distinguished from one another by different gray tones and internal stripe patterns rather than by color. The diagram includes straight leader lines pointing to each part of the cell. The background is white, and the text is black. The title 'Animal Cell' is at the top. There is no text in the image other than the labels and the title.",
+        "spec_items": [
+            {"id": "s1", "type": "attribute", "check": "cell components are distinguished by different gray tones/stripe patterns rather than color"},
+            {"id": "s2", "type": "spatial", "check": "straight leader lines point to each labeled part"},
+            {"id": "s3", "type": "text", "check": "a title reading \"Animal Cell\" (or equivalent) appears at the top"},
+            {"id": "s4", "type": "text", "check": "labels for the cell parts are legible"},
+            {"id": "s5", "type": "style", "check": "the background is white"},
+            {"id": "s6", "type": "text", "check": "no text appears other than the labels and title"}
+        ]
+    },
+    {
+        "id": "geometric_shape_set_claude",
+        "type": "Geometric Shape Set",
+        "source": "claude",
+        "prompt": "A set of eight separate geometric outline shapes evenly spaced on a plain white background, arranged in two rows of four, thin black outlines with no fill, the shapes are a regular hexagon, a square, a rhombus standing on one corner, an equilateral triangle, a trapezoid with the shorter side on top, a wide rectangle, a circle, and a regular pentagon, each shape isolated with clear white space around it, no shading, no text, no numbers.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 8 distinct shapes are present"},
+            {"id": "s2", "type": "spatial", "check": "the shapes are arranged in two rows of four"},
+            {"id": "s3", "type": "attribute", "check": "a regular hexagon is present among the shapes"},
+            {"id": "s4", "type": "attribute", "check": "a rhombus standing on one corner is present"},
+            {"id": "s5", "type": "attribute", "check": "a trapezoid with the shorter side on top is present"},
+            {"id": "s6", "type": "attribute", "check": "a regular pentagon is present and distinguishable from the hexagon"},
+            {"id": "s7", "type": "style", "check": "shapes have thin black outlines with no fill"},
+            {"id": "s8", "type": "spatial", "check": "shapes are evenly spaced with clear white space around each"},
+            {"id": "s9", "type": "text", "check": "no text, numbers, or shading appear in the image"}
+        ]
+    },
+    {
+        "id": "geometric_shape_set_chatgpt",
+        "type": "Geometric Shape Set",
+        "source": "chatgpt",
+        "prompt": "Create a printable elementary mathematics worksheet introducing basic geometric shapes. Include exactly eight shapes: regular hexagon, square, rhombus, equilateral triangle, trapezoid, rectangle, circle, and regular pentagon, each with a blank answer line beneath it. Add sections asking students to count sides and corners and identify real-world objects matching each shape. Use black vector outlines, clean typography, white background, and a printable worksheet layout.",
+        "spec_items": [
+            {"id": "s1", "type": "count", "check": "exactly 8 distinct shapes are present (hexagon, square, rhombus, triangle, trapezoid, rectangle, circle, pentagon)"},
+            {"id": "s2", "type": "spatial", "check": "each shape has a blank answer line beneath it"},
+            {"id": "s3", "type": "text", "check": "a section asks students to count sides and corners"},
+            {"id": "s4", "type": "text", "check": "a section asks students to match shapes to real-world objects"},
+            {"id": "s5", "type": "style", "check": "outlines are black vector lines"},
+            {"id": "s6", "type": "style", "check": "the overall layout resembles a clean printable worksheet"}
+        ]
+    },
+    {
+        "id": "geometric_shape_set_qwen",
+        "type": "Geometric Shape Set",
+        "source": "qwen2.5-vl-7b-instruct",
+        "prompt": "A black and white worksheet titled \"UNIT 17 test\". At the top, there is a space for the student's name. Below the title, instructions ask to write the name of each shape provided: rectangle, circle, square, hexagon, triangle, trapezoid, rhombus, pentagon. Eight shapes are shown in two rows of four, each with a blank line underneath for the student to write their answers. The shapes are a hexagon, a square, a rhombus, a triangle, a trapezoid, a rectangle, a circle, and a pentagon. Below, there is a section asking to write how many sides and corners each shape has, with examples of a circle, a rectangle, a rhombus, and a hexagon. Finally, at the bottom, students are asked to identify what shape each real-life object is, showing images of a house, donut, sailboat, and playing card.",
+        "spec_items": [
+            {"id": "s1", "type": "text", "check": "a title reading something like \"UNIT 17 test\" appears at the top"},
+            {"id": "s2", "type": "text", "check": "a space for the student's name is present"},
+            {"id": "s3", "type": "count", "check": "exactly 8 shapes are shown in two rows of four"},
+            {"id": "s4", "type": "spatial", "check": "each shape has a blank line underneath for an answer"},
+            {"id": "s5", "type": "text", "check": "a section for counting sides and corners is present"},
+            {"id": "s6", "type": "attribute", "check": "real-life objects such as a house, donut, sailboat, and playing card appear for shape identification"},
+            {"id": "s7", "type": "style", "check": "the worksheet is black and white"}
+        ]
+    }
+]
