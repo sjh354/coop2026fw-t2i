@@ -542,12 +542,35 @@ scripts/rewrite.py 신규. 인자 --in (프롬프트 JSON), --backend {passthrou
 
 ---
 
-### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🔵 1번(설정) + 파일럿 검증 완료, 2~4번 남음 (2026-07-28)
+### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🔵 1~2·3 생성 완료, 채점만 남음 (2026-07-28)
 
 `configs/models/qwen-image-lightning.yaml` 추가 완료(`bench/results.md` "TASK-F" 절 참고).
 동일 시드 파일럿(2장)으로 체크포인트 정상 적용 확인, 속도 약 2.1배 향상(97s vs 207s/img),
-VRAM은 동일(15.56GB, 양자화 레벨만 다름 — Q4_K_S vs base의 Q5_K_M). 아래 2~4번(정식
-bench_cost.py 측정, 24프롬프트 전체 생성+spec/CSD 채점, 비교표)은 아직 미실행.
+VRAM은 동일(15.56GB, 양자화 레벨만 다름 — Q4_K_S vs base의 Q5_K_M).
+
+**2~3번 정식 실행 완료 (2026-07-28, 서버 157)** — 신규 `scripts/sweeps/task_f_qwen_pipeline.sh`
+(b: bench_cost.py, c: lecture_generate.py, d: build_taskf_report.py 순차 실행) +
+`scripts/build_taskf_report.py`(quality/latency/VRAM 비교표 생성) 추가, 커밋 `236ad63`.
+157에서 백그라운드 실행 → 완료, 결과 커밋 `450ca7e`.
+
+| 항목 | qwen-image (full, 30-step, Q5_K_M) | qwen-image-lightning (8-step, Q4_K_S) |
+|---|---|---|
+| peak VRAM (torch/smi) | 15.53 / 16.04 GB | 15.53 / 16.05 GB |
+| latency p50 / p90 | 152.15s / 153.62s | 50.44s / 51.27s |
+
+- **속도 약 3배** (파일럿 2.1배보다 더 벌어짐 — 24프롬프트 정식 측정이라 텍스트 인코딩 등
+  고정 오버헤드 비중이 상대적으로 줄어든 것으로 보임). **VRAM은 사실상 동일**하고
+  16GB 예산을 nvidia-smi 실측 기준 양쪽 다 근소하게 초과(16.04~16.05GB).
+- 24프롬프트 전체 생성 완료: `image-prompts/v255_qwen-image-lecture24/`,
+  `image-prompts/v256_qwen-image-lightning-lecture24/`. 이미지(`images/`)는 gitignored —
+  채점하려면 서버 23으로 rsync/scp 필요.
+- 비교표 초안: `reports/task-f_qwen_lightning_comparison.md` — quality(vqascore/csd_target)
+  컬럼은 아직 **"채점 대기(서버 23)"**. 서버 23에서 채점 후
+  `build_taskf_report.py --score-dir-full/--score-dir-lightning`으로 재실행하면 채워짐.
+
+**다음 단계 (미실행)**: 이미지를 서버 23으로 옮겨 vqascore/csd_target 채점(TASK-A와 동일
+지표 — spec 통과율은 TASK-B2/TASK-C에서 이미 신뢰 불가로 결론남, 이 비교에도 주 지표로
+쓰지 않는다) → `build_taskf_report.py` 재실행으로 4번(quality/latency/VRAM 3열 표) 완성.
 
 ```
 [배경]
