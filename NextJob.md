@@ -540,6 +540,23 @@ scripts/rewrite.py 신규. 인자 --in (프롬프트 JSON), --backend {passthrou
   키워드 매칭(이미 TASK-E 1차 결과에 있음) 같은 규칙 기반 지표를 병행 — **아직 미결정,
   다음 채점 실행 전에 방향을 정해야 함**.
 
+**4지표 채점 + 비교 리포트 완료 (2026-07-28, 서버 23)**
+
+`scripts/rewrite_compare_v250_252.sh` 신규 — VQAScore/custom_cv/csd_target/VLM-judge(InternVL3-8B,
+lecture24 4축)를 72장 전부 채점. 결과: `bench/results.md` TASK-E 절, 리포트
+`reports/rewrite-v250-v251-v252-comparison/index.html`(72장 이미지 그리드 + 사람 눈 채점 대기용
+72행 표 포함, 이미지는 이미 로컬에 pull 완료).
+
+요약: wan_style이 VQAScore 최고(0.902), promptenhancer가 csd_target/custom_cv 최고(0.659/0.750) —
+네 지표 동시 1위 백엔드 없음. judge 결과는 TASK-C에서 이미 신뢰도 낮음(κ<0.6)이 확정된 경로라
+참고용으로만 쓰고, 최종 판정은 사람 눈 채점(리포트 표 채운 뒤) 이후로 미룸.
+
+채점 중 서버 23 disk 정리로 보이는 외부 프로세스가 v250/v251 images/ 를 중간에 삭제해 첫 pass1/
+csd_target이 조용히 0건으로 통과된 문제 발견 — 157(생성 서버)에서 재복사 후 재채점으로 수정.
+
+**다음 단계**: 리포트의 사람 눈 채점 72행 표를 채운 뒤, VLM-judge/사람 채점 일치도까지 반영해서
+최종 백엔드(wan_style vs promptenhancer vs passthrough) 채택 여부 결정.
+
 ---
 
 ### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🔵 1~2·3 생성 완료, 채점만 남음 (2026-07-28)

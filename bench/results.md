@@ -308,3 +308,28 @@ transformer 위에 얹는 공식 경로는 호환성 문제가 보고돼 있어,
   전체의 상당 부분이라 배수만큼 안 줄어듦). VRAM은 동일(같은 아키텍처 계열, 양자화 레벨만 다름).
 - 다음 단계(TASK-F 본문 2~4번, 아직 미실행): `bench_cost.py`로 정식 VRAM/latency 측정, 동일 24
   프롬프트 생성 후 spec+CSD 채점, quality/latency/VRAM 3열 비교표.
+
+## TASK-E · 리라이팅 3백엔드 4지표 채점 (2026-07-28, 서버 23)
+
+`scripts/rewrite_compare_v250_252.sh`로 v250(passthrough)/v251(wan_style)/v252(promptenhancer)
+72장(flux2-klein-4b-nf4, 동일 시드)에 VQAScore/custom_cv/csd_target/VLM-judge(InternVL3-8B,
+lecture24 4축) 전부 채점. 결과 리포트: `reports/rewrite-v250-v251-v252-comparison/index.html`.
+
+| backend | 버전 | VQAScore | custom_cv | csd_target |
+|---|---|---|---|---|
+| passthrough (대조군) | v250 | 0.832 | 0.733 | 0.630 |
+| wan_style | v251 | **0.902** | 0.734 | 0.620 |
+| promptenhancer | v252 | 0.829 | **0.750** | **0.659** |
+
+- 네 지표를 동시에 1등 하는 백엔드 없음 — wan_style은 VQAScore·judge(content/layout/edu 축)에서,
+  promptenhancer는 csd_target·custom_cv에서 각각 우세. passthrough(리라이팅 없음)도 큰 격차 없이
+  따라붙음.
+- judge_lecture24 결과는 참고용(TASK-C에서 이미 κ<0.6 확정) — 이 비교의 최종 판정 근거로 쓰지
+  않음. 리포트에 사람 눈 채점 대기용 72행 표를 미리 마련해둠(로컬 이미지 준비 완료,
+  `image-prompts/v25{0,1,2}_flux2-klein-4b-nf4-lecture24/images/`).
+- **채점 중 발견한 문제**: 서버 23의 disk 여유 확보를 위한 것으로 보이는 외부 프로세스가 v250/v251
+  이미지 디렉토리를 스코어링 도중 삭제해, 첫 pass1/csd_target 실행이 조용히 0건으로 기록됨(에러 없이
+  통과) — 생성 서버(157)에서 이미지를 재복사해 재채점으로 수정. 앞으로 이런 스크립트에는 0건 결과를
+  실패로 간주하는 가드를 추가하는 게 안전.
+
+**다음 단계**: 사람 눈 채점(리포트의 72행 표) 완료 후 VLM-judge와 비교, 최종 백엔드 채택 여부 결정.
