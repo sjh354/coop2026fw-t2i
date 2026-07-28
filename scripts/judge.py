@@ -1,8 +1,11 @@
-"""VLM-as-judge — 로컬 Qwen2.5-VL-7B-Instruct로 bench_v1 축(counting/spatial/attribute)
-별 pass/fail을 판정한다. 예전 scoring.py의 Anthropic API 기반 score_image_vlm을
-대체한다 (API 키 불필요, 3090에서 로컬 추론).
+"""VLM-as-judge — 로컬 VLM(기본 InternVL3-8B-hf, 2026-07-28부터)으로 bench_v1 축
+(counting/spatial/attribute)별 pass/fail을 판정한다. 예전 scoring.py의 Anthropic API
+기반 score_image_vlm을 대체한다 (API 키 불필요, 3090에서 로컬 추론).
 
-전용 conda env: t2i-judge (envs/README.md 참고, transformers 버전 핀 필수).
+기본 judge를 Qwen2.5-VL-7B-Instruct에서 InternVL3-8B-hf로 변경(TASK-C 삼각검증에서
+사람 채점과의 κ가 세 judge 중 최고인 0.61) — 전용 conda env도 t2i-judge2로 바뀐다
+(envs/README.md 참고, transformers 버전 핀 필수). Qwen2.5-VL로 교차검증하려면
+model_repo="Qwen/Qwen2.5-VL-7B-Instruct"를 명시하고 env도 t2i-judge로 바꿀 것.
 
     python -m scripts.judge --runs image-prompts/v223_lumina2 image-prompts/v224_lumina2
     python -m scripts.judge --runs image-prompts/v223_lumina2 --force   # 기존 결과 있어도 재실행
@@ -41,7 +44,7 @@ BENCH_V1 = ROOT / "configs" / "benchmarks" / "bench_v1.yaml"
 SCORES_DIR = ROOT / "bench" / "scores"
 IMAGE_PROMPTS = ROOT / "image-prompts"
 
-JUDGE_MODEL_REPO = "Qwen/Qwen2.5-VL-7B-Instruct"
+JUDGE_MODEL_REPO = "OpenGVLab/InternVL3-8B-hf"
 AXES = ("counting", "spatial", "attribute")
 
 JUDGE_SYSTEM = (

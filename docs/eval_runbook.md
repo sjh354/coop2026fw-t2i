@@ -68,13 +68,17 @@ for preset in edu-flat-v2 observational playful-soft storybook-scene; do
 done
 ```
 
-## 4. judge (VLM-as-judge, 로컬 Qwen2.5-VL-7B-Instruct)
+## 4. judge (VLM-as-judge, 로컬 InternVL3-8B — 2026-07-28부터 기본, envs/README.md 참고)
 
 ```bash
-conda activate t2i-judge
+conda activate t2i-judge2
 python -m scripts.judge --runs image-prompts/v2*_lumina2 image-prompts/v2*_pixart-sigma \
   image-prompts/v2*_flux2-klein-4b-nf4
 ```
+
+Qwen2.5-VL로 교차검증하려면 `conda activate t2i-judge`로 바꾸고 `scripts.judge`의
+`JUDGE_MODEL_REPO`를 `Qwen/Qwen2.5-VL-7B-Instruct`로 명시해서 돌릴 것(env가 다르면
+서로 안 섞인다).
 
 이미 결과가 있는 run은 스킵된다(`--force`로 재실행). 소요: item당 VLM 1~2회 호출
 (재시도 포함), 3090 기준 실측치는 `scripts/judge.py` 스모크 결과 참고.

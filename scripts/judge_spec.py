@@ -5,10 +5,15 @@
 변별력이 없어서, "통과한 spec item 수 / 전체 item 수"라는 연속값으로 대체한다.
 judge_lecture24.py는 그대로 남겨두고 이 스크립트는 별도로 돌린다.
 
-    conda run -n t2i-judge python -m scripts.judge_spec \
+    conda run -n t2i-judge2 python -m scripts.judge_spec \
         --images image-prompts/v243_pixart-sigma-lecture24/images \
         --spec configs/benchmarks/vlm-prompts-spec.json \
         --out bench/scores/v243_pixart-sigma-lecture24/judge_spec.csv
+
+기본 judge는 InternVL3-8B-hf(env t2i-judge2, envs/README.md 참고) — 2026-07-28,
+TASK-C 삼각검증에서 사람 채점과의 κ가 세 judge 중 가장 높게 나와(0.61) 기본값으로 채택.
+Qwen2.5-VL 등 다른 judge와 교차검증하려면 --judge-model로 명시적으로 지정할 것
+(env도 t2i-judge로 바꿔야 함 — 두 judge env는 torch 버전이 달라 호환 안 됨).
 """
 import argparse
 import csv
@@ -136,7 +141,7 @@ def _judge_spec_item(image_path, check_text, stats, model_repo, quant4bit):
 
 
 def judge_images(images_dir, spec_by_id, limit=None, mode="yesno",
-                  model_repo="Qwen/Qwen2.5-VL-7B-Instruct", quant4bit=False):
+                  model_repo="OpenGVLab/InternVL3-8B-hf", quant4bit=False):
     images_dir = pathlib.Path(images_dir)
     rows = []
     stats = {"parse_errors": 0, "unparseable": 0}
@@ -196,8 +201,9 @@ def main():
     ap.add_argument("--limit", type=int, help="채점할 이미지 수 제한 (파일럿용, 예: 3)")
     ap.add_argument("--mode", choices=["yesno", "probe"], default="yesno",
                     help="probe: probe/expect가 있는 항목은 추출형 질문으로 채점, 없으면 기존 yes/no로 폴백")
-    ap.add_argument("--judge-model", default="Qwen/Qwen2.5-VL-7B-Instruct",
-                    help="판정에 쓸 VLM repo id (기본: Qwen2.5-VL-7B-Instruct). "
+    ap.add_argument("--judge-model", default="OpenGVLab/InternVL3-8B-hf",
+                    help="판정에 쓸 VLM repo id (기본: InternVL3-8B-hf — 2026-07-28부터 기본 judge, "
+                         "TASK-C 파일럿에서 사람 채점과 κ=0.61로 Qwen2.5-VL/Gemma-3-12B 중 최고). "
                          "'qwen'이 안 들어간 repo는 AutoModelForImageTextToText로 로드한다(Gemma-3 등)")
     ap.add_argument("--judge-quant4bit", action="store_true",
                     help="judge 모델을 4bit(bitsandbytes)로 로드 (Qwen 백엔드에는 미적용)")

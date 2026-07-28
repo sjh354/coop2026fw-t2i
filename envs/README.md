@@ -90,12 +90,15 @@ LLaVA-Video, InternVideo2-CLIP 등 무관한 백엔드가 없는 의존성(`llav
 `huggingface-cli logout`으로 만료 토큰부터 지울 것 (flan-t5-xl은 공개 모델이라
 토큰 자체가 필요 없음).
 
-## VLM-judge 전용 env: t2i-judge
+## VLM-judge 보조 env: t2i-judge (Qwen2.5-VL, 교차검증용)
 
-`scripts/judge.py`(bench_v1 축별 pass/fail 판정)는 **로컬 Qwen2.5-VL-7B-Instruct**를
-쓴다 — 예전에는 Anthropic API(`score_image_vlm`, `t2i-score` env에 `anthropic` 패키지)로
-했었지만, API 키가 서버에 없어서 로컬 추론으로 전환했다. `t2i-qwen`(Qwen-Image T2I 생성
-모델용)과 이름이 비슷하지만 완전히 다른 모델·용도라 env를 분리한다.
+2026-07-28부터 기본 judge는 InternVL3-8B(아래 `t2i-judge2` 절 참고)로 바뀌었다 —
+TASK-C 삼각검증에서 사람 채점과의 κ가 세 judge 중 최고(0.61)였기 때문. 이 env는
+**Qwen2.5-VL-7B-Instruct로 교차검증할 때만** 쓴다. `scripts/judge.py`(bench_v1
+축별 pass/fail 판정)가 예전에는 Anthropic API(`score_image_vlm`, `t2i-score` env에
+`anthropic` 패키지)로 했었지만, API 키가 서버에 없어서 로컬 추론으로 전환한 env다.
+`t2i-qwen`(Qwen-Image T2I 생성 모델용)과 이름이 비슷하지만 완전히 다른 모델·용도라
+env를 분리한다.
 
     conda create -n t2i-judge python=3.11 -y
     conda activate t2i-judge
@@ -110,13 +113,17 @@ LLaVA-Video, InternVideo2-CLIP 등 무관한 백엔드가 없는 의존성(`llav
 가중치는 `HF_HOME`에 자동 다운로드(`Qwen/Qwen2.5-VL-7B-Instruct`, ~16GB). VRAM 실측치는
 `scripts/judge.py` 스모크 테스트 결과 참고(README.md "채점 모듈" 절).
 
-## 2차 judge 전용 env: t2i-judge2 (TASK-C, 자기 계열 선호 검증용)
+## 기본 judge env: t2i-judge2 (InternVL3-8B, 2026-07-28부터 기본값)
 
-`scripts/judge_spec.py --judge-model unsloth/gemma-3-12b-it-bnb-4bit`용. Qwen2.5-VL이 아닌
-judge를 붙여 자기 계열 선호(self-enhancement bias)를 확인하려는 목적이라 `t2i-judge`
-(torch 2.5.1 고정, Qwen2.5-VL 작동 버전)를 건드리지 않고 별도 env로 분리했다 — Gemma-3
-계열 체크포인트가 transformers 내부적으로 `torch>=2.6`을 요구해서 같은 env에 못 넣는다
-(2026-07-27 확인, `create_causal_mask`가 `ValueError: ... require torch>=2.6`로 죽음).
+원래는 TASK-C 자기 계열 선호(self-enhancement bias) 검증용으로 Qwen2.5-VL이 아닌
+judge(Gemma-3-12B 4bit)를 붙이려고 `t2i-judge`(torch 2.5.1 고정, Qwen2.5-VL 작동 버전)를
+건드리지 않고 분리한 env였다 — Gemma-3 계열 체크포인트가 transformers 내부적으로
+`torch>=2.6`을 요구해서 같은 env에 못 들어갔기 때문(2026-07-27 확인, `create_causal_mask`가
+`ValueError: ... require torch>=2.6`로 죽음). InternVL3-8B(`OpenGVLab/InternVL3-8B-hf`)도
+같은 이유로 이 env를 쓴다 — TASK-C 삼각검증 결과 InternVL3가 사람 채점과 κ=0.61로 세
+judge 중 가장 높게 나와 `scripts/judge.py`/`scripts/judge_spec.py`의 **기본 judge**가
+됐다. `scripts/judge_spec.py --judge-model unsloth/gemma-3-12b-it-bnb-4bit`(Gemma-3)도
+이 env에서 그대로 동작한다.
 
     conda create -n t2i-judge2 python=3.11 -y
     conda activate t2i-judge2
@@ -127,7 +134,15 @@ judge를 붙여 자기 계열 선호(self-enhancement bias)를 확인하려는 �
     # cu121 인덱스는 torch 2.5.1이 최신이라 torch>=2.6 요구를 못 채운다 — cu124 필수.
     # streamlit 등 나머지 requirements-common.txt 패키지는 이 env에서 안 쓰여서 뺐다.
 
-가중치는 `unsloth/gemma-3-12b-it-bnb-4bit`(사전 4bit 양자화, ~7.3GB, ungated) 사용 —
-`google/gemma-3-12b-it` 원본(bf16, ~22.7GB, gated)은 서버 여유 디스크에 안 들어간다.
-스냅샷: `envs/t2i-judge2.txt`. VRAM 실측: 파일럿 3장 기준 vram_peak=7.57GB
+**기본 judge 가중치**는 `OpenGVLab/InternVL3-8B-hf`(bf16, 15.9GB, transformers 네이티브
+`InternVLForConditionalGeneration`, `trust_remote_code` 불필요 — 원본 `OpenGVLab/InternVL3-8B`는
+커스텀 `InternVLChatModel` 클래스라 호환 안 됨, 반드시 `-hf` 접미사 붙은 리포를 쓸 것).
+VRAM 실측: 파일럿 3장 기준 vram_peak=15.35GB(16GB 예산 대비 여유 ~0.65GB,
+`scripts/sweeps/pilot_judge_internvl3.sh`, 2026-07-28).
+
+Gemma-3 가중치(교차검증용)는 `unsloth/gemma-3-12b-it-bnb-4bit`(사전 4bit 양자화, ~7.3GB,
+ungated) 사용 — `google/gemma-3-12b-it` 원본(bf16, ~22.7GB, gated)은 서버 여유 디스크에
+안 들어간다. VRAM 실측: 파일럿 3장 기준 vram_peak=7.57GB
 (`scripts/sweeps/pilot_judge_gemma3.sh`, 2026-07-27).
+
+스냅샷: `envs/t2i-judge2.txt`.

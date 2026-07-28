@@ -2,7 +2,7 @@
 
     score_image(image, prompt, components, ref_set=None) -> {vqascore?, custom_cv?, csd?}
 
-VLM-as-judge는 이 모듈에서 분리됐다 — 로컬 Qwen2.5-VL-7B-Instruct 기반
+VLM-as-judge는 이 모듈에서 분리됐다 — 로컬 VLM(기본 InternVL3-8B-hf, 2026-07-28부터) 기반
 `scripts/judge.py` 참고 (예전 Anthropic API 기반 score_image_vlm은 제거됨).
 
 무거운 모델(VQAScore, CSD)은 함수 인자로 받지 않고 모듈 레벨 캐시로 lazy-load한다.

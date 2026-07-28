@@ -81,8 +81,11 @@
   0~1로 정규화해 평균. 저장소의 실제 파일럿 PNG 6장(v205/v207/v211/v214, `pilot-complex3-report.md`
   축별 판정표 기준)으로 로컬 검증함 — 값이 0.77~0.82 범위에서 이미지별로 갈리는 것 확인.
 - **VLM-as-judge**: `scoring.py`에서 완전히 분리된 별도 스크립트 `scripts/judge.py` —
-  **로컬 Qwen2.5-VL-7B-Instruct**(전용 `t2i-judge` env, 3090에서 직접 추론)로 API 키 없이
-  판정한다. 예전에 있던 Anthropic API 기반 `score_image_vlm`은 제거됨. bench_v1의
+  로컬 VLM(전용 env, 3090에서 직접 추론)으로 API 키 없이 판정한다. 예전에 있던
+  Anthropic API 기반 `score_image_vlm`은 제거됨. **2026-07-28부터 기본 judge는
+  InternVL3-8B-hf**(`t2i-judge2` env) — TASK-C 삼각검증(사람 vs Qwen2.5-VL/Gemma-3/InternVL3)
+  결과 사람 채점과의 κ가 셋 중 최고(0.61)라 채택. Qwen2.5-VL-7B-Instruct는 `t2i-judge` env로
+  교차검증용으로 남아있다(아래 스모크 테스트는 Qwen 기준 기록). bench_v1의
   counting/spatial/attribute 축별로 pass/fail을 구조화 JSON으로 받는다. 실행 순서는
   `docs/eval_runbook.md` 참고. `t2i-judge` env 구성 시 `qwen-vl-utils`가 import 시점에
   요구하는 `torchvision`이 설치 목록에서 빠져 있었음 — `envs/README.md` 참고해 추가로 설치할 것.

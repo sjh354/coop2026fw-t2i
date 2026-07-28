@@ -111,8 +111,9 @@ generation + scoring model caches on the same 97GB disk):
   전부 이 env를 씀. `t2i-score`/`t2i-judge`/`t2i-qwen`/`t2i-ideogram` 같은 채점·비후보 모델 env는
   여기 만들지 않는다 — 디스크(97GB)가 금방 찬다.
 - `ubuntu@172.10.5.23` — repo at `/home/ubuntu/t2i` — **채점(scoring) + 프롬프트 리라이팅(rewrite) 전용.**
-  env는 `t2i-score`(VQAScore/CSD/custom_cv, `src/scoring.py`), `t2i-judge`(로컬 Qwen2.5-VL-7B-Instruct
-  VLM-judge, `scripts/judge.py`), `t2i-rewrite`(로컬 LLM 기반 프롬프트 리라이터 backend,
+  env는 `t2i-score`(VQAScore/CSD/custom_cv, `src/scoring.py`), `t2i-judge2`(로컬 InternVL3-8B
+  VLM-judge, 2026-07-28부터 기본, `scripts/judge.py`), `t2i-judge`(Qwen2.5-VL-7B-Instruct,
+  교차검증용 보조 judge), `t2i-rewrite`(로컬 LLM 기반 프롬프트 리라이터 backend,
   `scripts/rewrite.py` — 2026-07-27 TASK-E 추가) 이렇게 유지. T2I 생성 모델 env(`t2i` 등)나
   그 가중치 캐시를 여기 두지 않는다.
   **디스크 여유가 30GB 이상 필요한 큰 모델(예: PromptEnhancer-7B, 대체 judge 모델)을 새로
