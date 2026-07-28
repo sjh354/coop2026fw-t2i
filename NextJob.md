@@ -615,49 +615,82 @@ GPU: RTX 3090 24GB, 서빙 예산 16GB.
 
 ---
 
-### TASK-G · Ideogram-4 block 문제 + 텍스트 렌더링 평가
+### TASK-G · Ideogram-4 block 문제 + 텍스트 렌더링 평가 🔵 계획 재작성 완료, 서버 실행 대기 (2026-07-28)
+
+**배경 재조사 결과 (원안의 가정 두 개가 모두 틀렸음이 소스 코드로 확인됨)**
+
+원안은 "API의 Magic Prompt가 호출마다 다르게 리라이팅해서 확장본이 안전 필터에 걸린다"를
+가정했다. 그런데 이 프로젝트의 `ideogram-4`는 애초에 API가 아니라 `ideogram-ai/ideogram-4-nf4`
+로컬 nf4 가중치를 직접 로드해서 쓴다(`configs/models/ideogram-4.yaml`, `src/adapters/ideogram.py`,
+env `t2i-ideogram` — 이미 존재, 추론도 이미 해봄. 오픈 웨이트 공개 여부 확인도 이걸로 이미 끝난
+사실이라 원안 4번 항목은 그대로 완료 처리). Magic Prompt 자체를 안 쓰므로 원안의 원인 가설은
+성립하지 않는다 — 여기까지는 `scripts/ideogram_probe.py`의 기존 docstring이 이미 정정해둔
+내용이었다.
+
+이번에 서버 157의 `t2i-ideogram` env에 실제로 설치된 `ideogram4` 패키지 소스를 직접 읽어 한 단계
+더 파고든 결과:
+
+- `ideogram4/pipeline_ideogram4.py`에는 safety 관련 코드가 전혀 없다. `ideogram4/safety.py`의
+  `moderate_prompt`/`moderate_image`는 Hive API를 호출하는 **독립 함수**이고 API 키(`HIVE`)가
+  필요한데, 파이프라인 `__call__`도 이 프로젝트의 `src/adapters/ideogram.py`도 이 함수들을
+  호출하지 않는다 — 즉 **이 self-host 경로에는 실제 safety filter가 아예 연결돼 있지 않다.**
+  공식 문서(`docs/prompting.md`)가 말하는 "NSFW면 회색 차단 화면 반환"은 호스티드 프로덕트
+  (ideogram.ai) 얘기지 이 오픈 웨이트 패키지의 동작이 아니다.
+- 그럼 과거에 실제로 관찰된 "block"은 무엇이었나 — `ideogram4/caption_verifier.py`의
+  `CaptionVerifier`가 원인이다. 이 모델은 구조화 JSON 캡션으로만 학습됐고, `pipeline_ideogram4.py`
+  는 매 호출마다 `CaptionVerifier.verify_raw()`로 캡션을 검사해서 `raise_on_caption_issues=True`
+  (파이프라인 기본값)일 때 스키마 위반(비-JSON 포함)마다 `ValueError`를 던진다. 커밋
+  `f57d99e`(2026-07-14) 이전엔 `generic.py`로 plain text를 그대로 넣고 있었으니 이게 곧 "block"
+  으로 보였을 것이다. 지금 `src/adapters/ideogram.py`는 이미 `raise_on_caption_issues=False`로
+  이 예외를 억제하고 있어 **프로덕션 경로에서는 이 원인의 하드 실패가 이미 해소된 상태.**
+- 남는 문제: 현재 어댑터의 `_to_caption_json`은 프롬프트 전체를 `obj` 요소 하나에 욱여넣는
+  naive wrap이라 `style_description`도 없고 `type:"text"` 요소도 전혀 안 쓴다 — 스키마상 유효는
+  하지만 학습 분포와 동떨어진 캡션을 매번 넣고 있었던 셈이다. 특히 텍스트 렌더링을 요구하는
+  프롬프트에서 `type:"text"` 요소(공식 스키마가 글자를 그리게 하는 유일한 경로)를 한 번도 쓴 적이
+  없다는 게 텍스트 렌더링 품질 저하의 유력한 원인으로 새로 확인됐다.
+
+**GitHub 소스 확인 경로**: `docs/prompting.md`(`gh api repos/ideogram-oss/ideogram4/contents/docs/prompting.md`
+로 원문 확보 — WebFetch 요약은 필드명 스펠링이 어긋나는 등 신뢰 불가라 원문 대조 필수였음),
+`src/ideogram4/caption_verifier.py`, `src/ideogram4/safety.py`, `src/ideogram4/pipeline_ideogram4.py`
+(뒤 세 개는 서버 157 `t2i-ideogram` env에 설치된 실물 소스를 직접 grep/cat).
+
+**재설계된 계획**
 
 ```
-[배경]
-Ideogram-4로 생성하면 간헐적으로 "blocked" 응답이 오고 이미지가 안 나온다.
-동일 프롬프트가 어떤 때는 되고 어떤 때는 막힌다.
-
-[가장 유력한 원인 — 먼저 이것부터 확인]
-Ideogram의 Magic Prompt(자동 프롬프트 확장)가 호출마다 다르게 리라이팅하고,
-확장된 결과가 안전 필터에 걸리는 것이다. 원본이 아니라 확장본이 걸리므로 비결정적으로 보인다.
-→ API 호출에서 magic prompt 옵션을 OFF로 두고 재현성을 먼저 확보한다.
-   (v4에서 필드명이 바뀌었을 수 있으니 developer.ideogram.ai 문서 확인)
-
-[해야 할 일]
-1. scripts/ideogram_probe.py 신규. 24개 프롬프트를 magic prompt ON/OFF 두 조건으로
-   각 3회씩 호출하고 block 여부를 CSV로 기록한다.
-   컬럼: prompt_id, magic_prompt, trial, blocked(bool), error_message, latency_s
-   → OFF에서 결정론적(같은 프롬프트는 항상 같은 결과)이 되는지가 첫 검증 기준.
-2. block이 남는 프롬프트가 있으면 그 프롬프트들의 공통 어휘를 뽑아 리포트.
-   (인체, 역사적 사건, 국가명 등 패턴이 있는지)
-3. 프롬프트를 JSON caption schema로 변환하는 옵션을 추가.
-   필드: high_level_description / style_description / compositional_deconstruction(background + elements)
-   Ideogram 공식 문서가 plain-text 프롬프트의 오탐률이 높음을 인정하고 JSON 경로를 권장한다.
-   변환 전/후 block rate를 비교.
-4. 별도로 — Ideogram-4가 오픈 웨이트로 공개되었는지 확인하라(2026년 6월경 릴리스 정보 있음,
-   레포 후보: ideogram-ai/ideogram-4-nf4 / -fp8, 라이선스 게이트 있음).
-   사실이면 셀프호스팅 시 API-side 필터가 아예 사라지므로 이게 근본 해결이다.
-   1024px에서 peak VRAM 실측이 필요하다(9.3B, 16GB 예산 초과 가능성 있음).
-
-[텍스트 렌더링 평가 — 위와 분리된 작업]
-5. 먼저 파일럿을 돌린다. 현재 후보 3종(FLUX.2-klein-4b, Lumina2, PixArt-Sigma)에
-   짧은 영어 단어 렌더링을 요구하는 프롬프트 10개를 넣고 PaddleOCR로 word-F1을 잰다.
-   **세 모델 모두 0에 가까우면 OCR 기반 평가 자체가 무의미하므로 그 사실을 보고하고 중단한다.**
-   floor effect 위에 평가 인프라를 짓지 않기 위한 게이트다.
-6. 게이트를 통과한 모델에 대해서만 Ideogram과의 비교 실험을 설계한다.
-
-[검증 기준]
-- 1번의 OFF 조건이 결정론적이지 않으면 원인 가설이 틀린 것이니 즉시 보고하고 멈춰라.
-- OCR 결과는 반드시 이미지 3장을 사람이 직접 보고 OCR 출력과 대조해 검증한 뒤 전체 실행.
+[할 일 — 순서대로]
+1. (완료) src/adapters/ideogram.py: _to_caption_json이 이미 유효한 캡션 JSON을 받으면
+   재래핑하지 않고 통과(재직렬화만)시키도록 수정.
+2. (완료) scripts/ideogram_guide_captions.py 신규: 공식 스키마(엄격한 key 순서,
+   style_description의 photo/art_style 배타 규칙, type:"text" 요소)를 정확히 따르는
+   24개(8카테고리 x 3소스) 캡션을 원본 vlm-prompts.json 문구만 가지고 손으로 분해해
+   image-prompts/rewrite/ideogram_guide.json에 작성. "no text"라고 명시한 프롬프트에는
+   글자를 지어내 넣지 않았고, 원문이 실제로 인용부호로 준 문자열(qwen 소스의 'bar graphs',
+   'Animal Cell', 'UNIT 17 test')이 있는 경우에만 type:"text" 요소를 추가함.
+3. (완료) scripts/ideogram_probe.py 확장: --guide-prompts-json으로 위 3번째 포맷을 추가.
+   CaptionVerifier 경고 개수(GPU 불필요, 정적 체크)를 caption_format별로 기록하고, pipe()
+   예외 여부와 별개로 반환 이미지의 그레이스케일 표준편차(근사 단색 = 차단 화면 의심)도 기록.
+   --limit으로 파일럿 규모 조절 가능.
+4. (서버 157에서 실행 대기) 파일럿: --limit 6~8 --trials 2 --formats plain json guide로
+   텍스트 필요/불필요 프롬프트를 섞어 먼저 돌리고 s/img를 확인한 뒤 전체 24개 실행 여부를 결정
+   (V4_QUALITY_48=48-step, qwen-image 30-step이 152s/img였던 걸 감안하면 전체 매트릭스는
+   비쌀 수 있음 — bench/cost/vram_latency.csv 참고).
+5. (서버 157에서 실행 대기) scripts/lecture_generate.py --model ideogram-4
+   --prompts-json image-prompts/rewrite/ideogram_guide.json 으로 guide 포맷 24장 정식 생성.
+   텍스트 렌더링 여부는 여기서 나온 실제 이미지를 사람이 직접 보고 판단한다(OCR 자동화는
+   TASK-G 이전 세션에서 이미 폐기 — 아래 참고).
+6. bench/results.md에 결과 정리: verifier_warnings(plain vs naive-json vs guide),
+   exception rate, blank_image 여부, guide 포맷에서 텍스트가 실제로 읽히는지 육안 판정.
 
 [하지 말 것]
-- 안전 필터를 우회하는 프롬프트 트릭을 시도하지 마라. 포맷 문제와 우회는 다르다.
-- 한국어 텍스트 렌더링부터 시작하지 마라. 영어에서 0이면 한국어는 볼 것도 없다.
+- PaddleOCR 기반 자동 채점 인프라를 다시 만들지 마라. 커밋 ed033d9에서 "3개 후보 모델의
+  텍스트 렌더링 붕괴는 이미 반복 확인된 사실"이라는 이유로 사용자 지시에 따라 이미 삭제된
+  범위다(`configs/experiments/text-render-pilot.yaml`, `configs/keywords/text-render-pilot10.yaml`,
+  `scripts/score_ocr_text.py`) — 재검증 불필요, Ideogram 자체의 텍스트 렌더링 판정은 육안으로
+  충분하다.
+- "no text/no letters"라고 명시한 원본 프롬프트에 글자를 지어내 type:"text"로 넣지 마라.
+  베이스라인 24개 세트와의 비교 가능성이 깨진다.
+- 안전 필터를 우회하는 프롬프트 트릭을 시도하지 마라 — 애초에 이 self-host 경로엔 안전
+  필터가 연결돼 있지 않다는 게 이번에 확인된 사실이라 이 항목 자체가 성립하지 않는다.
 ```
 
 ---
