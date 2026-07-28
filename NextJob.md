@@ -258,15 +258,27 @@ v246/v247/v249 자동 채점 → `judge_agreement.py`로 κ 계산.
 |---|---|---|---|---|---|
 | 사람 vs Qwen2.5-VL-7B (기존) | 0.76 | 0.55 | 0.55 | 0.29 | 0.55 |
 | 사람 vs Gemma-3-12B-4bit (신규) | 0.66 | 0.31 | 0.17 | 0.40 | 0.17 |
+| 사람 vs InternVL3-8B (2026-07-28 추가) | 0.79 | 0.61 | 0.78 | 0.20 | 0.78 |
 
-- 두 judge 모두 κ<0.6 — **이 규모에서는 둘 다 신뢰할 수 없음.** 사람 손 채점 30장 이상
+- 두 judge(Qwen/Gemma-3) 모두 κ<0.6 — **이 규모에서는 둘 다 신뢰할 수 없음.** 사람 손 채점 30장 이상
   확보 기준에 이제 막 도달한 수준이라, 표본을 늘려 재검증하기 전까지 spec item 채점
   결과를 모델 비교의 최종 근거로 쓰지 말 것.
 - **자기 계열 선호(self-enhancement bias) 가설은 이 파일럿에서 지지되지 않음**: Qwen
   judge가 qwen 소스에 유독 후하지 않고(claude와 동일 κ=0.55), Gemma-3도 qwen 소스에
-  유독 박하지 않음(claude와 동일 κ=0.17). 대신 두 judge 모두 **chatgpt 소스에서 서로
-  반대 방향으로 튐**(Qwen: chatgpt 최저 0.29 / Gemma-3: chatgpt 최고 0.40) — 계열 편향보다
-  chatgpt 소스 spec item 문구의 모호성 문제일 가능성.
+  유독 박하지 않음(claude와 동일 κ=0.17). InternVL3도 마찬가지로 qwen 소스(κ=0.78)가
+  claude 소스(κ=0.78)와 동률 — 세 judge 모두 자기 계열 선호 징후 없음. 대신 세 judge 다
+  **chatgpt 소스에서 유독 불안정**(Qwen 0.29 / Gemma-3 0.40 / InternVL3 0.20) — 계열 편향보다
+  chatgpt 소스 spec item 문구의 모호성 문제일 가능성이 더 짙어짐.
+- InternVL3-8B(`OpenGVLab/InternVL3-8B-hf`, transformers 5.14.1 네이티브
+  `InternVLForConditionalGeneration`, `trust_remote_code` 불필요)는 이 파일럿에서 전체
+  κ=0.61로 유일하게 0.6 기준을 넘긴 judge지만, chatgpt 소스만 따로 보면 여전히 0.20으로
+  기준 미달 — "InternVL3가 전반적으로 낫다"보다는 "chatgpt 소스 문제가 judge와 무관하게
+  반복된다"는 기존 결론을 한 번 더 뒷받침하는 근거로 읽어야 함. VRAM peak 15.35GB
+  (16GB 예산 대비 여유 ~0.65GB). 서버 23 디스크 부족(5.2GB free)으로 우선 `~/t2i/hf_cache`
+  (33GB, `HF_HOME` 미참조 상태의 죽은 중복 캐시로 확인) 정리 후 진행.
+  스크립트: `scripts/sweeps/pilot_judge_internvl3.sh`. 결과:
+  `bench/scores/v243_pixart-sigma-lecture24/judge_spec_internvl3.csv`,
+  `judge_disagreement_internvl3_vs_manual.csv`.
 
 **다음 단계**: 사람 손 채점 규모를 30장 이상으로 늘려 재검증 필요.
 
@@ -298,6 +310,52 @@ TASK-B2 STAGE 3(손 라벨링 125건, v246/v247/v249)와 같은 표본으로 Gem
 근본 원인은 spec item 문구(특히 chatgpt 소스) 쪽일 가능성이 높음 — spec 문구 자체를
 사람이 재검토하거나, spec 채점을 모델 비교의 보조 지표로 격하하고 VQAScore/CSD 등
 다른 지표를 주 근거로 삼는 방향 전환이 필요. 여기까지 기록만 하고 실행은 보류.
+
+**다음 단계 (선택적) · InternVL3을 3번째 judge로 추가**
+
+**진행 상황 (2026-07-28, 파일럿 규모만 완료 — 아래 STAGE 3 규모는 아직 미실행)**
+
+v243 파일럿(29건) 규모로 사람 vs InternVL3-8B만 실행 완료 (결과는 위 표 참고).
+아래 원안의 STAGE 3 규모(v246/v247/v249, 125건) 재실행과 Qwen vs InternVL3 /
+Gemma-3 vs InternVL3 교차 κ는 아직 하지 않았음 — 필요하면 이어서 진행.
+
+```
+[배경]
+TASK-C 원안에서 비-Qwen 계열 judge 후보로 InternVL3-8B / Gemma-3-12B 4bit 둘을
+제시했으나 실제로는 Gemma-3만 시도됨. Gemma-3 결과(사람 vs Gemma3 κ=0.19)는
+Qwen(κ=0.37)보다 오히려 낮아 "비-Qwen 계열이 더 객관적"이라는 가설은 이번
+데이터로는 지지되지 않았고, 근본 원인이 judge 계열이 아니라 spec item 문구
+쪽이라는 결론이 이미 남. 따라서 이 작업의 목적은 "judge를 바꿔서 신뢰성을
+높인다"가 아니라 — spec 채점을 모델 비교에 계속 쓰게 되는 경우를 대비해
+**judge 계열 의존도를 낮추는 삼각검증 근거**를 하나 더 마련하는 것으로 한정한다.
+spec 채점 신뢰성 문제 자체를 이 태스크로 해결하려 하지 말 것 (그건 이미 다른
+방향 — spec 문구 재검토 / VQAScore·CSD로 주 지표 전환 — 으로 정리됨).
+
+[해야 할 일]
+1. InternVL3-8B(또는 VRAM 안 맞으면 InternVL3-2B급으로 하향)를
+   scripts/judge_spec.py --judge-model로 붙인다 (Gemma-3 붙일 때 쓴
+   AutoModelForImageTextToText 범용 백엔드 재사용, 신규 어댑터 만들지 말 것).
+2. TASK-B2 STAGE 3와 동일 표본(v246/v247/v249, 125건, worklist_v2)에 대해
+   InternVL3 judge를 돌린다 (scripts/sweeps/stage3_gemma3_judge.sh를
+   참고해 동일 구조로 스크립트만 교체).
+3. scripts/judge_agreement.py로 다음 세 쌍의 κ를 계산:
+   사람 vs InternVL3, Qwen2.5-VL-7B vs InternVL3, Gemma-3 vs InternVL3.
+   prompt_source(claude/chatgpt/qwen)별로도 쪼갤 것 — 기존 두 judge와
+   동일한 표 포맷으로 bench/results.md에 추가.
+
+[검증 기준]
+- κ<0.6이 다시 나오더라도 그 자체로 유의미한 결과다 (spec 문구 원인론을
+  세 번째 judge로 재확인하는 것) — "실패"로 취급하지 말고 그대로 기록한다.
+- 사람 vs InternVL3 κ가 사람 vs Qwen(0.37) 또는 사람 vs Gemma-3(0.19)보다
+  뚜렷이 높게 나오는 경우에만 "judge 후보로 채택 가능"이라고 결론 낼 것 —
+  비슷하거나 낮으면 "3개 계열 다 spec 채점엔 부적합"으로 결론짓고 종료.
+
+[하지 말 것]
+- InternVL3 결과가 잘 나온다고 해서 기존 Qwen/Gemma-3 채점 결과를 폐기하고
+  InternVL3로 전면 재채점하지 마라. 세 judge 결과를 나란히 보고하는 것이 목적이지
+  하나로 수렴시키는 게 목적이 아니다.
+- VRAM 안 맞아서 4bit/양자화로 내려가야 하면 그 사실과 실측 VRAM을 반드시 기록.
+```
 
 ---
 
