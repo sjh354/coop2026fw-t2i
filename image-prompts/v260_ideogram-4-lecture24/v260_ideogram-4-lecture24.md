@@ -1,0 +1,316 @@
+---
+best: []
+created: '2026-07-28'
+dtype: bfloat16
+experiment: lecture-vlm24
+guidance_scale: 7.0
+issues: ''
+keyword_set: lecture_vlm24
+keywords:
+- Structured Worksheet Template (claude)
+- Structured Worksheet Template (chatgpt)
+- Structured Worksheet Template (qwen2.5-vl-7b-instruct)
+- Data Visualization Chart (claude)
+- Data Visualization Chart (chatgpt)
+- Data Visualization Chart (qwen2.5-vl-7b-instruct)
+- Historical Figure Portrait (claude)
+- Historical Figure Portrait (chatgpt)
+- Historical Figure Portrait (qwen2.5-vl-7b-instruct)
+- Multi-Character Classroom Collaboration (claude)
+- Multi-Character Classroom Collaboration (chatgpt)
+- Multi-Character Classroom Collaboration (qwen2.5-vl-7b-instruct)
+- Intergenerational Indoor Scene (claude)
+- Intergenerational Indoor Scene (chatgpt)
+- Intergenerational Indoor Scene (qwen2.5-vl-7b-instruct)
+- Single-Character Cutout (claude)
+- Single-Character Cutout (chatgpt)
+- Single-Character Cutout (qwen2.5-vl-7b-instruct)
+- Labeled Science Diagram (claude)
+- Labeled Science Diagram (chatgpt)
+- Labeled Science Diagram (qwen2.5-vl-7b-instruct)
+- Geometric Shape Set (claude)
+- Geometric Shape Set (chatgpt)
+- Geometric Shape Set (qwen2.5-vl-7b-instruct)
+model: ideogram-4
+model_repo: ideogram-ai/ideogram-4-nf4
+negative_prompt: ''
+num_images: 24
+prompts:
+- '{"high_level_description":"A blank children''s worksheet with six empty boxes above
+  a row of colored location pins.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white page.","elements":[{"type":"obj","desc":"Six
+  empty rectangular boxes with thick black outlines and white interiors, arranged
+  in two staggered rows, completely blank inside."},{"type":"obj","desc":"A single
+  horizontal black baseline near the bottom of the page."},{"type":"obj","desc":"Six
+  small teardrop-shaped location pins in different colors placed along the baseline,
+  each connected to one box above by a thin vertical black stroke."}]}}'
+- '{"high_level_description":"A printable elementary school worksheet template with
+  six large empty boxes and colored location pins, ready for handwriting.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white page with
+  balanced spacing and a clean vector layout.","elements":[{"type":"obj","desc":"Six
+  large empty rectangular boxes with thick black outlines, arranged in two staggered
+  rows, writing areas completely blank."},{"type":"obj","desc":"Six small colored
+  teardrop-shaped location pins along a horizontal baseline, each connected to one
+  box by a thin vertical stroke."}]}}'
+- '{"high_level_description":"A blank children''s worksheet with six empty boxes above
+  a row of colored location pins.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white page.","elements":[{"type":"obj","desc":"Six
+  empty rectangular boxes with thick black outlines and white interiors, arranged
+  in two staggered rows, completely blank inside."},{"type":"obj","desc":"A single
+  horizontal black baseline near the bottom of the page."},{"type":"obj","desc":"Six
+  small teardrop-shaped location pins in different colors placed along the baseline,
+  each connected to one box above by a thin vertical black stroke."}]}}'
+- '{"high_level_description":"A simple vertical bar chart with six bars of different
+  colors and heights on a white background, no numbers or labels.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading","color_palette":["#F2C230","#2E5AAC","#F2871E","#D62828","#8B5E3C","#3C9F45","#FFFFFF"]},"compositional_deconstruction":{"background":"A
+  plain white worksheet background with thin horizontal gridlines behind the bars.","elements":[{"type":"obj","desc":"A
+  plain vertical axis line on the left edge of the chart."},{"type":"obj","desc":"Six
+  vertical bars of equal width standing on a horizontal baseline, left to right colored
+  yellow, blue, orange, red, brown and green, the blue bar tallest and the orange
+  bar shortest, a small toy icon centered below each bar."}]}}'
+- '{"high_level_description":"A printable worksheet with a colorful bar graph comparing
+  six favorite-toy categories.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A clean white page with
+  balanced classroom-friendly layout.","elements":[{"type":"obj","desc":"A bar graph
+  with six differently colored bars and a small toy icon below each category."},{"type":"obj","desc":"Labeled
+  axes, numbered comprehension questions, and blank answer lines below the chart,
+  left completely blank of any specific wording."}]}}'
+- '{"high_level_description":"A bar graph worksheet titled ''bar graphs'' showing
+  the favorite toys of Grade 1 learners.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading","color_palette":["#F2C230","#2E5AAC","#F2871E","#D62828","#8B5E3C","#3C9F45","#F5E6C8"]},"compositional_deconstruction":{"background":"A
+  white worksheet background with a beige header section.","elements":[{"type":"text","text":"bar
+  graphs","desc":"Small bold black title text at the top of the worksheet."},{"type":"obj","desc":"Six
+  bars colored yellow, blue, orange, red, brown and green in that order, each with
+  a toy icon below it: a doll, a robot, a basketball, a dinosaur, a truck, and a teddy
+  bear."},{"type":"text","text":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12","desc":"Small
+  black numeric y-axis scale running vertically from 1 to 12."}]}}'
+- '{"high_level_description":"A friendly cartoon portrait of a nineteenth-century
+  American statesman, upper body only.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white background.","elements":[{"type":"obj","desc":"A
+  man with a dark beard along the jawline and no mustache, wearing a black formal
+  coat and bow tie, calm smiling expression, facing slightly left, tall dark hat removed."},{"type":"obj","desc":"A
+  striped and starred flag hanging behind his right shoulder."},{"type":"obj","desc":"A
+  rolled parchment scroll placed near his left side."}]}}'
+- '{"high_level_description":"An educational cartoon illustration of a single historical
+  political figure, upper body only.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white background
+  with balanced composition.","elements":[{"type":"obj","desc":"A historical figure
+  in formal period clothing with distinctive facial hair and hairstyle, calm expression."},{"type":"obj","desc":"A
+  national flag on one side and a rolled parchment scroll on the other as symbolic
+  props."}]}}'
+- '{"high_level_description":"A cartoon-style portrait of Abraham Lincoln, upper body
+  only, facing slightly left.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white background,
+  simple and colorful style with soft edges.","elements":[{"type":"obj","desc":"Abraham
+  Lincoln with a dark beard along the jawline and no mustache, black formal coat,
+  white shirt and dark bow tie, tall hat removed, calm smiling expression."},{"type":"obj","desc":"An
+  American flag with red and white stripes and white stars on a blue field hanging
+  behind his right shoulder."},{"type":"obj","desc":"A rolled parchment scroll in
+  a pale cream tone resting near his left side."}]}}'
+- '{"high_level_description":"Four elementary school students sitting around a shared
+  classroom table sharing their projects.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A simple plain classroom
+  background.","elements":[{"type":"obj","desc":"Two girls on the left and a boy and
+  a girl on the right sitting around a table, bright cheerful expressions; the girl
+  at front left holds up a folded paper booklet with both hands, the boy holds a marker
+  pen."},{"type":"obj","desc":"Colored drawings of a park and pencils scattered on
+  the table surface."},{"type":"obj","desc":"The girl on the right seated in a wheelchair."}]}}'
+- '{"high_level_description":"A Korean elementary school textbook illustration of
+  four students sharing their creative projects around a table.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A simple classroom background
+  with soft pastel colors.","elements":[{"type":"obj","desc":"Four students each presenting
+  a different work such as a park drawing, booklet, or poster while smiling and talking;
+  the student on the right uses a wheelchair."},{"type":"obj","desc":"A speech bubble
+  shape above each student''s head, left free of specific wording."}]}}'
+- '{"high_level_description":"A group of four children at a shared classroom table,
+  each engaged with a drawing of a park.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A classroom with a simple
+  wooden table and chairs, cartoonish and colorful style.","elements":[{"type":"obj","desc":"The
+  girl on the front left holds an open folded booklet showing a drawing of a park;
+  the other three children are focused on their own drawings; the girl in a wheelchair
+  on the right has a completed park drawing."},{"type":"obj","desc":"A speech bubble
+  shape above each child''s head, left free of specific wording."}]}}'
+- '{"high_level_description":"An elderly couple sitting on a sofa while a child kneels
+  nearby writing notes in a cozy living room.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A living room with a soft
+  green rug.","elements":[{"type":"obj","desc":"An elderly woman in a magenta cardigan
+  and yellow scarf gesturing with one hand, and an elderly man in a light blue shirt
+  smiling, both with gray hair, sitting side by side on a beige fabric sofa."},{"type":"obj","desc":"A
+  young child in a red hoodie kneeling on the floor in the foreground with their back
+  to the viewer, writing on a small notepad with a pencil."},{"type":"obj","desc":"A
+  floor lamp with a green shade behind the sofa, and a wooden side table with a small
+  potted plant."}]}}'
+- '{"high_level_description":"An elementary school textbook illustration of a child
+  interviewing two grandparents in a cozy living room.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A living room with minimal
+  background details and warm family atmosphere.","elements":[{"type":"obj","desc":"A
+  child kneeling on the floor in the foreground with their back to the viewer, writing
+  notes on a small notepad."},{"type":"obj","desc":"Two grandparents sitting side
+  by side on a beige sofa answering questions with friendly expressions."},{"type":"obj","desc":"A
+  green-shaded floor lamp, a wooden side table, and a small potted plant."}]}}'
+- '{"high_level_description":"A cozy living room scene with an elderly couple on a
+  sofa and a child taking notes on the floor.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A living room with a soft
+  green rug, warm-toned and cartoonish style.","elements":[{"type":"obj","desc":"An
+  elderly woman in a magenta cardigan, gray pants and yellow scarf with glasses, smiling,
+  seated beside an elderly man in a light blue shirt and dark pants on a beige fabric
+  sofa."},{"type":"obj","desc":"A child in a red hoodie kneeling on the floor in the
+  foreground with their back to the viewer, holding a small notepad and pencil."},{"type":"obj","desc":"A
+  green floor lamp with a light shade, a wooden side table with a small potted plant."}]}}'
+- '{"high_level_description":"An elderly woman sewing fabric at a treadle sewing machine,
+  upper body cutout.","style_description":{"aesthetics":"simple, cheerful, classroom-friendly","lighting":"even
+  flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat vector
+  children''s educational illustration, thick clean black outlines, minimal shading"},"compositional_deconstruction":{"background":"A
+  flat pale blue rounded background shape, nothing shown below the table.","elements":[{"type":"obj","desc":"An
+  elderly woman with gray hair tied in a bun and round glasses, wearing a white long-sleeve
+  blouse and green vest, gentle focused smile."},{"type":"obj","desc":"An old black
+  treadle sewing machine mounted on a wooden table, both her hands guiding a folded
+  pink and white checkered cloth under the needle."}]}}'
+- '{"high_level_description":"An educational cutout illustration of a single character
+  using a sewing machine at a work table.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A simple flat solid-color
+  background shape without additional scenery.","elements":[{"type":"obj","desc":"A
+  character seated at a work table using a hands-on tool such as a sewing machine,
+  upper body and work surface only, everything below the table cropped out."}]}}'
+- '{"high_level_description":"A cartoon-style elderly woman sewing a piece of fabric
+  at a treadle sewing machine.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A flat pale blue rounded
+  shape, nothing shown below the table, simple and colorful style.","elements":[{"type":"obj","desc":"An
+  elderly woman with gray hair tied in a bun, round glasses, white long-sleeve blouse
+  and green vest, guiding pink and white checkered fabric under the needle with both
+  hands."},{"type":"obj","desc":"A black treadle sewing machine with silver accents
+  mounted on a wooden table."}]}}'
+- '{"high_level_description":"A black and white line drawing of an animal cell for
+  a science worksheet, no text.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A white background.","elements":[{"type":"obj","desc":"One
+  large oval cell outlined with a thin double membrane line."},{"type":"obj","desc":"A
+  single large circle in the center representing the nucleus, four oval organelles
+  with internal wavy stripes distributed around it, a cluster of short curved ribbon
+  shapes on the left side, two plain empty ovals on the right and lower left, thin
+  black outlines with light gray fill only inside the organelles."}]}}'
+- '{"high_level_description":"A printable elementary science worksheet with a simplified
+  animal cell diagram with labeled organelles.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A white background with
+  black vector outlines and grayscale fills.","elements":[{"type":"obj","desc":"A
+  cell membrane, cytoplasm, nucleus, mitochondria, and vacuole, each connected to
+  a label with a straight leader line."},{"type":"obj","desc":"A color key at the
+  bottom of the worksheet."}]}}'
+- '{"high_level_description":"A diagram of an animal cell titled ''Animal Cell'',
+  labeled with its cellular components.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A white background, thin
+  black line drawing with light gray fills.","elements":[{"type":"text","text":"Animal
+  Cell","desc":"Bold black title text at the top of the worksheet."},{"type":"obj","desc":"A
+  cell membrane drawn as a thin double outline, a large circle nucleus at the center,
+  and mitochondria, vacuole and cytoplasm distinguished by different gray tones and
+  internal stripe patterns."},{"type":"text","text":"cell membrane\ncytoplasm\nnucleus\nmitochondria\nvacuole","desc":"Small
+  black labels next to straight leader lines pointing to each part of the cell."}]}}'
+- '{"high_level_description":"A set of eight separate geometric outline shapes evenly
+  spaced on a white background, no text.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A plain white background.","elements":[{"type":"obj","desc":"Eight
+  shapes arranged in two rows of four with thin black outlines and no fill: a regular
+  hexagon, a square, a rhombus standing on one corner, an equilateral triangle, a
+  trapezoid with the shorter side on top, a wide rectangle, a circle, and a regular
+  pentagon, each isolated with clear white space around it."}]}}'
+- '{"high_level_description":"A printable elementary mathematics worksheet introducing
+  eight basic geometric shapes.","style_description":{"aesthetics":"simple, cheerful,
+  classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A white background with
+  clean typography and printable worksheet layout.","elements":[{"type":"obj","desc":"Eight
+  shapes with black vector outlines, each with a blank answer line beneath it: regular
+  hexagon, square, rhombus, equilateral triangle, trapezoid, rectangle, circle, and
+  regular pentagon."},{"type":"obj","desc":"A section asking students to count sides
+  and corners and identify real-world objects matching each shape, left free of specific
+  wording."}]}}'
+- '{"high_level_description":"A black and white worksheet titled ''UNIT 17 test''
+  with eight geometric shapes in two rows.","style_description":{"aesthetics":"simple,
+  cheerful, classroom-friendly","lighting":"even flat lighting, no dramatic shadows","medium":"illustration","art_style":"flat
+  vector children''s educational illustration, thick clean black outlines, minimal
+  shading"},"compositional_deconstruction":{"background":"A white background, black
+  and white worksheet style.","elements":[{"type":"text","text":"UNIT 17 test","desc":"Bold
+  black title text at the top of the worksheet."},{"type":"obj","desc":"A space for
+  the student''s name below the title."},{"type":"obj","desc":"Eight shapes in two
+  rows of four with a blank line underneath each for the student''s answer: a hexagon,
+  a square, a rhombus, a triangle, a trapezoid, a rectangle, a circle, and a pentagon."},{"type":"obj","desc":"A
+  bottom section with images of a house, donut, sailboat, and playing card for students
+  to identify by shape."}]}}'
+quantization: nf4
+rating: null
+sec_per_image: 160.22
+seed: 0
+status: done
+steps: 48
+style: ''
+tags: []
+version: v260
+vram_peak_gb: 19.06
+---
+
+## Images
+
+![[v260_00_structured_worksheet_template_claude.png]]
+![[v260_01_structured_worksheet_template_chatgpt.png]]
+![[v260_02_structured_worksheet_template_qwen.png]]
+![[v260_03_data_visualization_chart_claude.png]]
+![[v260_04_data_visualization_chart_chatgpt.png]]
+![[v260_05_data_visualization_chart_qwen.png]]
+![[v260_06_historical_figure_portrait_claude.png]]
+![[v260_07_historical_figure_portrait_chatgpt.png]]
+![[v260_08_historical_figure_portrait_qwen.png]]
+![[v260_09_multi_character_classroom_collaboration_claude.png]]
+![[v260_10_multi_character_classroom_collaboration_chatgpt.png]]
+![[v260_11_multi_character_classroom_collaboration_qwen.png]]
+![[v260_12_intergenerational_indoor_scene_claude.png]]
+![[v260_13_intergenerational_indoor_scene_chatgpt.png]]
+![[v260_14_intergenerational_indoor_scene_qwen.png]]
+![[v260_15_single_character_cutout_claude.png]]
+![[v260_16_single_character_cutout_chatgpt.png]]
+![[v260_17_single_character_cutout_qwen.png]]
+![[v260_18_labeled_science_diagram_claude.png]]
+![[v260_19_labeled_science_diagram_chatgpt.png]]
+![[v260_20_labeled_science_diagram_qwen.png]]
+![[v260_21_geometric_shape_set_claude.png]]
+![[v260_22_geometric_shape_set_chatgpt.png]]
+![[v260_23_geometric_shape_set_qwen.png]]

@@ -1,0 +1,49 @@
+prompt_id,type,source,caption_format,trial,verifier_warnings,exception,error_message,blank_image,image_std,latency_s
+0,Structured Worksheet Template,claude,plain,0,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+0,Structured Worksheet Template,claude,plain,1,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+0,Structured Worksheet Template,claude,json,0,0,False,,False,29.67357635498047,166.55
+0,Structured Worksheet Template,claude,json,1,0,False,,False,29.67357635498047,164.67
+0,Structured Worksheet Template,claude,guide,0,0,False,,False,29.129281997680664,161.24
+0,Structured Worksheet Template,claude,guide,1,0,False,,False,29.129281997680664,161.29
+1,Structured Worksheet Template,chatgpt,plain,0,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+1,Structured Worksheet Template,chatgpt,plain,1,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+1,Structured Worksheet Template,chatgpt,json,0,0,False,,False,37.50956344604492,165.0
+1,Structured Worksheet Template,chatgpt,json,1,0,False,,False,37.50956344604492,164.96
+1,Structured Worksheet Template,chatgpt,guide,0,0,False,,False,10.140691757202148,161.35
+1,Structured Worksheet Template,chatgpt,guide,1,0,False,,False,10.140691757202148,161.39
+2,Structured Worksheet Template,qwen2.5-vl-7b-instruct,plain,0,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+2,Structured Worksheet Template,qwen2.5-vl-7b-instruct,plain,1,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+2,Structured Worksheet Template,qwen2.5-vl-7b-instruct,json,0,0,False,,False,29.67357635498047,164.81
+2,Structured Worksheet Template,qwen2.5-vl-7b-instruct,json,1,0,False,,False,29.67357635498047,164.86
+2,Structured Worksheet Template,qwen2.5-vl-7b-instruct,guide,0,0,False,,False,29.129281997680664,161.45
+2,Structured Worksheet Template,qwen2.5-vl-7b-instruct,guide,1,0,False,,False,29.129281997680664,161.29
+3,Data Visualization Chart,claude,plain,0,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+3,Data Visualization Chart,claude,plain,1,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+3,Data Visualization Chart,claude,json,0,0,False,,False,63.15854263305664,165.15
+3,Data Visualization Chart,claude,json,1,0,False,,False,63.15854263305664,165.12
+3,Data Visualization Chart,claude,guide,0,0,False,,False,63.6014404296875,162.65
+3,Data Visualization Chart,claude,guide,1,0,False,,False,63.6014404296875,162.48
+4,Data Visualization Chart,chatgpt,plain,0,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+4,Data Visualization Chart,chatgpt,plain,1,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+4,Data Visualization Chart,chatgpt,json,0,0,False,,False,45.255577087402344,162.33
+4,Data Visualization Chart,chatgpt,json,1,0,False,,False,45.255577087402344,162.44
+4,Data Visualization Chart,chatgpt,guide,0,0,False,,False,10.480587005615234,160.83
+4,Data Visualization Chart,chatgpt,guide,1,0,False,,False,10.480587005615234,160.66
+5,Data Visualization Chart,qwen2.5-vl-7b-instruct,plain,0,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+5,Data Visualization Chart,qwen2.5-vl-7b-instruct,plain,1,1,True,"caption verifier flagged prompt[0]:
+invalid JSON: Expecting value: line 1 column 1 (char 0)",,,0.0
+5,Data Visualization Chart,qwen2.5-vl-7b-instruct,json,0,0,False,,False,56.95111846923828,171.55
+5,Data Visualization Chart,qwen2.5-vl-7b-instruct,json,1,0,False,,False,56.95111846923828,171.46
+5,Data Visualization Chart,qwen2.5-vl-7b-instruct,guide,0,0,False,,False,10.02332878112793,164.91
+5,Data Visualization Chart,qwen2.5-vl-7b-instruct,guide,1,0,False,,False,10.02332878112793,164.73
