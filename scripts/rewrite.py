@@ -89,13 +89,14 @@ def build_rewrite_fn(backend, system_prompt, enable_thinking):
                 messages, tokenize=False, add_generation_prompt=True,
                 enable_thinking=enable_thinking)
             inputs = tok(text, return_tensors="pt").to(model.device)
-            out = model.generate(**inputs, max_new_tokens=512, do_sample=False)
+            max_new_tokens = 1024 if enable_thinking else 512
+            out = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
             raw = tok.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True).strip()
-            if "<answer>" in raw:
-                raw = raw.split("<answer>", 1)[1].split("</answer>", 1)[0].strip()
-            elif "</think>" in raw:
-                raw = raw.split("</think>", 1)[1].strip()
-            return raw
+            if "<answer>" in raw and "</answer>" in raw:
+                return raw.split("<answer>", 1)[1].split("</answer>", 1)[0].strip()
+            if "</think>" in raw:
+                return raw.split("</think>", 1)[1].strip()
+            return prompt
 
         return rewrite_fn
 
