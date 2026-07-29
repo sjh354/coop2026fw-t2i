@@ -654,7 +654,25 @@ GPU: RTX 3090 24GB, 서빙 예산 16GB.
 
 ---
 
-### TASK-G · Ideogram-4 block 문제 + 텍스트 렌더링 평가 🔵 계획 재작성 완료, 서버 실행 대기 (2026-07-28)
+### TASK-G · Ideogram-4 block 문제 + 텍스트 렌더링 평가 🟢 4조건 생성+채점 완료, 육안 판정만 남음 (2026-07-29)
+
+**진행 상황 (2026-07-29)**: 계획 4~6번 실행 완료. 4조건(passthrough/wan_style/promptenhancer/
+ideogram_guide) × 24프롬프트를 ideogram-4-nf4(48-step)로 생성(`v257`~`v260`, 서버 157) →
+VQAScore/custom_cv/csd_target/VLM-judge 채점(서버 23, `scripts/rewrite_compare_ideogram4.sh`) →
+리포트 `reports/rewrite-ideogram4-comparison/index.html`. 상세 수치와 해석은
+`bench/results.md`의 "TASK-G · ideogram-4 리라이팅/캡션포맷 4조건 생성 + 채점" 절 참고.
+
+핵심 요약: ideogram_guide(공식 스키마 캡션)가 VQAScore/custom_cv는 최고인데 csd_target은
+뚜렷하게 최저, judge content_present도 최저, 그레이스케일 std도 최저 — 세 신호가 같은 방향으로
+"더 단조로운 이미지"를 가리킨다. 4조건은 "리라이팅 품질"과 "캡션 포맷"이 뒤섞인 confound라
+순위표가 아니라 참고 수치로만 취급.
+
+**남은 것은 계획 5~6번의 마지막 조각, 육안 판정뿐**: 텍스트/라벨이 필요한 카테고리
+(Structured Worksheet Template / Data Visualization Chart / Labeled Science Diagram)에서
+ideogram_guide 열에 실제로 글자가 읽히는지 리포트를 열어 직접 확인 — 공식 스키마의
+`type:"text"` 요소가 실제로 텍스트 렌더링을 개선하는지가 TASK-G의 원래 질문이고, 자동 지표는
+이 질문에 답하지 못한다(오히려 guide가 다른 지표에서 불리하게 나온 상태). 육안 확인 후 TASK-G
+결론 확정.
 
 **배경 재조사 결과 (원안의 가정 두 개가 모두 틀렸음이 소스 코드로 확인됨)**
 

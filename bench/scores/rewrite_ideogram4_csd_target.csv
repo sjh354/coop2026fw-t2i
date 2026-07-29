@@ -1,0 +1,97 @@
+image,type,source,csd_target
+v257_00_structured_worksheet_template_claude.png,Structured Worksheet Template,claude,0.4017
+v257_01_structured_worksheet_template_chatgpt.png,Structured Worksheet Template,chatgpt,0.525
+v257_02_structured_worksheet_template_qwen.png,Structured Worksheet Template,qwen,0.4017
+v257_03_data_visualization_chart_claude.png,Data Visualization Chart,claude,0.5135
+v257_04_data_visualization_chart_chatgpt.png,Data Visualization Chart,chatgpt,0.5127
+v257_05_data_visualization_chart_qwen.png,Data Visualization Chart,qwen,0.6757
+v257_06_historical_figure_portrait_claude.png,Historical Figure Portrait,claude,0.3648
+v257_07_historical_figure_portrait_chatgpt.png,Historical Figure Portrait,chatgpt,0.0721
+v257_08_historical_figure_portrait_qwen.png,Historical Figure Portrait,qwen,0.3867
+v257_09_multi_character_classroom_collaboration_claude.png,Multi-Character Classroom Collaboration,claude,0.1343
+v257_10_multi_character_classroom_collaboration_chatgpt.png,Multi-Character Classroom Collaboration,chatgpt,0.1401
+v257_11_multi_character_classroom_collaboration_qwen.png,Multi-Character Classroom Collaboration,qwen,0.1299
+v257_12_intergenerational_indoor_scene_claude.png,Intergenerational Indoor Scene,claude,0.3913
+v257_13_intergenerational_indoor_scene_chatgpt.png,Intergenerational Indoor Scene,chatgpt,0.134
+v257_14_intergenerational_indoor_scene_qwen.png,Intergenerational Indoor Scene,qwen,0.5048
+v257_15_single_character_cutout_claude.png,Single-Character Cutout,claude,0.1651
+v257_16_single_character_cutout_chatgpt.png,Single-Character Cutout,chatgpt,0.1717
+v257_17_single_character_cutout_qwen.png,Single-Character Cutout,qwen,0.7949
+v257_18_labeled_science_diagram_claude.png,Labeled Science Diagram,claude,0.7221
+v257_19_labeled_science_diagram_chatgpt.png,Labeled Science Diagram,chatgpt,0.5873
+v257_20_labeled_science_diagram_qwen.png,Labeled Science Diagram,qwen,0.8669
+v257_21_geometric_shape_set_claude.png,Geometric Shape Set,claude,0.636
+v257_22_geometric_shape_set_chatgpt.png,Geometric Shape Set,chatgpt,0.6882
+v257_23_geometric_shape_set_qwen.png,Geometric Shape Set,qwen,0.1878
+v258_00_structured_worksheet_template_claude.png,Structured Worksheet Template,claude,0.4175
+v258_01_structured_worksheet_template_chatgpt.png,Structured Worksheet Template,chatgpt,0.4948
+v258_02_structured_worksheet_template_qwen.png,Structured Worksheet Template,qwen,0.4175
+v258_03_data_visualization_chart_claude.png,Data Visualization Chart,claude,0.4803
+v258_04_data_visualization_chart_chatgpt.png,Data Visualization Chart,chatgpt,0.1008
+v258_05_data_visualization_chart_qwen.png,Data Visualization Chart,qwen,0.676
+v258_06_historical_figure_portrait_claude.png,Historical Figure Portrait,claude,0.4137
+v258_07_historical_figure_portrait_chatgpt.png,Historical Figure Portrait,chatgpt,0.3612
+v258_08_historical_figure_portrait_qwen.png,Historical Figure Portrait,qwen,0.3988
+v258_09_multi_character_classroom_collaboration_claude.png,Multi-Character Classroom Collaboration,claude,0.1382
+v258_10_multi_character_classroom_collaboration_chatgpt.png,Multi-Character Classroom Collaboration,chatgpt,0.1326
+v258_11_multi_character_classroom_collaboration_qwen.png,Multi-Character Classroom Collaboration,qwen,0.1309
+v258_12_intergenerational_indoor_scene_claude.png,Intergenerational Indoor Scene,claude,0.4247
+v258_13_intergenerational_indoor_scene_chatgpt.png,Intergenerational Indoor Scene,chatgpt,0.1336
+v258_14_intergenerational_indoor_scene_qwen.png,Intergenerational Indoor Scene,qwen,0.482
+v258_15_single_character_cutout_claude.png,Single-Character Cutout,claude,0.4822
+v258_16_single_character_cutout_chatgpt.png,Single-Character Cutout,chatgpt,0.1729
+v258_17_single_character_cutout_qwen.png,Single-Character Cutout,qwen,0.8293
+v258_18_labeled_science_diagram_claude.png,Labeled Science Diagram,claude,0.7347
+v258_19_labeled_science_diagram_chatgpt.png,Labeled Science Diagram,chatgpt,0.8349
+v258_20_labeled_science_diagram_qwen.png,Labeled Science Diagram,qwen,0.8691
+v258_21_geometric_shape_set_claude.png,Geometric Shape Set,claude,0.6201
+v258_22_geometric_shape_set_chatgpt.png,Geometric Shape Set,chatgpt,0.1835
+v258_23_geometric_shape_set_qwen.png,Geometric Shape Set,qwen,0.1789
+v259_00_structured_worksheet_template_claude.png,Structured Worksheet Template,claude,0.4797
+v259_01_structured_worksheet_template_chatgpt.png,Structured Worksheet Template,chatgpt,0.4865
+v259_02_structured_worksheet_template_qwen.png,Structured Worksheet Template,qwen,0.4797
+v259_03_data_visualization_chart_claude.png,Data Visualization Chart,claude,0.5109
+v259_04_data_visualization_chart_chatgpt.png,Data Visualization Chart,chatgpt,0.7827
+v259_05_data_visualization_chart_qwen.png,Data Visualization Chart,qwen,0.7719
+v259_06_historical_figure_portrait_claude.png,Historical Figure Portrait,claude,0.3295
+v259_07_historical_figure_portrait_chatgpt.png,Historical Figure Portrait,chatgpt,0.2353
+v259_08_historical_figure_portrait_qwen.png,Historical Figure Portrait,qwen,0.3134
+v259_09_multi_character_classroom_collaboration_claude.png,Multi-Character Classroom Collaboration,claude,0.117
+v259_10_multi_character_classroom_collaboration_chatgpt.png,Multi-Character Classroom Collaboration,chatgpt,0.1245
+v259_11_multi_character_classroom_collaboration_qwen.png,Multi-Character Classroom Collaboration,qwen,0.1207
+v259_12_intergenerational_indoor_scene_claude.png,Intergenerational Indoor Scene,claude,0.1244
+v259_13_intergenerational_indoor_scene_chatgpt.png,Intergenerational Indoor Scene,chatgpt,0.1277
+v259_14_intergenerational_indoor_scene_qwen.png,Intergenerational Indoor Scene,qwen,0.6636
+v259_15_single_character_cutout_claude.png,Single-Character Cutout,claude,0.7914
+v259_16_single_character_cutout_chatgpt.png,Single-Character Cutout,chatgpt,0.6885
+v259_17_single_character_cutout_qwen.png,Single-Character Cutout,qwen,0.7133
+v259_18_labeled_science_diagram_claude.png,Labeled Science Diagram,claude,0.6383
+v259_19_labeled_science_diagram_chatgpt.png,Labeled Science Diagram,chatgpt,0.4784
+v259_20_labeled_science_diagram_qwen.png,Labeled Science Diagram,qwen,0.7507
+v259_21_geometric_shape_set_claude.png,Geometric Shape Set,claude,0.6547
+v259_22_geometric_shape_set_chatgpt.png,Geometric Shape Set,chatgpt,0.7884
+v259_23_geometric_shape_set_qwen.png,Geometric Shape Set,qwen,0.7664
+v260_00_structured_worksheet_template_claude.png,Structured Worksheet Template,claude,0.4914
+v260_01_structured_worksheet_template_chatgpt.png,Structured Worksheet Template,chatgpt,0.0123
+v260_02_structured_worksheet_template_qwen.png,Structured Worksheet Template,qwen,0.4914
+v260_03_data_visualization_chart_claude.png,Data Visualization Chart,claude,0.5757
+v260_04_data_visualization_chart_chatgpt.png,Data Visualization Chart,chatgpt,0.0869
+v260_05_data_visualization_chart_qwen.png,Data Visualization Chart,qwen,0.097
+v260_06_historical_figure_portrait_claude.png,Historical Figure Portrait,claude,0.0617
+v260_07_historical_figure_portrait_chatgpt.png,Historical Figure Portrait,chatgpt,0.0705
+v260_08_historical_figure_portrait_qwen.png,Historical Figure Portrait,qwen,0.0613
+v260_09_multi_character_classroom_collaboration_claude.png,Multi-Character Classroom Collaboration,claude,0.1173
+v260_10_multi_character_classroom_collaboration_chatgpt.png,Multi-Character Classroom Collaboration,chatgpt,0.1272
+v260_11_multi_character_classroom_collaboration_qwen.png,Multi-Character Classroom Collaboration,qwen,0.1298
+v260_12_intergenerational_indoor_scene_claude.png,Intergenerational Indoor Scene,claude,0.1275
+v260_13_intergenerational_indoor_scene_chatgpt.png,Intergenerational Indoor Scene,chatgpt,0.137
+v260_14_intergenerational_indoor_scene_qwen.png,Intergenerational Indoor Scene,qwen,0.1449
+v260_15_single_character_cutout_claude.png,Single-Character Cutout,claude,0.1543
+v260_16_single_character_cutout_chatgpt.png,Single-Character Cutout,chatgpt,0.1684
+v260_17_single_character_cutout_qwen.png,Single-Character Cutout,qwen,0.1884
+v260_18_labeled_science_diagram_claude.png,Labeled Science Diagram,claude,0.6775
+v260_19_labeled_science_diagram_chatgpt.png,Labeled Science Diagram,chatgpt,0.1458
+v260_20_labeled_science_diagram_qwen.png,Labeled Science Diagram,qwen,0.1498
+v260_21_geometric_shape_set_claude.png,Geometric Shape Set,claude,0.7012
+v260_22_geometric_shape_set_chatgpt.png,Geometric Shape Set,chatgpt,0.1879
+v260_23_geometric_shape_set_qwen.png,Geometric Shape Set,qwen,0.178

@@ -53,8 +53,8 @@ csd_parts=()
 judge_parts=()
 
 check_rows() {
-  # $1=csv path, $2=label, $3=run_dir(for images-count re-check)
-  local csv="$1" label="$2" run_dir="$3"
+  # $1=csv path, $2=label, $3=run_dir(for images-count re-check), $4=expected row count
+  local csv="$1" label="$2" run_dir="$3" expect="$4"
   local img_n
   img_n=$(ls "image-prompts/${run_dir}/images" 2>/dev/null | wc -l | tr -d ' ')
   if [ "$img_n" -ne "$EXPECT_N" ]; then
@@ -63,8 +63,8 @@ check_rows() {
   fi
   local n
   n=$(tail -n +2 "$csv" 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$n" -ne "$EXPECT_N" ]; then
-    echo "    FAIL: $label got $n rows, expected $EXPECT_N"
+  if [ "$n" -ne "$expect" ]; then
+    echo "    FAIL: $label got $n rows, expected $expect"
     return 1
   fi
   echo "    OK ($n rows)"
@@ -81,7 +81,7 @@ for run_dir in "${RUN_DIRS[@]}"; do
   echo "=== [$backend] src.scoring vqascore,cv -> $scores_dir/pass1.csv"
   if conda run -n t2i-score python -m src.scoring \
       --dir "$images" --out "$scores_dir/pass1.csv" --components vqascore,cv \
-      > "$pass1_log" 2>&1 && check_rows "$scores_dir/pass1.csv" "[$backend/$run_dir] pass1" "$run_dir"; then
+      > "$pass1_log" 2>&1 && check_rows "$scores_dir/pass1.csv" "[$backend/$run_dir] pass1" "$run_dir" "$EXPECT_N"; then
     conda run -n t2i-score python "$ALERT" --task "$TASK" --status ok \
       --message "[$backend/$run_dir] pass1(vqascore+cv) OK"
     pass1_parts+=("$scores_dir/pass1.csv")
@@ -96,7 +96,7 @@ for run_dir in "${RUN_DIRS[@]}"; do
   echo "=== [$backend] score_csd_target -> $scores_dir/csd_target.csv"
   if PYTHONPATH=vendor conda run -n t2i-score python -m scripts.score_csd_target \
       --dir "$images" --out "$scores_dir/csd_target.csv" \
-      > "$csd_log" 2>&1 && check_rows "$scores_dir/csd_target.csv" "[$backend/$run_dir] csd_target" "$run_dir"; then
+      > "$csd_log" 2>&1 && check_rows "$scores_dir/csd_target.csv" "[$backend/$run_dir] csd_target" "$run_dir" "$EXPECT_N"; then
     conda run -n t2i-score python "$ALERT" --task "$TASK" --status ok \
       --message "[$backend/$run_dir] csd_target OK"
     csd_parts+=("$scores_dir/csd_target.csv")
@@ -111,7 +111,7 @@ for run_dir in "${RUN_DIRS[@]}"; do
   echo "=== [$backend] judge_lecture24 (InternVL3-8B) -> $scores_dir/judge_lecture24.csv"
   if conda run -n t2i-judge2 python -m scripts.judge_lecture24 \
       --runs "image-prompts/${run_dir}" \
-      > "$judge_log" 2>&1 && check_rows "$scores_dir/judge_lecture24.csv" "[$backend/$run_dir] judge_lecture24" "$run_dir"; then
+      > "$judge_log" 2>&1 && check_rows "$scores_dir/judge_lecture24.csv" "[$backend/$run_dir] judge_lecture24" "$run_dir" "$((EXPECT_N * 4))"; then
     vram=$(grep -o 'vram_peak=[0-9.]*GB' "$judge_log" | tail -1)
     conda run -n t2i-score python "$ALERT" --task "$TASK" --status ok \
       --message "[$backend/$run_dir] judge_lecture24 OK ($vram)"

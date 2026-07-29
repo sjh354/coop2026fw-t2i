@@ -333,3 +333,45 @@ lecture24 4축) 전부 채점. 결과 리포트: `reports/rewrite-v250-v251-v252
   실패로 간주하는 가드를 추가하는 게 안전.
 
 **다음 단계**: 사람 눈 채점(리포트의 72행 표) 완료 후 VLM-judge와 비교, 최종 백엔드 채택 여부 결정.
+
+## TASK-G · ideogram-4 리라이팅/캡션포맷 4조건 생성 + 채점 (2026-07-28~29, 서버 157/23)
+
+`scripts/sweeps/rewrite_generate_ideogram4.sh`로 passthrough(v257)/wan_style(v258)/
+promptenhancer(v259)/ideogram_guide(v260) 4조건 × 24프롬프트를 ideogram-4-nf4(48-step)로 생성
+완료(서버 157, sec/img 160~173, vram_peak 19.1~19.2GB). `scripts/rewrite_compare_ideogram4.sh`로
+VQAScore/custom_cv/csd_target/VLM-judge(InternVL3-8B, lecture24 4축) 채점 완료(서버 23). 결과
+리포트: `reports/rewrite-ideogram4-comparison/index.html`.
+
+**중요한 confound**: 앞 3조건은 순수 텍스트를 `_to_caption_json`이 naive JSON 하나의 `obj`
+요소로 감싼 것이고, ideogram_guide는 공식 스키마(`style_description` + `type:"text"` 요소 포함)를
+사람이 직접 작성한 캡션이다(TASK-G 설계 §696). 즉 이 비교는 "리라이팅 품질"과 "캡션 포맷"이
+뒤섞여 있어 4-way 순위표가 아니라 참고 수치로 읽어야 한다.
+
+| backend | 버전 | VQAScore | custom_cv | csd_target |
+|---|---|---|---|---|
+| passthrough (대조군) | v257 | 0.8241 | 0.7735 | 0.4212 |
+| wan_style | v258 | 0.8699 | 0.7691 | 0.4212 |
+| promptenhancer | v259 | 0.8461 | 0.7529 | **0.4974** |
+| ideogram_guide | v260 | **0.8706** | **0.8110** | 0.2201 |
+
+- VQAScore·custom_cv는 ideogram_guide가 최고, csd_target(스타일 유사도)은 promptenhancer가
+  최고이고 **ideogram_guide가 csd_target에서 뚜렷하게 최저**(0.22 vs 나머지 0.42~0.50) — 앞의
+  TASK-E(flux2-klein) 결과와 달리 여기서는 한 조건이 지표 간 방향이 완전히 갈린다.
+- judge_lecture24(참고용, TASK-B2/TASK-C에서 이미 κ<0.6 확정): ideogram_guide는
+  content_present pass율 45.5%(n=11/24, na=13)로 나머지 세 조건(80~100%)보다 뚜렷이 낮고,
+  text_legibility는 24개 전부 n/a — `type:"text"` 요소를 명시적으로 추가했음에도 judge가 텍스트
+  관련 판정을 시도한 이미지가 0건.
+- 채점 전 그레이스케일 표준편차 스크리닝: 96장 전부 std>8로 완전 단색/차단화면(block)은 없음.
+  다만 ideogram_guide 평균 std(17.5)가 나머지 세 조건(36.4~43.6)보다 뚜렷이 낮아 — 시각적으로
+  더 단조로운(flat) 이미지 경향이며, csd_target·judge content_present 저하와 방향이 일치한다.
+- **[Inference]** 세 신호(csd_target 저하, judge content_present 저하, std 저하)가 전부
+  ideogram_guide에서 동시에 나타나므로, 손으로 쓴 구조화 캡션이 원본 VLM 캡션 소스 이미지와의
+  스타일/내용 일치도 양쪽에서 다른 세 조건과 다른(더 단순화된) 이미지를 만들고 있을 가능성이
+  높다. 다만 n=24, 시드 1개라 통계 검정 없이 "악화"라고 단정할 수 없다.
+- 텍스트 렌더링 성공 여부(TASK-G 원래 목적)는 자동 지표로 답할 수 없는 질문 — 리포트의
+  Structured Worksheet Template / Data Visualization Chart / Labeled Science Diagram 카테고리에서
+  ideogram_guide 열을 육안으로 확인 필요(OCR 자동화는 이미 폐기 결정, 재도입 안 함).
+
+**다음 단계**: 리포트를 열어 텍스트/라벨이 필요한 카테고리의 ideogram_guide 열을 육안 판정 —
+공식 스키마 캡션이 실제로 글자를 더 잘 그리는지가 TASK-G의 핵심 질문이었고, 자동 지표만으로는
+결론이 나지 않음(오히려 스타일 유사도·judge 판정은 guide가 불리하게 나옴).

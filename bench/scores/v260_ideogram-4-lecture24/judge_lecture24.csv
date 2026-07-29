@@ -1,0 +1,97 @@
+run,model,type,source,axis,verdict,rationale,retried
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,content_present,pass,Six empty boxes and colored location pins are present as described.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,text_legibility,n/a,No text is present in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,layout_structure,pass,Boxes and pins are arranged as described with a baseline and vertical strokes connecting them.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,educational_fit,pass,"The image is simple, flat, and classroom-friendly with no distortions or noise.",False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,content_present,n/a,No content to evaluate as the image is blocked.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,text_legibility,n/a,No text to evaluate as the image is blocked.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,layout_structure,n/a,No layout to evaluate as the image is blocked.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,educational_fit,n/a,No visual content to evaluate educational fit as the image is blocked.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,content_present,pass,Six empty boxes and colored location pins are present as described.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,text_legibility,n/a,No text is present in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,layout_structure,pass,Boxes and pins are arranged as described with a baseline and vertical strokes connecting them.,False
+v260_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,educational_fit,pass,"The image is simple, flat, and classroom-friendly with no distortions or noise.",False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,content_present,pass,"The image contains six vertical bars of different colors and heights, each with a toy icon below it.",False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,layout_structure,pass,"The bars are evenly spaced and aligned with a vertical axis on the left, with gridlines behind them.",False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,educational_fit,pass,"The image has a simple, flat, and cheerful style suitable for children's educational materials.",False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,layout_structure,n/a,Image is blocked and no layout structure is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,educational_fit,n/a,Image is blocked and no educational content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,content_present,fail,The image does not contain the required bar graph or elements.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,text_legibility,n/a,No text is present in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,layout_structure,n/a,No layout or structure is visible in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,educational_fit,n/a,The image is blocked and does not display any educational content.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,content_present,fail,The image is blocked and does not show any content.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,text_legibility,n/a,No text is present in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,layout_structure,n/a,No layout or structure is visible due to the blocked image.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,educational_fit,n/a,The image does not display any educational content or style.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,educational_fit,n/a,Image is blocked and no educational fit can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,content_present,fail,"아브라함 라이스너의 초상화, 암스特朗 타입, 배경, 요소가 없습니다.",False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,text_legibility,n/a,텍스트가 없으므로 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,layout_structure,n/a,이미지가 없으므로 레이아웃을 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,educational_fit,n/a,이미지가 없으므로 교육적 적합성을 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,content_present,fail,이미지에 학생들이 공유하는 책상에 앉아 프로젝트를 공유하는 내용이 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,text_legibility,n/a,텍스트가 없으므로 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,layout_structure,n/a,이미지가 없어 배치 구조를 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,educational_fit,n/a,이미지가 없어 교육적 적합성을 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,educational_fit,n/a,Image is blocked and no educational content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,educational_fit,n/a,Image is blocked and no educational fit can be evaluated.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,content_present,fail,"이미지에 주요 대상인 노인 부부, 어린 아이, 소파, 노트, 그리고 식물이 없습니다.",False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,text_legibility,n/a,텍스트가 없으므로 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,layout_structure,n/a,이미지가 없어 배치 구조를 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,educational_fit,n/a,이미지가 없어 교육적 적합성을 평가할 수 없습니다.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,educational_fit,n/a,Image is blocked and no educational content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,content_present,fail,"The image is blocked and does not show the described elderly couple, child, or living room scene.",False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,text_legibility,n/a,No text is present in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,layout_structure,n/a,No layout or structure is visible due to the blocked image.,False
+v260_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,educational_fit,n/a,The image does not display any content to evaluate educational fit.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,educational_fit,n/a,Image is blocked and no educational fit can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,content_present,n/a,이미지가 제공되지 않아 콘텐츠가 없는지 확인할 수 없다.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,text_legibility,n/a,텍스트가 없으므로 텍스트가 읽히는지 확인할 수 없다.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,layout_structure,n/a,이미지가 없어 배치 구조를 평가할 수 없다.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,educational_fit,n/a,이미지가 없어 교육적 적합성을 평가할 수 없다.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,educational_fit,n/a,Image is blocked and no educational fit can be assessed.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,content_present,pass,The image shows a black and white line drawing of an animal cell with a nucleus and organelles as described.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,text_legibility,n/a,"There is no text in the image, so legibility is not applicable.",False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,layout_structure,pass,The layout includes a large oval cell with a nucleus and organelles arranged as specified.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,educational_fit,pass,"The image is a simple, flat vector illustration suitable for a classroom-friendly science worksheet.",False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,content_present,n/a,No content is visible due to the safety filter.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,text_legibility,n/a,No text is present to evaluate legibility.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,layout_structure,n/a,No elements are visible to assess layout structure.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,educational_fit,n/a,No educational content is visible to evaluate fit.,False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,content_present,n/a,"Image is blocked by a safety filter, so content cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,text_legibility,n/a,"Image is blocked by a safety filter, so text cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,layout_structure,n/a,"Image is blocked by a safety filter, so layout cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,educational_fit,n/a,"Image is blocked by a safety filter, so educational fit cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,content_present,pass,Eight geometric shapes are present and evenly spaced on a white background.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,text_legibility,n/a,No text is present in the image.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,layout_structure,pass,Shapes are arranged in two rows of four with clear spacing and no overlapping.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,educational_fit,pass,"The image has a simple, flat vector style suitable for children's educational materials.",False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,content_present,n/a,Image is blocked and no content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,text_legibility,n/a,Image is blocked and no text is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,layout_structure,n/a,Image is blocked and no layout structure is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,educational_fit,n/a,Image is blocked and no educational content is visible.,False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,content_present,n/a,"Image is blocked by a safety filter, so content cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,text_legibility,n/a,"Image is blocked by a safety filter, so text cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,layout_structure,n/a,"Image is blocked by a safety filter, so layout cannot be assessed.",False
+v260_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,educational_fit,n/a,"Image is blocked by a safety filter, so educational fit cannot be assessed.",False

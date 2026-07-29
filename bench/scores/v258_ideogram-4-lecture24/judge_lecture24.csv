@@ -1,0 +1,97 @@
+run,model,type,source,axis,verdict,rationale,retried
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,content_present,pass,"The image contains six empty rectangular boxes arranged in two staggered rows, each connected to a small teardrop-shaped pin in different colors along a horizontal line.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,text_legibility,n/a,"There is no text or letters in the image, so legibility is not applicable.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,layout_structure,pass,"The boxes and pins are arranged in two staggered rows with vertical strokes connecting them, matching the description.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,claude,educational_fit,pass,"The image is clean, uses flat style, and is appropriate for an educational worksheet.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,content_present,pass,The image contains six large empty rectangular boxes arranged in two staggered rows and six small colored teardrop-shaped location pins below the baseline.,False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,layout_structure,pass,"The layout follows the staggered arrangement of boxes and evenly spaced pins with connecting lines, maintaining balanced spacing.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,chatgpt,educational_fit,pass,"The design is clean, uses a flat style, and is suitable for a classroom-friendly printable layout.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,content_present,pass,"The image contains six empty rectangular boxes arranged in two staggered rows, each connected to a small teardrop-shaped pin in different colors along a horizontal line.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,text_legibility,n/a,"There is no text or letters in the image, so legibility is not applicable.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,layout_structure,pass,"The boxes and pins are arranged in two staggered rows with vertical strokes connecting them, matching the description.",False
+v258_ideogram-4-lecture24,ideogram-4,structured_worksheet_template,qwen,educational_fit,pass,"The image is clean, uses flat style, and is appropriate for an educational worksheet.",False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,content_present,pass,The image contains six bars of equal width with the specified colors and order.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,layout_structure,pass,The bars are aligned on a horizontal baseline with thin horizontal gridlines and a vertical axis line on the left.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,claude,educational_fit,pass,"The chart is simple, flat, and suitable for an educational context without distortion or noise.",False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,content_present,n/a,No content is visible due to the safety filter.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,text_legibility,n/a,No text is present to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,layout_structure,n/a,No layout or structure is visible due to the safety filter.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,chatgpt,educational_fit,n/a,No educational content is visible to assess fit.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,content_present,pass,The image includes a bar graph with six colored bars representing different toys and icons at the bottom.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,text_legibility,pass,The text 'bar graphs' and the labels on the graph are clearly legible.,False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,layout_structure,pass,"The layout follows the structure with a header, bar graph, y-axis, and icons at the bottom.",False
+v258_ideogram-4-lecture24,ideogram-4,data_visualization_chart,qwen,educational_fit,pass,"The image is clean, uses flat style, and is appropriate for a Grade 1 educational worksheet.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,content_present,pass,"The image includes a nineteenth-century American statesman with a calm smiling expression, a black formal coat and bow tie, a dark beard, and a striped and starred flag behind his right shoulder. A rolled parchment scroll is also present near his left side.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,layout_structure,pass,"The layout includes a clear portrait with the flag and scroll positioned as described, on a plain white background.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,claude,educational_fit,pass,"The image is in a clean flat style, appropriate for an educational context, with no visible distortions or noise.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,content_present,pass,"The image shows a historical political figure with distinctive facial hair and hairstyle, dressed in formal historical clothing. A national flag is positioned to the left, and a rolled parchment scroll is to the right.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,layout_structure,pass,"The composition is balanced with the flag on the left and the scroll on the right, against a plain white background.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,chatgpt,educational_fit,pass,"The image is in a friendly cartoon style with soft muted colors, suitable for an educational context.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,content_present,pass,The image shows Abraham Lincoln with the specified features and items.,False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,layout_structure,pass,"The layout matches the description with Lincoln facing left, the flag, and scroll in place.",False
+v258_ideogram-4-lecture24,ideogram-4,historical_figure_portrait,qwen,educational_fit,pass,"The image is simple, colorful, and appropriate for educational use.",False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,content_present,n/a,"Image is blocked by safety filter, so content cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,text_legibility,n/a,"Image is blocked by safety filter, so text cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,layout_structure,n/a,"Image is blocked by safety filter, so layout cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,claude,educational_fit,n/a,"Image is blocked by safety filter, so educational fit cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,content_present,n/a,No image content to evaluate.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,text_legibility,n/a,No text present in the image.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,layout_structure,n/a,No layout or structure to evaluate.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,chatgpt,educational_fit,n/a,No image content to assess educational fit.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,content_present,n/a,Image is blocked and no content is visible.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,text_legibility,n/a,Image is blocked and no text is visible.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,layout_structure,n/a,Image is blocked and no layout can be assessed.,False
+v258_ideogram-4-lecture24,ideogram-4,multi_character_classroom_collaboration,qwen,educational_fit,n/a,Image is blocked and no educational content can be evaluated.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,content_present,pass,"The image shows an elderly couple on a beige sofa, with the grandmother in a magenta cardigan and yellow scarf gesturing, and the grandfather in a light blue shirt smiling. A child in a red hoodie is writing on a notepad on the green rug.",False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,layout_structure,pass,"The layout includes a sofa, a child on the floor, a floor lamp, and a side table with a plant, consistent with the description.",False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,claude,educational_fit,pass,"The image is clean, with a flat style suitable for educational purposes, featuring a family scene appropriate for children.",False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,content_present,n/a,No content is visible due to the safety filter.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,text_legibility,n/a,No text is present in the image.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,layout_structure,n/a,No layout or structure is visible due to the safety filter.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,chatgpt,educational_fit,n/a,No educational content is visible due to the safety filter.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,content_present,pass,"The image includes an elderly woman, an elderly man, and a child in a living room setting as described.",False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,layout_structure,pass,"The layout matches the description with a sofa, characters, and background elements like a lamp and rug.",False
+v258_ideogram-4-lecture24,ideogram-4,intergenerational_indoor_scene,qwen,educational_fit,pass,"The image is clean, has a flat style, and is appropriate for an educational context.",False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,content_present,pass,"The image shows an elderly woman with gray hair tied in a bun and round glasses, seated at an old black treadle sewing machine on a wooden table, guiding a folded pink and white checkered cloth under the needle with a gentle focused smile.",False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,layout_structure,pass,"The layout includes an elderly woman at a sewing machine on a wooden table, isolated on a pale blue background, with no additional elements or text.",False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,claude,educational_fit,pass,"The image is clean, flat, and suitable for an educational context, depicting a focused activity appropriate for a younger audience.",False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,content_present,n/a,No content to evaluate as the image is blocked.,False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,text_legibility,n/a,No text to evaluate as the image is blocked.,False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,layout_structure,n/a,No layout to evaluate as the image is blocked.,False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,chatgpt,educational_fit,n/a,No visual content to evaluate educational fit as the image is blocked.,False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,content_present,pass,"The image shows an elderly woman with gray hair tied in a bun and round glasses, sitting at a black treadle sewing machine with silver accents on a wooden table, sewing a pink and white checkered fabric with both hands.",False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,layout_structure,pass,"The layout includes a black treadle sewing machine with silver accents on a wooden table, and the background is a flat pale blue rounded shape with nothing below the table.",False
+v258_ideogram-4-lecture24,ideogram-4,single_character_cutout,qwen,educational_fit,pass,"The image is in a clean flat style, appropriate for an educational context, with no visible distortions or noise.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,content_present,pass,"The image contains a large oval shape with a thin double membrane, a central nucleus, four oval organelles with wavy lines, two ribbon shapes, and two empty ovals, all in the correct positions.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,layout_structure,pass,"The layout follows the structure with a central nucleus, surrounding organelles, and additional shapes in the correct positions.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,claude,educational_fit,pass,"The image is a clean, flat-style illustration suitable for educational purposes, with no distortions or noise.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,content_present,pass,"The image includes the nucleus, mitochondria, vacuole, cell membrane, and cytoplasm as specified.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,text_legibility,fail,The text labels are not legible due to the language and formatting errors.,False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,layout_structure,pass,The layout follows a clean vector outline with labels connected by leader lines and a color key below the diagram.,False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,chatgpt,educational_fit,fail,"The text is not in clean typography and contains errors, making it unsuitable for educational purposes.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,content_present,pass,"The image includes all labeled cellular components such as vacuole, mitochondria, nucleus, cytoplasm, and others as specified in the prompt.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,text_legibility,pass,"The text labels are clear and legible, with no issues in readability.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,layout_structure,pass,"The diagram follows the described layout with a thin double outline for the cell membrane, a large central nucleus, and various components distinguished by gray tones and patterns.",False
+v258_ideogram-4-lecture24,ideogram-4,labeled_science_diagram,qwen,educational_fit,pass,"The image is in a clean flat style, appropriate for educational purposes, with no distortions or noise.",False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,content_present,pass,The image contains eight separate geometric shapes as described in the prompt.,False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,layout_structure,pass,"The shapes are evenly spaced in two rows of four, matching the prompt's arrangement.",False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,claude,educational_fit,pass,"The image is clean, uses flat style, and is appropriate for an educational context.",False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,content_present,n/a,Image is blocked and no shapes are visible.,False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,text_legibility,n/a,No text is present in the image.,False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,layout_structure,n/a,No shapes or layout to evaluate.,False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,chatgpt,educational_fit,n/a,No content to assess educational fit.,False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,content_present,n/a,"Image is blocked by safety filter, so content cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,text_legibility,n/a,"Image is blocked by safety filter, so text cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,layout_structure,n/a,"Image is blocked by safety filter, so layout cannot be assessed.",False
+v258_ideogram-4-lecture24,ideogram-4,geometric_shape_set,qwen,educational_fit,n/a,"Image is blocked by safety filter, so educational fit cannot be assessed.",False
