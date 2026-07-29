@@ -36,11 +36,28 @@ PHOTO_WORDS = [
     "dslr", "bokeh", "studio lighting", "ray tracing", "raytraced", "photo",
 ]
 
+NEGATION_CUES = ["no ", "not ", "non-", "avoid", "free of", "lack of",
+                  "without", "devoid"]
+NEGATION_WINDOW = 40
+
 
 def count_photo_words(text):
-    """리라이팅 출력에 섞인 사진/영상 계열 어휘를 찾아 리스트로 반환한다."""
+    """리라이팅 출력에 섞인 사진/영상 계열 어휘를 찾아 리스트로 반환한다.
+
+    "avoiding photorealistic qualities"처럼 금지 문맥에서 나온 매칭은
+    실질 leak이 아니므로, 매칭 앞 NEGATION_WINDOW자 안에 부정 표현이 있으면 제외한다.
+    """
     lowered = text.lower()
-    return [w for w in PHOTO_WORDS if w in lowered]
+    hits = []
+    for w in PHOTO_WORDS:
+        idx = lowered.find(w)
+        if idx == -1:
+            continue
+        context = lowered[max(0, idx - NEGATION_WINDOW):idx]
+        if any(cue in context for cue in NEGATION_CUES):
+            continue
+        hits.append(w)
+    return hits
 
 
 def build_rewrite_fn(backend, system_prompt, enable_thinking):

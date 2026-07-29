@@ -557,6 +557,45 @@ csd_target이 조용히 0건으로 통과된 문제 발견 — 157(생성 서버
 **다음 단계**: 리포트의 사람 눈 채점 72행 표를 채운 뒤, VLM-judge/사람 채점 일치도까지 반영해서
 최종 백엔드(wan_style vs promptenhancer vs passthrough) 채택 여부 결정.
 
+**`enable_thinking=True` 실험 + photo-word 카운터 버그 정정 (2026-07-29, 서버 23)**
+
+애초 사전지식에 있었던 "`enable_thinking` 두 설정 다 실험"이 미실행 상태였던 걸 확인하고 진행.
+과정에서 버그 두 개를 발견해 수정함 (`scripts/rewrite.py`, 커밋 `5bc035f`/`a429c64`/후속 커밋):
+
+1. **CoT 파싱 버그**: `enable_thinking=True`일 때 `max_new_tokens=512`로는 CoT가 다 안 끝나서
+   `</think>` 닫는 태그 없이 잘리는 경우, raw thinking 텍스트("Okay, here's the breakdown of
+   the thought process...")가 그대로 최종 프롬프트에 새어나감 — 파서가 2단 폴백(`<answer>`
+   우선 → `</think>` 제거)만 있고 마지막 "둘 다 실패 시 원본으로 폴백"이 빠져 있었음. 공식
+   레포(Hunyuan-PromptEnhancer)가 명시하는 3단 폴백으로 교체하고 `max_new_tokens`도
+   thinking 조건만 1024로 확대. 재실행 후 24개 전부 파싱 성공(원본 폴백 0건) 확인.
+2. **`count_photo_words()` 부정문 미필터 버그**: `"avoiding photorealistic qualities"`,
+   `"devoid of any photographic, cinematic..."` 같은 **금지 문맥**의 매칭까지 그대로
+   leak으로 카운트하고 있었음. `NEGATION_CUES`(`no /avoid/free of/lack of/without/devoid` 등)
+   앞뒤 40자 윈도우로 필터링하도록 수정.
+
+**버그 수정 후 재집계 결과 (`passthrough`/`wan_style`/`promptenhancer`/`promptenhancer_thinking`
+4개 파일 전부 재검토, 24개 프롬프트 × 3소스 = 72개 항목 기준)**:
+
+| 조건 | 부정문 필터 전 (기존, 오탐 포함) | 부정문 필터 후 (실질 leak) |
+|---|---|---|
+| passthrough | 0 | 0 |
+| wan_style | 0 | 0 |
+| promptenhancer (`enable_thinking=False`) | 7 (cinematic×4, photorealistic×3) | **0** |
+| promptenhancer (`enable_thinking=True`, 재실행) | 13 (cinematic×4, photorealistic×3, photo×6) | **0** |
+
+**결론**:
+- 기존 TASK-E 1차 결과의 "PromptEnhancer는 명시적으로 금지한 시스템 프롬프트를 줬는데도
+  사진/영상 어휘가 새어나온다"는 결론은 **철회**. 단순 substring 매칭이 `"avoiding
+  photorealistic..."`류 부정문을 걸러내지 못한 오탐이었고, 검출된 히트를 전부 직접 대조한
+  결과 실질 leak은 0건이었음.
+- `enable_thinking=True`는 부정문 필터 적용 후 `False`와 실질 leak(0건 vs 0건), 길이 분포
+  (avg 1020자 vs 1064자)에서 유의미한 차이가 없었음. **기본값은 공식 구현 그대로
+  `enable_thinking=False`로 확정**, `True` 조건은 이번 실험으로 이득 없음이 확인된 각주로
+  남김 — 추가 실행 계획 없음.
+- 상단 §550의 "wan_style이 VQAScore 최고, promptenhancer가 csd_target/custom_cv 최고"
+  같은 4지표 채점 결과는 photo-word와 무관한 별도 지표라 이번 정정과 충돌하지 않음. 최종
+  판정은 여전히 §557의 "사람 눈 채점 72행 표" 완료 이후로 유효.
+
 ---
 
 ### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🔵 1~2·3 생성 완료, 채점만 남음 (2026-07-28)
