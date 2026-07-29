@@ -1,0 +1,13 @@
+image,type,source,csd_target
+v263_00_structured_worksheet_template_claude.png,Structured Worksheet Template,claude,0.4819
+v263_01_structured_worksheet_template_chatgpt.png,Structured Worksheet Template,chatgpt,0.4849
+v263_02_structured_worksheet_template_qwen.png,Structured Worksheet Template,qwen,0.4819
+v263_03_data_visualization_chart_claude.png,Data Visualization Chart,claude,0.5482
+v263_04_data_visualization_chart_chatgpt.png,Data Visualization Chart,chatgpt,0.5432
+v263_05_data_visualization_chart_qwen.png,Data Visualization Chart,qwen,0.5556
+v263_06_labeled_science_diagram_claude.png,Labeled Science Diagram,claude,0.6185
+v263_07_labeled_science_diagram_chatgpt.png,Labeled Science Diagram,chatgpt,0.6941
+v263_08_labeled_science_diagram_qwen.png,Labeled Science Diagram,qwen,0.5842
+v263_09_geometric_shape_set_claude.png,Geometric Shape Set,claude,0.6951
+v263_10_geometric_shape_set_chatgpt.png,Geometric Shape Set,chatgpt,0.8135
+v263_11_geometric_shape_set_qwen.png,Geometric Shape Set,qwen,0.8864

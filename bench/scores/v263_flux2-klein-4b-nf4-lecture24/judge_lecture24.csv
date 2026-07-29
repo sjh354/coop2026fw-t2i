@@ -1,0 +1,49 @@
+run,model,type,source,axis,verdict,rationale,retried
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,content_present,pass,The image contains six empty rectangular boxes arranged in two staggered rows and six colored location pins below a horizontal line.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,layout_structure,pass,"The layout features six boxes in a staggered formation and six colored pins below a horizontal line, matching the description.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,claude,educational_fit,pass,"The image has a clean, flat style with a simple, educational design suitable for its intended use.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,content_present,pass,"The image contains six large, empty, rectangular boxes arranged in two staggered rows as described.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,layout_structure,pass,The boxes and pins are arranged in a staggered layout with distinct colors corresponding to each box.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,chatgpt,educational_fit,pass,"The image is clean, flat, and suitable for an elementary school worksheet with no visible distortions or noise.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,content_present,pass,The image contains six empty rectangular boxes arranged in two staggered rows and six colored location pins below a horizontal line.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,layout_structure,pass,"The layout features six boxes in a staggered formation and six colored pins below a horizontal line, matching the description.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,structured_worksheet_template,qwen,educational_fit,pass,"The image has a clean, flat style with a simple, educational design suitable for its intended use.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,content_present,pass,"The image contains six bars with distinct colors and toy icons beneath each, matching the description.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,layout_structure,pass,"The bars are arranged in a single row with equal width, and gridlines are present as described.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,claude,educational_fit,pass,"The image is clean, uses flat colors, and is appropriate for an educational context.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,content_present,pass,The image includes the main categories 'Cars' and 'Dolls' with corresponding bars and icons.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,text_legibility,pass,The title and axis labels are clear and legible.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,layout_structure,pass,"The layout follows the described structure with a title, axes, and bar graph.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,chatgpt,educational_fit,pass,"The image is clean, uses flat style, and is appropriate for elementary education.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,content_present,fail,The image contains nonsensical text instead of meaningful questions about toy preferences.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,text_legibility,fail,The text is illegible due to nonsensical content and poor formatting.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,layout_structure,fail,"The layout includes a solid beige header with the title 'bar grahts', but the y-axis labels are incorrect and the questions are nonsensical.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,data_visualization_chart,qwen,educational_fit,fail,"The image is not educational due to the presence of nonsensical text and incorrect y-axis labels, making it unsuitable for classroom use.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,content_present,pass,"The image contains a single animal cell with a double membrane, nucleus, organelles, and additional structures as described.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,text_legibility,n/a,There is no text present in the image.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,layout_structure,pass,"The layout follows the described structure with a central cell, surrounding organelles, and additional elements on the sides.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,claude,educational_fit,pass,"The image is in a flat style, appropriate for educational purposes, with clear and simple representations.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,content_present,fail,The labels on the diagram are nonsensical and do not correspond to actual cell organelles.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,text_legibility,fail,The text below the diagram is illegible and appears to be nonsensical.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,layout_structure,fail,"The layout does not match the description, as the cell membrane is not an elongated rectangle and the nucleus is not elongated.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,chatgpt,educational_fit,fail,"The image uses nonsensical labels and text, making it unsuitable for educational purposes.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,content_present,pass,The image shows a detailed diagram of an animal cell with labeled components.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,text_legibility,pass,"The title 'Animal Cell' is clearly legible in clean, black text.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,layout_structure,pass,The diagram follows a circular layout with components labeled by straight lines.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,labeled_science_diagram,qwen,educational_fit,pass,"The image is clean, uses a flat style, and is appropriate for educational purposes.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,content_present,pass,The image contains eight distinct geometric shapes as described in the prompt.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,text_legibility,n/a,There is no text in the image to evaluate legibility.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,layout_structure,pass,"The shapes are evenly spaced and arranged in two rows of four, matching the prompt.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,claude,educational_fit,pass,"The image is clean, uses flat style, and is appropriate for an educational context.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,content_present,fail,The text on the shapes is garbled and unreadable.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,text_legibility,fail,The text is not legible due to garbled characters.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,layout_structure,pass,The layout is organized into distinct sections for each shape with clear lines and questions.,False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,chatgpt,educational_fit,fail,"The text is unreadable, making the worksheet non-educational.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,content_present,pass,"The worksheet includes a name space, instructions, geometric shapes, a calculation question with examples, and real-life objects for identification.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,text_legibility,fail,"The text contains numerous typographical errors, making it illegible.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,layout_structure,pass,"The worksheet is neatly organized with a clear grid of shapes, a calculation section, and a final identification section.",False
+v263_flux2-klein-4b-nf4-lecture24,flux2-klein-4b-nf4,geometric_shape_set,qwen,educational_fit,pass,"The worksheet uses a clean, flat style with age-appropriate content and no visible distortions or noise.",False
