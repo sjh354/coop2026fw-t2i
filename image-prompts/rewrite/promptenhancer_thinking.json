@@ -1,0 +1,311 @@
+[
+  {
+    "type": "Structured Worksheet Template",
+    "claude": {
+      "prompt": "A layout for a worksheet is presented on a plain white background, featuring six empty boxes and six location pins. In the upper portion, six identical, empty rectangular boxes are organized into two staggered rows; the top row contains three boxes, and the bottom row contains three boxes shifted to the left and right. Each box is defined by a thick, uniform black outline and has a plain white interior. A single, solid black horizontal line runs across the entire width of the layout just below the boxes. Positioned along this line are six small, teardrop-shaped location pins, each a distinct color, creating a color scale. Thin, straight vertical strokes connect the center of each box to the line below it. The overall presentation is a clean vector graphic with no text, letters, or numbers, rendered in a flat style.",
+      "metric": [
+        "6 boxes",
+        "6 pins",
+        "1:1 box-to-pin connection",
+        "boxes remain empty inside"
+      ],
+      "prompt_original": "A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six small teardrop-shaped location pins in different colors placed along that line, each box connected to one pin by a thin vertical stroke, thick black outlines, all boxes completely empty with white interiors, plain white background, no text, no letters.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "A printable worksheet template is presented, featuring six large, empty rectangular boxes organized in two staggered rows. The top row contains three identical boxes, positioned directly above the bottom row which is staggered such that its boxes sit partially under the top row's boxes. Below this arrangement, a single, continuous horizontal baseline runs across the width of the template. Six small, teardrop-shaped location pins are aligned along this baseline, each one a distinct, solid color. Thin, uniform vertical strokes extend upwards from the base of each box, connecting it to the corresponding pin above. The entire composition is set against a clean, solid white background, defined by bold, black outlines and balanced, uniform spacing. The artwork is executed in a flat, graphic style suitable for educational materials.",
+      "metric": [
+        "layout accuracy",
+        "blank space preservation",
+        "box-to-pin connector placement",
+        "print suitability",
+        "design balance"
+      ],
+      "prompt_original": "Create a printable elementary school worksheet template containing six large empty rectangular boxes arranged in two staggered rows above a single horizontal baseline. Place six small colored teardrop-shaped location pins along that baseline and connect each box to one pin with a thin vertical stroke, leaving the writing areas completely blank. Use a clean vector layout, thick black outlines, white background, balanced spacing, and a classroom-friendly printable design.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "A layout for a worksheet is presented on a plain white background, featuring six empty boxes and six location pins. In the upper portion, six identical, empty rectangular boxes are organized into two staggered rows; the top row contains three boxes, and the bottom row contains three boxes shifted to the left and right. Each box is defined by a thick, uniform black outline and has a plain white interior. A single, solid black horizontal line runs across the entire width of the layout just below the boxes. Positioned along this line are six small, teardrop-shaped location pins, each a distinct color, creating a color scale. Thin, straight vertical strokes connect the center of each box to the line below it. The overall presentation is a clean vector graphic with no text, letters, or numbers, rendered in a flat style.",
+      "metric": [
+        "6 rectangular boxes present",
+        "6 colored location pins arranged along bottom line",
+        "1:1 connection between boxes and pins",
+        "black outlines with empty white interiors",
+        "no text or letters in the design"
+      ],
+      "prompt_original": "A blank worksheet layout for children, six empty rectangular boxes arranged in two staggered rows above a single horizontal line at the bottom, six small teardrop-shaped location pins in different colors placed along that line, each box connected to one pin by a thin vertical stroke, thick black outlines, all boxes completely empty with white interiors, plain white background, no text, no letters.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Data Visualization Chart",
+    "claude": {
+      "prompt": "A simple vertical bar chart is presented on a stark white background, defined by a single horizontal baseline upon which the bars stand. A plain vertical axis line, devoid of numerical markers or text, runs along the left edge of the chart. The six bars are arranged in a horizontal row, each identical in width but varying in height. From left to right, the bars are colored in the following sequence: yellow, blue, orange, red, brown, and green. The blue bar is the tallest, and the orange bar is the shortest, creating a clear visual comparison. Centered atop each bar is a small, simplified toy icon. Thin, horizontal gridlines are positioned behind the bars, reinforcing the graphical structure. The composition is entirely devoid of text, labels, or glyphs. This visual is rendered in a clean, 2D vector art style suitable for educational materials.",
+      "metric": [
+        "6 bars",
+        "6 toy icons, one below each bar",
+        "color-order attribute binding",
+        "height ranking (blue tallest, orange shortest)",
+        "gridline straightness"
+      ],
+      "prompt_original": "A simple vertical bar chart on white background, six bars of equal width standing on a horizontal baseline, a small toy icon centered below each bar, the bars colored in left-to-right order yellow, blue, orange, red, brown and green, the blue bar tallest and the orange bar shortest, thin horizontal gridlines behind the bars, a plain vertical axis line on the left, no numbers, no labels, no text.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "A printable elementary school worksheet is presented against a clean white background, featuring a colorful bar graph under a title and axis labels. At the top center, the worksheet title, 'Favorite Toy Categories', is rendered in a bold, friendly, sans-serif font. To the left of the title, a simple x-axis label reads 'Categories' and a y-axis label reads 'Number of Likes'. The central portion of the worksheet is occupied by the bar graph, which contains six vertical bars of equal width. Each bar is filled with a unique, bright color, including shades of blue, green, orange, purple, red, and yellow. Positioned directly below the bottom edge of each colored bar is a small, stylized icon representing a toy. For instance, a blue bar might be accompanied by a simple blue block icon, while a red bar could feature a red car icon. Beneath the graph, four comprehension questions are arranged in a column, each preceded by a number and a clear, easy-to-read question. Following the questions are four blank, horizontal lines, indicating spaces for student responses. The entire design utilizes clean lines and a high-contrast color palette suitable for educational materials. The overall presentation is that of a flat, 2D vector illustration.",
+      "metric": [
+        "graph accuracy",
+        "6 toy categories with one matching icon each",
+        "information clarity",
+        "text area composition",
+        "question placement",
+        "worksheet completeness"
+      ],
+      "prompt_original": "Create a printable elementary school worksheet featuring a colorful bar graph comparing six favorite-toy categories with different colored bars and a small toy icon below each category. Include a worksheet title, labeled axes, numbered comprehension questions, blank answer lines, and a clean page layout. Use vector graphics, high readability, white background, and a classroom-friendly printable worksheet design.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "A bar graph worksheet is presented against a plain white background, organized with a distinct header and data section. The upper portion consists of a beige header where the title 'bar graphs' is rendered in a clean, black, sans-serif font. The main area below displays the data visualization, featuring a vertical y-axis on the left marked with numerical labels from 1 to 12. Along the bottom edge, a horizontal x-axis is populated with a sequence of six stylized toy icons: a doll, a robot, a basketball, a dinosaur, a truck, and a teddy bear. Rising above each icon is a rectangular bar, colored in a distinct, sequential palette: yellow, blue, orange, red, brown, and green. Beneath the graph, several black, sans-serif text questions are included, one asking to identify the most and least preferred toy, another asking for the least and most disliked, and a third inquiring about a specific combination of two toys. The artwork adheres to a flat design aesthetic, characterized by its lack of gradients, shadows, or photographic qualities.",
+      "metric": [
+        "the graph contains six bars, one for each toy icon",
+        "the questions are clearly aligned with the data presented in the graph",
+        "the colors of the bars correspond to the icons at the bottom of the graph",
+        "the y-axis values are correctly labeled and correspond to the number of learners",
+        "there is no text or additional elements outside of the graph and questions"
+      ],
+      "prompt_original": "A bar graph worksheet titled 'bar graphs'. The graph displays the favorite toys of Grade 1 learners, with each bar representing a different toy. The toys are represented by icons at the bottom: a doll, a robot, a basketball, a dinosaur, a truck, and a teddy bear. The six bars are colored yellow, blue, orange, red, brown, and green in that order. The y-axis is labeled with numbers from 1 to 12, indicating the count of learners who prefer each toy. The worksheet includes questions asking students to identify which toy is most liked, least liked, and how many learners like specific combinations of toys. The background is white, and the text is black, with a beige header section. There is no text in the image other than the title, labels, and questions.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Historical Figure Portrait",
+    "claude": {
+      "prompt": "A friendly cartoon portrait illustration captures the upper body of a nineteenth-century American statesman, positioned against a plain white background. The man's head is turned slightly to his left, presenting a calm and smiling expression with gentle eyes. A tall, dark, cylindrical hat is depicted as being removed from his head, resting beside his hair. His face features a full, dark beard and mustache that follow the line of his jaw, but he does not wear a mustache. He is dressed in formal attire, consisting of a black formal coat with a visible lapel and a simple black bow tie fastened at his neck. Directly behind his right shoulder, a portion of an American flag hangs, displaying its iconic red and white stripes and a small blue star in the upper left corner of the visible fabric. To his left, a rolled parchment scroll with a visible, textured edge is placed horizontally. The artwork is presented as a flat, 2D illustration with clean lines and solid colors, suitable for educational use.",
+      "metric": [
+        "figure attributes (beard shape/attire)",
+        "two props placed left/right",
+        "single figure maintained"
+      ],
+      "prompt_original": "A friendly cartoon portrait illustration of a nineteenth-century American statesman, tall dark hat removed, dark beard along the jawline without a mustache, black formal coat and bow tie, calm smiling expression, upper body only facing slightly left, a striped and starred flag hanging behind his right shoulder, a rolled parchment scroll placed near his left side, plain white background, no text.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "A full-length, upper-body educational illustration captures a single historical political figure standing against a plain white background. The figure is depicted in a friendly cartoon style, with a gentle expression, a neatly trimmed beard, and a formal hairstyle, such as a 18th-century powdered wig tied back. He wears historical formal wear, which includes a dark, textured frock coat with wide lapels over a lighter-colored waistcoat and a high-collared shirt. Flanking the figure symmetrically are two symbolic props. On one side, a national flag is presented, featuring simple, bold stripes in muted, soft colors. On the other side, a rolled parchment scroll with a decorative end cap is placed, suggesting it contains important documents. The composition is perfectly balanced, utilizing negative space to maintain focus on the character and his symbolic accessories. The artwork is executed in a clean, flat educational illustration style with soft lighting and a color palette limited to muted tones.",
+      "metric": [
+        "figure attributes accuracy (facial hair/hairstyle/attire)",
+        "period-appropriate styling",
+        "two props placed on either side",
+        "single figure maintained",
+        "educational illustration style"
+      ],
+      "prompt_original": "Create an educational illustration showing a single historical political figure in a friendly cartoon style. Display the upper body only, wearing formal historical clothing with distinctive facial hair and hairstyle appropriate for the period. Place a national flag on one side and a rolled parchment scroll on the other as symbolic props. Use a plain white background, balanced composition, clean educational illustration style, and soft muted colors.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "A cartoon-style portrait of Abraham Lincoln is presented, showing his upper body and depicting him from the chest up. He faces slightly to the left, and his expression is calm and smiling. He has a dark, well-groomed beard that runs along his jawline, and he is clean-shaven without a mustache. He wears a formal black coat over a white shirt with a visible collar, and a dark bow tie is fastened at his neck. His tall, cylindrical hat is absent. Behind his right shoulder, the American flag hangs, featuring its distinct red and white stripes and the blue field with white stars. Near his left side rests a rolled parchment scroll, presented in a pale cream tone. The entire composition is set against a plain white background, with a simple and colorful aesthetic characterized by soft edges and minimal shading. There is no text within the image.",
+      "metric": [
+        "a single figure is present, shown from the upper body only",
+        "the beard runs along the jawline with no mustache",
+        "a striped and starred flag hangs behind the right shoulder",
+        "a rolled parchment scroll rests near the left side",
+        "the background is plain white with no text"
+      ],
+      "prompt_original": "A cartoon-style portrait of Abraham Lincoln, showing the upper body only and facing slightly to the left. He has a dark beard running along his jawline without a mustache, and wears a black formal coat with a white shirt and a dark bow tie. His tall hat has been removed and his expression is calm and smiling. Behind his right shoulder hangs an American flag with red and white stripes and white stars on a blue field. Near his left side rests a rolled parchment scroll in a pale cream tone. The background is plain white, and the overall style is simple and colorful with soft edges and minimal shading. There is no text in the image.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Multi-Character Classroom Collaboration",
+    "claude": {
+      "prompt": "Four elementary school students are gathered around a central classroom table, captured from a slight front angle. On the left side, two young girls are seated; the one closer to the viewer holds a folded paper booklet with both hands, presenting it forward, while the second girl leans in attentively. On the right side, a boy sits beside a girl who is positioned in a wheelchair, and the boy holds a marker pen, appearing to choose a drawing from the scattered items on the table. These items include colorful, child-like drawings of a park with trees and a sun, alongside several unsharpened pencils. The entire group has bright, cheerful expressions. The setting is a simple, uncluttered classroom with a plain, light-colored wall serving as the backdrop, with no text or additional details. The artwork is presented as a clean, 2D illustration with bold outlines and solid colors, typical of educational materials.",
+      "metric": [
+        "accuracy of 4 people",
+        "left-2/right-2 spatial arrangement",
+        "hand-prop binding",
+        "wheelchair depiction (girl on the right)"
+      ],
+      "prompt_original": "Four elementary school students sitting around a shared classroom table seen from a slight front angle, two girls on the left side and one boy and one girl on the right side, the girl at the front left holding up a folded paper booklet with both hands, the boy holding a marker pen, colored drawings of a park and pencils scattered on the table surface, the girl on the right seated in a wheelchair, bright cheerful expressions, simple plain classroom background, no text.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "Four young students from a Korean elementary school are depicted sitting around a light-colored wooden table in a bright and cheerful classroom setting, engaged in a collaborative project. The student on the far left, a boy with short black hair, smiles warmly as he holds up a paper drawing of a park, complete with simple green trees and a yellow sun. Beside him, a girl with braided brown hair shows a finished booklet, its cover adorned with colorful, whimsical illustrations. Seated next to her is another boy who presents a poster on his desk, featuring a vibrant design of flowers and leaves against a pale blue background. On the far right, a girl with shoulder-length black hair sits comfortably in her wheelchair, which has large rear wheels and small front caster wheels, and she happily shares her project. Above each student’s head is a clean, empty speech bubble, indicating a group discussion. The background is a simple educational tableau featuring a portion of a green chalkboard, a window with soft light, and colorful educational posters. This is a flat, graphic illustration with a soft pastel color palette and clean lines, designed in a child-friendly educational book style.",
+      "metric": [
+        "accuracy of student count",
+        "diversity of depicted work outputs",
+        "naturalness of interaction",
+        "maintenance of textbook illustration style",
+        "speech bubble placement"
+      ],
+      "prompt_original": "Create a Korean elementary school textbook illustration showing four students sitting around a shared classroom table and sharing their creative projects. Each student presents a different work such as a park drawing, booklet, or poster while smiling and talking. The student on the right uses a wheelchair. Include speech bubbles above each student. Use soft pastel colors, a clean educational illustration style, a simple classroom background, balanced composition, and child-friendly textbook artwork.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "Four children are depicted sitting around a simple wooden table in a brightly colored classroom, each absorbed in drawing or reading about a shared park drawing. The child positioned in the front left seat sits attentively, holding open a folded booklet that displays a hand-drawn illustration of a park with a green field and a tree. To the right, a child is seated in a manual wheelchair, which features large, spoked rear wheels and smaller front casters; this child looks down at their own completed drawing resting on the table. The other two children, one behind and one at the back, are also focused on their individual drawings placed on the tabletop. Directly above each of the four children's heads is a distinct, empty speech bubble, each containing stylized Korean Hangul characters that represent their thoughts or comments about the park. The setting is a minimalist classroom with light-colored walls and a wooden floor, serving as a clean backdrop. The overall presentation is that of a flat, colorful, and cartoonish children's illustration, suitable for educational use. The illustration contains no text, letters, or numeric glyphs, leaving only the speech bubbles with their designated text.",
+      "metric": [
+        "four children are present in the image",
+        "each child has a speech bubble with Korean text",
+        "the children are engaged in drawing or reading about a park",
+        "the girl on the right is in a wheelchair",
+        "the setting is a classroom with a shared wooden table and chairs",
+        "the style is cartoonish and colorful"
+      ],
+      "prompt_original": "A group of four children sitting at a shared classroom table, each engaged in drawing or reading about a park they have drawn. The girl on the front left is holding an open folded booklet showing a drawing of a park, while the other three children are focused on their drawings. The girl in the wheelchair on the right has a completed drawing of a park. Each child has a speech bubble above their head with Korean text expressing their thoughts about the park. The setting is a classroom with a simple wooden table and chairs. The overall style is cartoonish and colorful, suitable for a children's illustration. There is no text in the image itself, only the speech bubbles containing text.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Intergenerational Indoor Scene",
+    "claude": {
+      "prompt": "An elderly couple is seated side-by-side on a beige fabric sofa within a brightly lit living room. The woman, positioned on the left, has short, neatly styled gray hair and wears a cozy magenta cardigan over her clothing, with a chunky yellow scarf wrapped around her neck; she is depicted gesturing with one hand as she smiles warmly. Next to her, the man, also with gray hair, is dressed in a light blue button-up shirt and has a gentle, contented smile on his face, his gaze directed towards the child. In the foreground, a young child kneels on the floor with their back turned to the viewer, actively writing with a pencil on a small, spiral-bound notepad. The child is wearing a vibrant red hooded sweatshirt. Behind the sofa, a tall, minimalist floor lamp with a solid green shade stands, providing soft illumination. A soft, plush green rug is partially visible on the floor beneath the sofa and the child. The entire composition is rendered in a clean, graphic style with solid colors, bold outlines, and minimal shading. This is a flat educational illustration with no text, suitable for a K-12 classroom slide.",
+      "metric": [
+        "age distinction among 3 people",
+        "clothing-to-person binding",
+        "foreground-background depth",
+        "prop placement"
+      ],
+      "prompt_original": "An elderly couple with gray hair sitting side by side on a beige fabric sofa in a living room, the grandmother wearing a magenta cardigan and yellow scarf gesturing with one hand, the grandfather in a light blue shirt smiling, a young child in a red hoodie kneeling on the floor in the foreground with their back to the viewer, writing on a small notepad with a pencil, a floor lamp with a green shade behind the sofa, a wooden side table with a small potted plant, soft green rug, no text.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "An illustration depicts a child interviewing two grandparents within a cozy, minimalist living room. In the foreground, a young child kneels on the light-colored floor, their back turned to the viewer as they write in a small notepad. Occupying the middle ground, the two grandparents sit side-by-side on a large, beige-colored sofa. The grandfather wears a comfortable sweater and smiles warmly, while the grandmother, with neatly styled hair, looks attentively at the child with a friendly expression. Simple furniture includes a tall floor lamp with a green fabric shade in one corner, a small wooden side table beside the sofa holding a mug, and a small potted plant in a corner. The background consists of a plain wall in a soft pastel hue, maintaining a warm and uncluttered atmosphere. The work is presented in a clean, flat educational illustration style, characterized by minimal background details, a soft color palette, and simplified forms.",
+      "metric": [
+        "figure posture",
+        "depiction of living space",
+        "emotional expression",
+        "prop placement",
+        "educational illustration style"
+      ],
+      "prompt_original": "Create an elementary school textbook illustration showing a child interviewing two grandparents in a cozy living room. The child kneels on the floor in the foreground with their back to the viewer, writing notes on a small notepad, while the grandparents sit side by side on a beige sofa and answer questions with friendly expressions. Include simple furniture such as a green-shaded floor lamp, a wooden side table, and a small potted plant. Use soft pastel colors, clean educational illustration style, minimal background details, and warm family atmosphere.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "A cozy living room scene is depicted, featuring three characters arranged around a sofa against a soft pastel wall. On the left side of the sofa sits an elderly woman with a gentle smile; she wears large glasses, a magenta cardigan over a gray top, and a yellow scarf. Next to her on the sofa is an elderly man, also smiling warmly, dressed in a light blue shirt and dark-colored pants. In the foreground, a child is shown kneeling on the floor with their back toward the viewer, focused on a small notepad and pencil held in their hands. The background is completed by a plush, soft green rug on the floor, a simple wooden side table with a small potted plant, and a green floor lamp with a light shade. The entire illustration is presented in a flat, 2D style using only simple shapes and clean outlines, avoiding any photorealistic or cinematic qualities. The color scheme consists of a warm, limited palette of soft pastel tones. This image is rendered in a cartoonish style suitable for an educational context.",
+      "metric": [
+        "three distinct characters are present",
+        "the elderly woman is seated on the left of a beige sofa, wearing a magenta cardigan and yellow scarf",
+        "the elderly man is seated beside her on the same sofa, wearing a light blue shirt and dark pants",
+        "the child kneels in the foreground with their back to the viewer, holding a notepad and pencil",
+        "the setting is a living room with a beige sofa, a green floor lamp, and a wooden side table with a small potted plant",
+        "the scene has a warm and inviting tone"
+      ],
+      "prompt_original": "A cozy living room scene featuring three characters. On the left, an elderly woman sits on a beige fabric sofa wearing a magenta cardigan, gray pants, and a yellow scarf. She has glasses and is smiling. Beside her on the same sofa sits an elderly man, dressed in a light blue shirt and dark pants. He also has a friendly smile. In the foreground, a child in a red hoodie kneels on the floor with their back to the viewer, holding a small notepad and pencil, seemingly taking notes. The background includes a green floor lamp with a light shade, a wooden side table with a small potted plant, and a soft green rug. The overall style is cartoonish and warm-toned, with soft pastel colors dominating the scene.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Single-Character Cutout",
+    "claude": {
+      "prompt": "An elderly woman is depicted in an educational illustration, seated at a sewing machine mounted on a wooden table. The woman has gray hair tied back in a bun and wears round glasses. She is shown from the upper body, wearing a white long-sleeved blouse beneath a green vest. Her hands are positioned on a folded cloth with a pink and white checkered pattern, guiding it under the needle of the machine. The sewing machine is an old, black model, and the table it sits upon has a light wood grain. The composition is cut off at the table level, showing only the woman and the table. The entire scene is isolated within a large, flat, rounded shape of a pale blue color, which acts as a simple, unadorned background. The illustration adheres to a flat design, avoiding photorealistic, cinematic, or 3D-rendered qualities.",
+      "metric": [
+        "subject-background edge clarity",
+        "background flatness score",
+        "hand-tool interaction",
+        "cutout bottom-crop handling"
+      ],
+      "prompt_original": "An elderly woman with gray hair tied in a bun and round glasses, wearing a white long-sleeve blouse and green vest, seated at an old black treadle sewing machine mounted on a wooden table, both hands guiding a folded pink and white checkered cloth under the needle, gentle focused smile, upper body and table only with nothing below, isolated on a flat pale blue rounded background shape, no text.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "A children's educational scene is presented, focusing on a character using a hands-on sewing machine at a work table. The central figure is a young child, depicted in a seated position on a simple, solid-colored circular background shape. The character has a focused expression and is actively using a small, simplified sewing machine, with their hands placed on the machine's controls to guide a piece of light-colored fabric under the needle. The work table surface is a clean, uniform pastel color, serving as a neutral ground for the activity. The composition is cropped to show only the upper body and the work surface, with all elements arranged in a balanced layout. The illustration employs a clean, educational cutout style with soft pastel colors and distinct outlines.",
+      "metric": [
+        "tool-object interaction accuracy",
+        "upper-body-and-worksurface-only cropping",
+        "background flatness (solid-color shape)",
+        "single character maintained",
+        "educational cutout style"
+      ],
+      "prompt_original": "Create an educational cutout illustration showing a single character using a hands-on tool such as a sewing machine at a work table. Display only the upper body and the work surface, cropping everything below the table. Place the character on a simple flat solid-color background shape without additional scenery. Use clean educational illustration style, soft pastel colors, balanced composition, and clear object interaction.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "An elderly woman is depicted in a side profile view, intently working on a piece of fabric with a treadle sewing machine. She has gray hair gathered into a neat bun on the back of her head and wears round glasses. Her attire consists of a white long-sleeved blouse worn underneath a sleeveless green vest. Both of her hands are shown in the process of guiding the fabric under the needle of the sewing machine. The machine itself is primarily black with silver-colored details on its body and base, and it is mounted on a wooden table showing a light brown finish. The fabric being sewn is a pink and white checkered pattern. The background is a solid, flat, pale blue rounded shape, and the lower portion of the composition shows no table or ground. The artwork is presented in a simple, colorful cartoon style with soft outlines and minimal shading.",
+      "metric": [
+        "the image contains one elderly woman",
+        "the woman is using a treadle sewing machine with both hands",
+        "there is a pink and white checkered fabric being sewn",
+        "the background is a flat pale blue shape with no gradient",
+        "the style is cartoonish and simple"
+      ],
+      "prompt_original": "A cartoon-style elderly woman is sitting at a treadle sewing machine, working on a piece of fabric. She has gray hair tied in a bun, wears round glasses, and is dressed in a white long-sleeve blouse with a green vest. The sewing machine is black with silver accents and is mounted on a wooden table, and she guides the fabric under the needle with both hands. The fabric she is sewing is pink and white checkered. The background is a flat pale blue rounded shape, and nothing is shown below the table. The overall style is simple and colorful, with soft edges and minimal shading.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Labeled Science Diagram",
+    "claude": {
+      "prompt": "A black and white line drawing illustrates a single animal cell against a plain white background. The primary structure is a large, vertically oriented oval representing the cell, defined by a continuous, thin black outline that signifies its outer plasma membrane. Occupying the center of this oval is a prominent, solid black circle, which denotes the nucleus. Four additional oval-shaped organelles are distributed around the nucleus, each enclosed in a thin black line and filled with a light gray color. Within each of these organelles, there are fine, wavy black stripes to represent internal structures. To the left of the main cell, a small cluster of short, curved, ribbon-like shapes is positioned. On the right side of the composition, two separate, empty ovals are placed, one higher up and one lower down, both rendered as simple shapes with light gray fill. The overall presentation is a clean, two-dimensional illustration with no text, letters, or arrows. Everything is rendered in thin black outlines with light gray fill only inside the organelles.",
+      "metric": [
+        "count of internal structures (1 nucleus + 4 striped organelles + 2 empty ovals)",
+        "nucleus centered placement",
+        "uniform line thickness",
+        "absence of color leakage"
+      ],
+      "prompt_original": "A black and white line drawing of an animal cell for a science worksheet, one large oval cell outlined with a thin double membrane line, a single large circle in the center representing the nucleus, four oval organelles with internal wavy stripes distributed around the nucleus, a cluster of short curved ribbon shapes on the left side, two plain empty ovals on the right and lower left, everything drawn in thin black outlines with light gray fill only inside the organelles, white background, no text, no letters, no arrows.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "A printable elementary science worksheet is laid out against a clean white background, featuring a central diagram of a simplified animal cell. The cell itself is outlined with a black vector line and contains several internal organs, all filled with solid grayscale colors. A large, teardrop-shaped vacuole occupies the upper half of the cell, while a circular mitochondrion is positioned near its base. A small, bean-shaped nucleus is located in the lower half. Thin, straight leader lines extend from the image border to each organelle, connecting them to their labels. At the top of the worksheet, a title such as 'Animal Cell' is displayed in a large, bold, sans-serif font. Directly beneath the main diagram, a section contains short, blocky, educational descriptions for each organelle. At the bottom, a color key is arranged, showing the assigned grayscale color for each organelle against its name. The entire design uses black outlines, grayscale fills, clean typography, and a friendly, organized layout suitable for printing.",
+      "metric": [
+        "biological structure accuracy",
+        "ability to generate leader lines (label connectors)",
+        "text-to-object correspondence",
+        "schematic representation ability",
+        "information density maintenance",
+        "educational diagram quality"
+      ],
+      "prompt_original": "Create a printable elementary science worksheet showing a simplified animal cell diagram with labeled organelles. Include the cell membrane, cytoplasm, nucleus, mitochondria, and vacuole connected to their labels using straight leader lines. Add a worksheet title, short educational descriptions for each organelle, and a color key at the bottom. Use black vector outlines, grayscale fills, clean typography, white background, and a classroom-friendly printable layout.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "A detailed diagram of a single animal cell is presented against a solid white background, designed as a flat educational illustration. At the top of the diagram, the title 'Animal Cell' is displayed in a black, sans-serif font. The entire cell structure is rendered as a thin black line drawing with a corresponding light gray fill. The cell membrane is defined by a thin, double-lined outline. In the center lies the large, circular nucleus, also enclosed by a black outline. Other components, including several mitochondria, a large vacuole, and the surrounding cytoplasm, are positioned within the cell. These sub-components are differentiated from one another by varying light gray tones and simple internal stripe patterns, rather than color. Extending from each major part of the cell are straight, black leader lines that point to their labels. The image adheres to a strict flat and two-dimensional style, with no text, letters, or numeric glyphs other than the title and labels, and no photographic or cinematic qualities.",
+      "metric": [
+        "correctly identifies all labeled parts of the cell",
+        "grayscale fills consistently distinguish each component",
+        "proper labeling of each component",
+        "clear and legible text",
+        "no additional text or elements outside the diagram"
+      ],
+      "prompt_original": "A detailed diagram of an animal cell labeled with various cellular components. The whole cell is drawn as a thin black line drawing with light gray fills. The cell membrane is a thin double outline, the nucleus is a large circle at the center, and the mitochondria, vacuole, and cytoplasm are distinguished from one another by different gray tones and internal stripe patterns rather than by color. The diagram includes straight leader lines pointing to each part of the cell. The background is white, and the text is black. The title 'Animal Cell' is at the top. There is no text in the image other than the labels and the title.",
+      "backend": "promptenhancer"
+    }
+  },
+  {
+    "type": "Geometric Shape Set",
+    "claude": {
+      "prompt": "An arrangement of eight distinct geometric shapes is presented against a plain white background, organized into two horizontal rows of four. In the top row, from left to right, there is a regular hexagon with six equal sides, a square with four equal sides, a rhombus with four equal sides standing on one corner, and an equilateral triangle with three equal sides. In the bottom row, directly below the top row, there is a trapezoid with the shorter of its two parallel sides on top, a wide rectangle that is taller than it is wide, a circle with a continuous curved boundary, and a regular pentagon with five equal sides. Each shape is rendered with a thin, uniform black outline and is completely isolated by a border of clear white space, with no internal fill, shading, texture, or numerical labels. The overall presentation is a clean, minimalist flat illustration.",
+      "metric": [
+        "8 shapes total",
+        "accuracy of each shape's side count (confusion rate among octagon/hexagon/pentagon)",
+        "2x4 grid alignment",
+        "no fill maintained"
+      ],
+      "prompt_original": "A set of eight separate geometric outline shapes evenly spaced on a plain white background, arranged in two rows of four, thin black outlines with no fill, the shapes are a regular hexagon, a square, a rhombus standing on one corner, an equilateral triangle, a trapezoid with the shorter side on top, a wide rectangle, a circle, and a regular pentagon, each shape isolated with clear white space around it, no shading, no text, no numbers.",
+      "backend": "promptenhancer"
+    },
+    "chatgpt": {
+      "prompt": "A flat, educational worksheet is presented against a solid white background, designed for use in classrooms. The layout systematically introduces eight different geometric shapes. The first shape is a regular hexagon, defined by its six equal sides and six equal angles, with a blank line underneath for an answer. Following this, there is a square, characterized by its four equal sides and four right angles, also followed by a blank response line. The third shape is a rhombus, distinguished by its four equal sides and opposite angles being equal, with a corresponding blank line below. Next is an equilateral triangle, featuring three equal sides and three angles of 60 degrees, accompanied by its own empty answer row. Following the pattern is a trapezoid, an quadrilateral with at least one pair of parallel sides, marked with a blank line. Following this is a rectangle, a four-sided figure with four right angles, with a corresponding blank line. A circle is depicted with a perfect, unbroken circumference and a single center point, with a blank response line positioned below. The final shape is a regular pentagon, an five-sided figure with all sides and all angles being equal, also followed by a blank line. Positioned above each individual shape are two distinct lines of instructional text using a clean, sans-serif font, asking students to count the sides and corners and to name a real-world object that matches the shape. The entire composition is rendered with crisp black vector outlines and clean typography, adhering to a flat and simple design. The overall presentation is a black-and-white graphic, free of any photographic, cinematic, or 3D rendering qualities.",
+      "metric": [
+        "geometric accuracy of shapes",
+        "ability to generate regular polygons",
+        "line thickness consistency",
+        "layout alignment",
+        "accuracy of text-to-shape placement",
+        "print suitability"
+      ],
+      "prompt_original": "Create a printable elementary mathematics worksheet introducing basic geometric shapes. Include exactly eight shapes: regular hexagon, square, rhombus, equilateral triangle, trapezoid, rectangle, circle, and regular pentagon, each with a blank answer line beneath it. Add sections asking students to count sides and corners and identify real-world objects matching each shape. Use black vector outlines, clean typography, white background, and a printable worksheet layout.",
+      "backend": "promptenhancer"
+    },
+    "qwen2.5-vl-7b-instruct": {
+      "prompt": "A black and white educational worksheet is presented against a plain white background, structured for use in a classroom setting. At the top, the title 'UNIT 17 test' is centered in a bold, sans-serif font, with a rectangular space directly beneath it for a student's name. Below the title, a block of text in a smaller, regular font provides instructions, instructing students to write the names of each shape listed. Eight different geometric shapes are arranged in two horizontal rows of four. The first row displays a hexagon, a square, a rhombus, and a triangle. The second row lists a trapezoid, a rectangle, a circle, and a pentagon. Each shape is rendered as a solid black silhouette with a clean, thin outline. Directly underneath each shape, a blank, vertical strip with a small horizontal line at the top is provided for writing answers. Further down, a new section instructs students to write how many sides and corners each shape has, accompanied by small diagrams illustrating the concept for a circle, a rectangle, a rhombus, and a hexagon. The final section at the bottom of the worksheet asks students to identify what shape represents a real-life object, presenting four examples: a house, a donut, a sailboat, and a playing card, each represented by a simple black silhouette. The entire presentation is a flat, 2D vector graphic, characterized by crisp lines and a lack of shading or photorealistic qualities.",
+      "metric": [
+        "eight distinct shapes are present, with no shape repeated",
+        "accurate count of sides and corners for each shape",
+        "correct identification of real-life objects as shapes",
+        "proper use of blank lines for writing answers",
+        "all answer lines are left blank"
+      ],
+      "prompt_original": "A black and white worksheet titled \"UNIT 17 test\". At the top, there is a space for the student's name. Below the title, instructions ask to write the name of each shape provided: rectangle, circle, square, hexagon, triangle, trapezoid, rhombus, pentagon. Eight shapes are shown in two rows of four, each with a blank line underneath for the student to write their answers. The shapes are a hexagon, a square, a rhombus, a triangle, a trapezoid, a rectangle, a circle, and a pentagon. Below, there is a section asking to write how many sides and corners each shape has, with examples of a circle, a rectangle, a rhombus, and a hexagon. Finally, at the bottom, students are asked to identify what shape each real-life object is, showing images of a house, donut, sailboat, and playing card.",
+      "backend": "promptenhancer"
+    }
+  }
+]
