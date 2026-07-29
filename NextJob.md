@@ -557,6 +557,28 @@ csd_target이 조용히 0건으로 통과된 문제 발견 — 157(생성 서버
 **다음 단계**: 리포트의 사람 눈 채점 72행 표를 채운 뒤, VLM-judge/사람 채점 일치도까지 반영해서
 최종 백엔드(wan_style vs promptenhancer vs passthrough) 채택 여부 결정.
 
+**시스템 프롬프트 개량(공식 레포 구조 정합) baseline 재생성 + 채점 완료 (2026-07-29, 서버 157/23)**
+
+기존 `wan_style.txt`/`promptenhancer.txt`보다 공식 레포(Wan2.2 `prompt_extend.py`, Tencent
+PromptEnhancer-7B) 원본 시스템 프롬프트 구조에 더 가깝게 개량한 `configs/rewrite/wan_style_cn.txt`/
+`promptenhancer_cn.txt` 추가. v251/v252를 대체할 새 baseline 후보로 동일 파이프라인 재실행:
+`scripts/rewrite.py` → `scripts/sweeps/rewrite_generate_flux2klein_cn.sh`(v261/v262 생성) →
+`scripts/rewrite_compare_v261_262.sh`(4지표 채점). 결과 상세는 `bench/results.md` TASK-E
+"리라이팅 시스템 프롬프트 개량" 절 참고.
+
+요약: promptenhancer_cn(v262)이 가장 뚜렷하게 개선 — VQAScore 0.829→0.876, photo-word 누출
+7건→0건. wan_style_cn(v261)은 VQAScore가 소폭 하락(0.902→0.887)했지만 custom_cv/csd_target/
+judge pass율은 전부 개선. 두 `_cn` 버전 모두 새 baseline 후보로 채택할 근거 있음 — 단, 최종 판정은
+이전과 동일하게 사람 눈 채점 이후로 미룸.
+
+서버 23 disk가 90%(9.8GB)까지 차서 wan_style_cn용 Qwen2.5-7B-Instruct(~15GB) 다운로드가 막혔던 것을,
+대응 env 없는 orphan 캐시 `gemma-3-12b-it-bnb-4bit`(7.3GB)를 사용자 승인 하에 지워서 해결. 채점 완료
+시점엔 disk가 다시 98%(2.9GB)까지 참 — 이 Qwen 캐시는 계속 필요하니 유지, 서버 23에 앞으로 큰 모델을
+추가할 땐 이 캐시 크기까지 감안해야 함.
+
+**다음 단계**: v250/v251/v252/v261/v262를 한 리포트에서 나란히 비교(리라이팅 3~5조건 종합), 사람 눈
+채점 완료 후 최종 baseline 확정.
+
 **`enable_thinking=True` 실험 + photo-word 카운터 버그 정정 (2026-07-29, 서버 23)**
 
 애초 사전지식에 있었던 "`enable_thinking` 두 설정 다 실험"이 미실행 상태였던 걸 확인하고 진행.

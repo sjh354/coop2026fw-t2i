@@ -356,6 +356,44 @@ lecture24 4축) 전부 채점. 결과 리포트: `reports/rewrite-v250-v251-v252
 
 **다음 단계**: 사람 눈 채점(리포트의 72행 표) 완료 후 VLM-judge와 비교, 최종 백엔드 채택 여부 결정.
 
+## TASK-E · 리라이팅 시스템 프롬프트 개량(공식 레포 구조 정합) 4지표 채점 (2026-07-29, 서버 157/23)
+
+`configs/rewrite/wan_style_cn.txt`/`promptenhancer_cn.txt` — 기존 `wan_style.txt`/`promptenhancer.txt`보다
+공식 레포(Wan2.2 `prompt_extend.py`, Tencent PromptEnhancer-7B) 원본 시스템 프롬프트 구조에 더 가깝게
+개량한 버전. v251(wan_style)/v252(promptenhancer)를 대체하는 새 baseline 후보로 동일 파이프라인 재실행:
+
+1. `scripts/rewrite.py --backend {wan_style,promptenhancer} --system-prompt configs/rewrite/{wan_style_cn,promptenhancer_cn}.txt` →
+   `image-prompts/rewrite/{wan_style_cn,promptenhancer_cn}.json` (서버 23, `t2i-rewrite`)
+2. `scripts/sweeps/rewrite_generate_flux2klein_cn.sh` → flux2-klein-4b-nf4, 24프롬프트×2조건 생성
+   (서버 157) → v261(wan_style_cn)/v262(promptenhancer_cn)
+3. `scripts/rewrite_compare_v261_262.sh` → VQAScore/custom_cv/csd_target/VLM-judge 채점 (서버 23)
+
+| backend | 버전 | VQAScore | custom_cv | csd_target | photo-word 검출 |
+|---|---|---|---|---|---|
+| wan_style (기존) | v251 | **0.902** | 0.734 | 0.620 | 0 |
+| wan_style_cn (신규) | v261 | 0.887 | **0.750** | **0.639** | 0 |
+| promptenhancer (기존) | v252 | 0.829 | 0.750 | **0.659** | 7 |
+| promptenhancer_cn (신규) | v262 | **0.876** | 0.751 | 0.654 | **0** |
+
+judge_lecture24(InternVL3-8B, 참고용 — κ<0.6, 최종 판정 근거 아님) overall pass율(96문항=24×4축):
+passthrough(v250) 62/96, wan_style(v251) 66/96, **wan_style_cn(v261) 68/96**,
+promptenhancer(v252) 65/96, promptenhancer_cn(v262) 64/96. 축별로는 네 조건 모두 `text_legibility`가
+2~3/24로 압도적으로 낮음(공통 약점, 조건 간 차이 아님).
+
+- **promptenhancer_cn이 가장 뚜렷한 개선**: VQAScore 0.829→0.876, photo-word 누출 7건→0건. 시스템
+  프롬프트를 공식 구조에 맞게 재작성한 것만으로 기존 promptenhancer의 핵심 실패 모드(사진/영상 어휘
+  누출)가 해소됨.
+- wan_style_cn은 VQAScore가 기존보다 소폭 낮아졌지만(0.902→0.887) custom_cv/csd_target/judge
+  pass율은 전부 개선 — 두 시스템 프롬프트 모두 새 baseline 후보로 볼 근거 있음.
+- 서버 23 디스크 90%(9.8GB 여유) 상태에서 wan_style_cn용 Qwen2.5-7B-Instruct(~15GB) 신규 다운로드가
+  필요해, 대응 env가 없는 orphan 캐시 `gemma-3-12b-it-bnb-4bit`(7.3GB)를 사용자 승인 하에 삭제해
+  공간 확보. 이후 채점 중 디스크가 다시 98%(2.9GB)까지 참 — 이 Qwen 캐시는 wan_style(_cn) 리라이팅에
+  계속 필요하므로 유지, 대신 앞으로 서버 23에서 큰 모델을 추가할 때는 이 캐시까지 감안해 여유를
+  더 타이트하게 관리해야 함.
+
+**다음 단계**: v250~v252/v261/v262를 한 리포트에서 나란히 비교(passthrough 대조군 포함), 사람 눈 채점
+완료 후 최종 baseline(_cn 버전 채택 여부) 확정.
+
 ## TASK-G · ideogram-4 리라이팅/캡션포맷 4조건 생성 + 채점 (2026-07-28~29, 서버 157/23)
 
 `scripts/sweeps/rewrite_generate_ideogram4.sh`로 passthrough(v257)/wan_style(v258)/
