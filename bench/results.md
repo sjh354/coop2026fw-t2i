@@ -394,6 +394,34 @@ promptenhancer(v252) 65/96, promptenhancer_cn(v262) 64/96. 축별로는 네 조�
 **다음 단계**: v250~v252/v261/v262를 한 리포트에서 나란히 비교(passthrough 대조군 포함), 사람 눈 채점
 완료 후 최종 baseline(_cn 버전 채택 여부) 확정.
 
+## TASK-I · 프롬프트 리라이팅 효과의 카테고리별 분포 (파트 1, 2026-07-29, 로컬)
+
+TASK-E의 passthrough(v250)/wan_style_cn(v261)/promptenhancer_cn(v262) 채점 결과(신규 생성 없음)를
+`scripts/analyze_rewrite_by_category.py`로 재분석. TASK-A가 이미 정의한 track 구분(structural =
+worksheet/chart/science-diagram/geometric-shapes, illustration = 인물/장면 4종)을 그대로 써서, 항목별
+delta(리라이팅 − passthrough)가 두 track에서 다르게 나타나는지 Mann-Whitney U + paired bootstrap(그룹
+평균 차이 95% CI)으로 직접 비교했다(track당 n=12 = 4카테고리×3소스).
+
+| 조건 | 지표 | structural Δ평균 | illustration Δ평균 | Mann-Whitney p | bootstrap 그룹차 95% CI |
+|---|---|---|---|---|---|
+| wan_style_cn | vqascore | +0.090 | +0.019 | 0.194 | [-0.016, +0.164] |
+| wan_style_cn | judge_pass_rate | +0.139 | +0.000 | 0.155 | [+0.000, +0.292] |
+| promptenhancer_cn | vqascore | **+0.094** | **-0.007** | 0.078 | **[+0.005, +0.204]** |
+| promptenhancer_cn | judge_pass_rate | +0.056 | +0.000 | 0.655 | [-0.104, +0.229] |
+
+(custom_cv/csd_target은 두 track에서 delta 방향이 뒤섞이고 CI가 0을 넉넉히 포함 — 유의한 track 차이 없음,
+전체 8행은 `reports/length-effect-taski/length_effect_by_track.csv` 참고)
+
+- **promptenhancer_cn만 VQAScore에서 structural 쪽으로 유의에 가까운 개선**을 보인다 — bootstrap CI가
+  0을 겨우 벗어남([+0.005, +0.204]), Mann-Whitney p=0.078로 α=0.05 기준 미달. "리라이팅이 counting/
+  attribute-binding 카테고리에서 더 도움된다"는 가설과 방향은 일치하지만, n=12/그룹으로는 확정적 결론이
+  아니다 — 발표에서는 "경향"이 아니라 이 숫자 그대로("p=0.078, CI가 0을 근소하게 벗어남") 보고할 것.
+- wan_style_cn/judge_pass_rate도 같은 방향(structural +0.139 vs illustration +0.000)이지만 judge는
+  TASK-C에서 이미 신뢰도 낮음(κ<0.6)이 확정된 경로라 참고용.
+- **이건 "리라이팅 효과"이지 "길이 효과"가 아니다** — passthrough→wan_style_cn/promptenhancer_cn은
+  내용(어휘)도 같이 바뀌므로 길이만의 효과는 분리 안 됨. 길이 자체를 보려면 TASK-I 파트 2(단일 리라이팅
+  계열을 단어 예산별로 자른 사다리 실험, 신규 생성 필요)가 필요 — `NextJob.md` TASK-I 참고.
+
 ## TASK-G · ideogram-4 리라이팅/캡션포맷 4조건 생성 + 채점 (2026-07-28~29, 서버 157/23)
 
 `scripts/sweeps/rewrite_generate_ideogram4.sh`로 passthrough(v257)/wan_style(v258)/

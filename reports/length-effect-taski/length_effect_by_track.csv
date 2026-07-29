@@ -1,0 +1,9 @@
+rewrite_condition,metric,n_structural,n_illustration,structural_mean_delta,illustration_mean_delta,mannwhitney_u,mannwhitney_p,bootstrap_mean_diff,bootstrap_ci_low,bootstrap_ci_high
+wan_style_cn,vqascore,12,12,0.0902,0.0187,95.0,0.193834,0.0713,-0.016,0.1641
+wan_style_cn,custom_cv,12,12,0.0133,0.0191,68.0,0.839826,-0.006,-0.0333,0.0184
+wan_style_cn,csd_target,12,12,0.0036,0.0134,71.0,0.976965,-0.0103,-0.0878,0.0676
+wan_style_cn,judge_pass_rate,12,12,0.1389,0.0,90.0,0.154646,0.1388,0.0,0.2917
+promptenhancer_cn,vqascore,12,12,0.0938,-0.0072,103.0,0.078187,0.1005,0.0053,0.2036
+promptenhancer_cn,custom_cv,12,12,0.0083,0.0256,57.0,0.402299,-0.0173,-0.0455,0.0107
+promptenhancer_cn,csd_target,12,12,0.0021,0.0463,60.0,0.506628,-0.0448,-0.1282,0.0359
+promptenhancer_cn,judge_pass_rate,12,12,0.0556,0.0,78.0,0.654779,0.0564,-0.1042,0.2292
