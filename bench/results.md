@@ -309,6 +309,28 @@ transformer 위에 얹는 공식 경로는 호환성 문제가 보고돼 있어,
 - 다음 단계(TASK-F 본문 2~4번, 아직 미실행): `bench_cost.py`로 정식 VRAM/latency 측정, 동일 24
   프롬프트 생성 후 spec+CSD 채점, quality/latency/VRAM 3열 비교표.
 
+## TASK-F · qwen-image vs qwen-image-lightning 정식 24프롬프트 비교 (2026-07-28~29, 서버 157/23)
+
+`scripts/sweeps/task_f_qwen_pipeline.sh`로 동일 24프롬프트(lecture24)·동일 시드 정식 생성
+(v255=full 30-step Q5_K_M, v256=lightning 8-step Q4_K_S, 서버 157) → VQAScore/csd_target 채점
+(서버 23) → `reports/task-f_qwen_lightning_comparison.md`.
+
+| 항목 | qwen-image (full, 30-step, Q5_K_M) | qwen-image-lightning (8-step, Q4_K_S) |
+|---|---|---|
+| peak VRAM (torch/smi) | 15.53 / 16.04 GB | 15.53 / 16.05 GB |
+| latency p50 / p90 | 152.15s / 153.62s | 50.44s / 51.27s |
+| vqascore (mean, 24) | 0.8701 | **0.8784** |
+| csd_target (mean, 24) | 0.6319 | **0.6421** |
+
+- **품질 저하 없음** — vqascore·csd_target 둘 다 lightning이 오히려 근소하게 높다(둘 다
+  n=24, 시드 1개라 유의차 검정은 안 했지만 최소한 "distillation으로 품질이 깎였다"는 우려는
+  기각). VRAM은 사실상 동일(양쪽 다 nvidia-smi 기준 16GB 예산을 근소 초과), 속도는 약 3배 —
+  파일럿(2.1배, apple/cat 2장)보다 정식 측정에서 격차가 더 벌어졌는데, 24프롬프트 규모에서
+  텍스트 인코딩 등 고정 오버헤드 비중이 상대적으로 줄어든 것으로 보임.
+- **결론**: qwen-image 계열을 후보로 유지한다면 lightning으로 교체하는 데 품질상의 이유로
+  막을 근거가 없다. VRAM이 16GB를 근소 초과하는 문제는 full/lightning 공통이라 이 비교와는
+  별개 이슈.
+
 ## TASK-E · 리라이팅 3백엔드 4지표 채점 (2026-07-28, 서버 23)
 
 `scripts/rewrite_compare_v250_252.sh`로 v250(passthrough)/v251(wan_style)/v252(promptenhancer)

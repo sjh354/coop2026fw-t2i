@@ -10,5 +10,5 @@
 | peak VRAM (nvidia-smi) GB | 16.04 | 16.05 |
 | latency p50 (s) | 152.15 | 50.44 |
 | latency p90 (s) | 153.62 | 51.27 |
-| vqascore (mean, 24 prompts) | 채점 대기(서버 23) | 채점 대기(서버 23) |
-| csd_target (mean, 24 prompts) | 채점 대기(서버 23) | 채점 대기(서버 23) |
+| vqascore (mean, 24 prompts) | 0.8701 | 0.8784 |
+| csd_target (mean, 24 prompts) | 0.6319 | 0.6421 |

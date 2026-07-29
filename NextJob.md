@@ -598,7 +598,7 @@ csd_target이 조용히 0건으로 통과된 문제 발견 — 157(생성 서버
 
 ---
 
-### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🔵 1~2·3 생성 완료, 채점만 남음 (2026-07-28)
+### TASK-F · 속도 실험 (Qwen-Image-Lightning 등) 🟢 완료 (2026-07-29)
 
 `configs/models/qwen-image-lightning.yaml` 추가 완료(`bench/results.md` "TASK-F" 절 참고).
 동일 시드 파일럿(2장)으로 체크포인트 정상 적용 확인, 속도 약 2.1배 향상(97s vs 207s/img),
@@ -624,9 +624,11 @@ VRAM은 동일(15.56GB, 양자화 레벨만 다름 — Q4_K_S vs base의 Q5_K_M)
   컬럼은 아직 **"채점 대기(서버 23)"**. 서버 23에서 채점 후
   `build_taskf_report.py --score-dir-full/--score-dir-lightning`으로 재실행하면 채워짐.
 
-**다음 단계 (미실행)**: 이미지를 서버 23으로 옮겨 vqascore/csd_target 채점(TASK-A와 동일
-지표 — spec 통과율은 TASK-B2/TASK-C에서 이미 신뢰 불가로 결론남, 이 비교에도 주 지표로
-쓰지 않는다) → `build_taskf_report.py` 재실행으로 4번(quality/latency/VRAM 3열 표) 완성.
+**채점 완료 (2026-07-29, 서버 23)**: vqascore/csd_target 채점 → `build_taskf_report.py`
+재실행으로 quality/latency/VRAM 3열 표 완성. **품질 저하 없음** — vqascore 0.870→0.878,
+csd_target 0.632→0.642로 lightning이 오히려 근소하게 높다. VRAM 동일, 속도 약 3배. 상세는
+`bench/results.md`의 "TASK-F · qwen-image vs qwen-image-lightning 정식 24프롬프트 비교"
+절 참고. TASK-F 종료 — lightning으로 교체를 막을 품질상의 근거 없음.
 
 ```
 [배경]
