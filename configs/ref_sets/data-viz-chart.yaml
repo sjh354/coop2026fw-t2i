@@ -1,0 +1,75 @@
+preset: data-viz-chart
+status: validated
+count: 22
+stats:
+  mean: 0.6223
+  min: 0.427
+  std: 0.089
+outliers: []
+images:
+- path: refs/lecture24/data-viz-chart/1.png
+  sha256: ee921910597ceb8598e514d99d42e8978c9e26b5a14d30e7200fe0553ac51d88
+  mean_similarity: 0.6555
+- path: refs/lecture24/data-viz-chart/10.png
+  sha256: c4db85886b056419b6c740fe94c902bb20a0d7c092e3e263be9042ee99845eea
+  mean_similarity: 0.61
+- path: refs/lecture24/data-viz-chart/11.png
+  sha256: 3c1044214cdde774c23a94fe31679f5129f0ea3177b5448081016d64303207f7
+  mean_similarity: 0.6722
+- path: refs/lecture24/data-viz-chart/12.png
+  sha256: 327d9eba470433543066ac242ed60e630d0a96c9542841b46eb53bccddaa6b3a
+  mean_similarity: 0.6749
+- path: refs/lecture24/data-viz-chart/13.png
+  sha256: 83de844eff8272d824ace8796b9f7d6d642b8c807c1c76f75f097def9f0cf943
+  mean_similarity: 0.6218
+- path: refs/lecture24/data-viz-chart/14.png
+  sha256: bb11066bcef3be369ce0e8d24d158e16dbc81c13e4817b918a568c4aaf4aa660
+  mean_similarity: 0.6684
+- path: refs/lecture24/data-viz-chart/15.png
+  sha256: b60dcad0746c6cc962fb25371b8c82709943e226d3a0d313f94320e2b6bcc05a
+  mean_similarity: 0.6437
+- path: refs/lecture24/data-viz-chart/16.png
+  sha256: 4e13627d1b21189565212966bc5d2dfa254d6975292cd5ffe23b3e4a40d3250d
+  mean_similarity: 0.6102
+- path: refs/lecture24/data-viz-chart/17.png
+  sha256: 6999c5ecd283fa4a5d9af0b1e1e2ce28f9fa927d0a4f552cec2f3415ce9dd580
+  mean_similarity: 0.5918
+- path: refs/lecture24/data-viz-chart/18.png
+  sha256: 81473d2737e8e58141ef2f9581914f2a8c880a8685ba657b996118e96d07693b
+  mean_similarity: 0.5824
+- path: refs/lecture24/data-viz-chart/19.png
+  sha256: 4722fe6a7944791a26646ce97063a5b3dd7298f35817901af051ffae246ee149
+  mean_similarity: 0.6072
+- path: refs/lecture24/data-viz-chart/2.png
+  sha256: 91dcb2a07122e8bac3ba95e7d4eeccc106a170b310574a3c1a903041333d238f
+  mean_similarity: 0.6652
+- path: refs/lecture24/data-viz-chart/20.png
+  sha256: c3312d52cf268f471f190052466a301db745fba04fdde66680f6cabcbde71fe7
+  mean_similarity: 0.6154
+- path: refs/lecture24/data-viz-chart/21.png
+  sha256: 2cc941030043f974e5750d754ba92cb36ac84ff2e7c120fbeb958ec937649b22
+  mean_similarity: 0.5906
+- path: refs/lecture24/data-viz-chart/22.png
+  sha256: 56a278881831d8208da03f2da896659e077a0af4498d699f76c46587e75df359
+  mean_similarity: 0.5438
+- path: refs/lecture24/data-viz-chart/3.png
+  sha256: 834511119b0f9b3a78bb80dc16570220163ebee646eea9a645f69751cee93552
+  mean_similarity: 0.508
+- path: refs/lecture24/data-viz-chart/4.png
+  sha256: 25073dd4c20b013ddbe1ce51df63e012e67bf148137b78d10653235aa210d780
+  mean_similarity: 0.6362
+- path: refs/lecture24/data-viz-chart/5.png
+  sha256: 1e321a5f53c5ca7ccffd185c6b9876e24a8bde03503231658143eba1a4aaf843
+  mean_similarity: 0.6522
+- path: refs/lecture24/data-viz-chart/6.png
+  sha256: ef72a8b7351e0ff5e1fc313aedb663a55522f49c55f4490727f57a25d82dc224
+  mean_similarity: 0.6586
+- path: refs/lecture24/data-viz-chart/7.png
+  sha256: cc25af69325b4a710dbc972422e5f7c73cb3f1110f1daa68a208e54ab2250c89
+  mean_similarity: 0.6945
+- path: refs/lecture24/data-viz-chart/8.png
+  sha256: 594442f07d7e5be83783cb91d6f960d4b8dbd4341fb3f73a388b461a7419ebf3
+  mean_similarity: 0.5469
+- path: refs/lecture24/data-viz-chart/9.png
+  sha256: c46dd9dad7289a7ac9d1f74d67b9352e66223c3306febec31465861655ecc852
+  mean_similarity: 0.6412

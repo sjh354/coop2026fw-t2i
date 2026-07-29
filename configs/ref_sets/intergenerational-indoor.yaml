@@ -1,0 +1,66 @@
+preset: intergenerational-indoor
+status: validated
+count: 19
+stats:
+  mean: 0.4543
+  min: 0.2425
+  std: 0.1207
+outliers: []
+images:
+- path: refs/lecture24/intergenerational-indoor/1.png
+  sha256: 804a9c8da0af177f25c4abefb52c4533ec3e95440edbbf803922ad9119bdc820
+  mean_similarity: 0.4486
+- path: refs/lecture24/intergenerational-indoor/10.png
+  sha256: 5790fa167e7547e2d5ffd46e23bc79d8bbaaa305a28a4a4c8371520b9335469c
+  mean_similarity: 0.5304
+- path: refs/lecture24/intergenerational-indoor/11.png
+  sha256: 6457faf6ec4a4d7390ed3539d8cb182202cf7f33d5ff99a9db5bd9adb16a7e30
+  mean_similarity: 0.4866
+- path: refs/lecture24/intergenerational-indoor/12.png
+  sha256: 20fa235166a13806f915bb971caf02ecec476d4340be7470e7083178dd52e2b3
+  mean_similarity: 0.5021
+- path: refs/lecture24/intergenerational-indoor/13.png
+  sha256: 7e63264fd28e6321c561832c0353e5a94641927f79631dca61fca50bd7698723
+  mean_similarity: 0.4332
+- path: refs/lecture24/intergenerational-indoor/14.png
+  sha256: 0e84f383744916ebbddda6c263e3c359a8c9e8a9e91ae2f645670c1f42093bc5
+  mean_similarity: 0.4824
+- path: refs/lecture24/intergenerational-indoor/15.png
+  sha256: 2fa55c9da0b6afdb36f2fa5118e045c74981ad4d346d9f1d478b34f31d52851a
+  mean_similarity: 0.5066
+- path: refs/lecture24/intergenerational-indoor/16.png
+  sha256: 938b4ebbb2e3a888c77b61e5879103df34bca3d60a326196bf5da1b98448be37
+  mean_similarity: 0.3849
+- path: refs/lecture24/intergenerational-indoor/17.png
+  sha256: 617a6437f450ac874ded66c48c4d2f9aa5208f1589b5042d6e826391cd8a2498
+  mean_similarity: 0.4357
+- path: refs/lecture24/intergenerational-indoor/18.png
+  sha256: 7e9de32fe462b6a821c1532b3b6e5211873231d3918f9d92f360c9da9e628ef3
+  mean_similarity: 0.4415
+- path: refs/lecture24/intergenerational-indoor/19.png
+  sha256: a20f29721139d9b0c5ddc944f724f8ac3ae098068b6eddd691acb7ed55cf7f49
+  mean_similarity: 0.4832
+- path: refs/lecture24/intergenerational-indoor/2.png
+  sha256: 4006be0036b0aa1542430cc09182c6055a1dec721a5f6768e8e5db060223a570
+  mean_similarity: 0.4545
+- path: refs/lecture24/intergenerational-indoor/3.png
+  sha256: 833c0106dfeb9733d9f78af7ccd6bc17d73ed49ed4fec1c8a5f068453e7a3db0
+  mean_similarity: 0.4679
+- path: refs/lecture24/intergenerational-indoor/4.png
+  sha256: 5bfc3711471f88d8e930a490080c2e89070a174412b6d94ea9f10250f37406f6
+  mean_similarity: 0.4576
+- path: refs/lecture24/intergenerational-indoor/5.png
+  sha256: 432ea6488a0ca707536b07a757629a0736293b98fcfa08f806db190565f61e82
+  mean_similarity: 0.4076
+- path: refs/lecture24/intergenerational-indoor/6.png
+  sha256: 53b45388da088600823ad47d1a18532ed481dfebcce2f9964b3cb4877a7d847a
+  mean_similarity: 0.376
+- path: refs/lecture24/intergenerational-indoor/7.png
+  sha256: b632251ec8dab9a270cc2640ce68787bf840ed5c980ec4c191909b06b5f0f77f
+  mean_similarity: 0.4486
+- path: refs/lecture24/intergenerational-indoor/8.png
+  sha256: ede8a2f8ec5dea835f1f4d45bb5eb381f56a1233c296b9ce79204f819ccb0f33
+  mean_similarity: 0.4579
+- path: refs/lecture24/intergenerational-indoor/9.png
+  sha256: 735883432e6adcf8997fae3bce04d85415b13f70c6ca38317c5961a4dd1d207d
+  mean_similarity: 0.4267

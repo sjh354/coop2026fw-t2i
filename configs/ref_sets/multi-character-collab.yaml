@@ -1,0 +1,54 @@
+preset: multi-character-collab
+status: validated
+count: 15
+stats:
+  mean: 0.5685
+  min: 0.273
+  std: 0.1216
+outliers: []
+images:
+- path: refs/lecture24/multi-character-collab/1.png
+  sha256: 9de5a604c46f86e35aa6889659930482c0ecab0b8f470727aca75148a10eaaeb
+  mean_similarity: 0.5995
+- path: refs/lecture24/multi-character-collab/10.png
+  sha256: 0be8cb0e821b03ff4562bcd597cc77ffb862183971324a3bf59ba85153c3b14c
+  mean_similarity: 0.5933
+- path: refs/lecture24/multi-character-collab/11.png
+  sha256: 3c43534a071717421bab898f5b0afd4f0daeaf73e03e94effddae167ac0c6715
+  mean_similarity: 0.4502
+- path: refs/lecture24/multi-character-collab/12.png
+  sha256: 5ee6c83f2edf01fcdfb93b21ecff6519103db693edb9d5519f00d60587e99ed2
+  mean_similarity: 0.5253
+- path: refs/lecture24/multi-character-collab/13.png
+  sha256: 222f907c0c690b7f7f1d96129de4a487b22ebed27e7f2ce4831bae0328469124
+  mean_similarity: 0.5788
+- path: refs/lecture24/multi-character-collab/14.png
+  sha256: de553e67c77e8917c2b598132e7bbed3a5fdfd3b9320971d871e3227a7d305c9
+  mean_similarity: 0.5675
+- path: refs/lecture24/multi-character-collab/15.png
+  sha256: 6841e02a75b84e50fcd99eeb8dbc1285ae0315d1d981cce341b3abd5d501019b
+  mean_similarity: 0.6222
+- path: refs/lecture24/multi-character-collab/2.png
+  sha256: 24da5784cd649bfeb15014c623514e717ac618871d851754a4fbc8e6da9e1360
+  mean_similarity: 0.5695
+- path: refs/lecture24/multi-character-collab/3.png
+  sha256: 456cc09adee9524ac7d8ab051fb0027a9cceb172d8be61414dafd3e8709f67f8
+  mean_similarity: 0.607
+- path: refs/lecture24/multi-character-collab/4.png
+  sha256: 9e674e75427ef4a4ca621767a9d21cefa3df7dde5064c892fa9f87612ca1cf3f
+  mean_similarity: 0.6112
+- path: refs/lecture24/multi-character-collab/5.png
+  sha256: 4b0f09112a7f5889d0cbf5fe1ec620ad6bd06b7c3e8440fca7b6d3ad1f567a4b
+  mean_similarity: 0.5091
+- path: refs/lecture24/multi-character-collab/6.png
+  sha256: 38d4bd8c64d463177efc9c6f430fd5da65e68e17fd30d0d36bc9cfea364bf196
+  mean_similarity: 0.4269
+- path: refs/lecture24/multi-character-collab/7.png
+  sha256: b81bb10e45bf8ab479547a037622c8ee4f3a437a26903f15a26192b9ced86f9f
+  mean_similarity: 0.6378
+- path: refs/lecture24/multi-character-collab/8.png
+  sha256: abab4d8ea8586f85252ccb7903ce7676c8927d0a57fca24b886c4e1d9cfd7f91
+  mean_similarity: 0.5912
+- path: refs/lecture24/multi-character-collab/9.png
+  sha256: 53c607f523981106d49f75edb2cc96bba004945821ac1519375c4961a7cbf945
+  mean_similarity: 0.6381

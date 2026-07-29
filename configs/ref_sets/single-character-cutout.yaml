@@ -1,0 +1,57 @@
+preset: single-character-cutout
+status: validated
+count: 16
+stats:
+  mean: 0.48
+  min: 0.1592
+  std: 0.1254
+outliers: []
+images:
+- path: refs/lecture24/single-character-cutout/1.png
+  sha256: 8414a5d7c5d8dcef6ede04a6caf4cf8c2491f6d6587b9ebdfc5fe3af5fa74429
+  mean_similarity: 0.3235
+- path: refs/lecture24/single-character-cutout/10.png
+  sha256: a8b2e84026f9008ca5e42641a5c975c24549ba0f0f63ee022bed5c5815cd1b85
+  mean_similarity: 0.491
+- path: refs/lecture24/single-character-cutout/11.png
+  sha256: 2bdc6629fc39d9a410f15b3f55266379af47ab6b7cd6bad18158b4e6e82e76b7
+  mean_similarity: 0.5662
+- path: refs/lecture24/single-character-cutout/12.png
+  sha256: 8eee5127f2696a6e37ce1e4ad008f0766d23078be8443ac2a8774614bf5c6299
+  mean_similarity: 0.5009
+- path: refs/lecture24/single-character-cutout/13.png
+  sha256: 3e0616e2d57fadaac54420192cac8ede53d91a74f6a69a329e676b21ae07e401
+  mean_similarity: 0.4818
+- path: refs/lecture24/single-character-cutout/14.png
+  sha256: 734fac4baf52b6a29e94e520d9ccd16a24657367ccfa8a793d7046512ff0d165
+  mean_similarity: 0.5305
+- path: refs/lecture24/single-character-cutout/15.png
+  sha256: 83f30ee7ee83e317fb0ee173644210eaccde443d3bfc19740cd46d5ce027d2e3
+  mean_similarity: 0.5223
+- path: refs/lecture24/single-character-cutout/16.png
+  sha256: cb9847f5830d1d5ede547260ca6890f4e47f661c97d83b5aae621ed3db6eead7
+  mean_similarity: 0.4704
+- path: refs/lecture24/single-character-cutout/2.png
+  sha256: e38e7ec782abb1620ef4b85e3fd0cf49e075d8c86c903d10399e984f1ba01a10
+  mean_similarity: 0.5105
+- path: refs/lecture24/single-character-cutout/3.png
+  sha256: fe5d8a4c65fee94ed2625ed9ee8925d082b5aeaba68ae76ddb7cd38a89597aeb
+  mean_similarity: 0.5336
+- path: refs/lecture24/single-character-cutout/4.png
+  sha256: 6d854ec4a017016314178852f94c01b78e17fe609a73d995a53ede5476af75aa
+  mean_similarity: 0.4405
+- path: refs/lecture24/single-character-cutout/5.png
+  sha256: 048db4dd5b060c643fd6e4965cd34019ee9d97ee6057c805f370130367bc6d34
+  mean_similarity: 0.4281
+- path: refs/lecture24/single-character-cutout/6.png
+  sha256: e1ca631817670c00fde85417ba742749a47379eaad3cd18df47e8b5e5a8bdca3
+  mean_similarity: 0.368
+- path: refs/lecture24/single-character-cutout/7.png
+  sha256: 21d7467af970404830125df62abadc374b1a5471234f6d55d6a58c079ead2009
+  mean_similarity: 0.4726
+- path: refs/lecture24/single-character-cutout/8.png
+  sha256: ce70858a5cf103cafdad213bf243309efbd9e40554bd5a5d5f2094d8ff269298
+  mean_similarity: 0.5212
+- path: refs/lecture24/single-character-cutout/9.png
+  sha256: 8b4084c1c8f190bd0a288d635b3c048662ecb0f62e95dea01f66f654bbb0a868
+  mean_similarity: 0.5193

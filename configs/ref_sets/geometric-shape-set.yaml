@@ -1,0 +1,63 @@
+preset: geometric-shape-set
+status: validated
+count: 18
+stats:
+  mean: 0.6807
+  min: 0.3316
+  std: 0.1448
+outliers: []
+images:
+- path: refs/lecture24/geometric-shape-set/1.png
+  sha256: 488c9320e4ae6c5474cbeb499629d91e22541b8ec7a35150623ed46db69428de
+  mean_similarity: 0.6548
+- path: refs/lecture24/geometric-shape-set/10.png
+  sha256: ccd1f26a34187dc9638d51c9f3a9857751baea28638850f86c544a967fd87f7e
+  mean_similarity: 0.6978
+- path: refs/lecture24/geometric-shape-set/11.png
+  sha256: 64b6a8d2806520481f50bc6f58ee41edf883d26dc1db4edb62a870339060e85a
+  mean_similarity: 0.6494
+- path: refs/lecture24/geometric-shape-set/12.png
+  sha256: afc8574105a403c6d36c84c3e52bec2243b49c231c5f5d814fdfebdbcb635791
+  mean_similarity: 0.7579
+- path: refs/lecture24/geometric-shape-set/13.png
+  sha256: 6243ee551d4b6d130ef5acd2bfd3d9d2d88ca553789dae18634207d1bc844f8a
+  mean_similarity: 0.6355
+- path: refs/lecture24/geometric-shape-set/14.png
+  sha256: ae62e7f93ccc20f3d18577bcdbf36d922b61a0db36981d83a68f5a14a358639e
+  mean_similarity: 0.7391
+- path: refs/lecture24/geometric-shape-set/15.png
+  sha256: c69c65d82bb4d3c37892da962376768a1b5acc32dc9cb9007847417e79c20430
+  mean_similarity: 0.6113
+- path: refs/lecture24/geometric-shape-set/16.png
+  sha256: 3a34ddbd293c6c7ca4f1ffffccf9f48ad871a05fce15c34b8b26c232ee9e095b
+  mean_similarity: 0.7397
+- path: refs/lecture24/geometric-shape-set/17.png
+  sha256: 8c036c69178f32d19f5cbadfc6606eceb16203d686d3db17e439d299cafeec1c
+  mean_similarity: 0.7483
+- path: refs/lecture24/geometric-shape-set/18.png
+  sha256: 5a5cf0b6014aadac8a736290c84ef49b24a33846de9c5efa9159c34899f9b63b
+  mean_similarity: 0.7478
+- path: refs/lecture24/geometric-shape-set/2.png
+  sha256: 6281877e3dff922262495b0f85d58f61486a7f909f7ecd2b38ce5c9f02f56d46
+  mean_similarity: 0.7299
+- path: refs/lecture24/geometric-shape-set/3.png
+  sha256: cdf5539a4bfea282180ed2168c857058b0f862af1cce00ea38b156d1f4108384
+  mean_similarity: 0.7249
+- path: refs/lecture24/geometric-shape-set/4.png
+  sha256: 714c91f826502aba9f74aad1eb1929454a51c7f5500a25ea43e3756104766acc
+  mean_similarity: 0.6988
+- path: refs/lecture24/geometric-shape-set/5.png
+  sha256: 42b033e6c65ac34b7f02a4fc7da744ec7944d870819adfeb08c692dd824132de
+  mean_similarity: 0.5073
+- path: refs/lecture24/geometric-shape-set/6.png
+  sha256: ec6450d09ae22761c15a6771401b851537bc869b360096770b5086e57b515d74
+  mean_similarity: 0.4295
+- path: refs/lecture24/geometric-shape-set/7.png
+  sha256: 32935896821bfd9d6384618048054b0a989ca476d020ab34af59427a638da819
+  mean_similarity: 0.7365
+- path: refs/lecture24/geometric-shape-set/8.png
+  sha256: 949ef328977f6d9eadf93e9674a5ff26b4ad4f2ddfcddbe35ed6f12d28b2fc26
+  mean_similarity: 0.7139
+- path: refs/lecture24/geometric-shape-set/9.png
+  sha256: 40f7a0d2cd3bedbc2905a16caa178cdd1da24c0dbe667e037c4e8cd54b011bdd
+  mean_similarity: 0.7302

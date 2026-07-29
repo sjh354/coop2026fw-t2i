@@ -31,3 +31,51 @@ outlier 없음.
 status: `validated` · count: 10 · mean=0.592 min=0.3723 std=0.1033
 
 outlier 없음.
+
+## data-viz-chart
+
+status: `validated` · count: 22 · mean=0.6223 min=0.427 std=0.089
+
+outlier 없음.
+
+## geometric-shape-set
+
+status: `validated` · count: 18 · mean=0.6807 min=0.3316 std=0.1448
+
+outlier 없음.
+
+## historical-figure-portrait
+
+status: `validated` · count: 20 · mean=0.3821 min=0.1028 std=0.1353
+
+outlier 없음.
+
+## intergenerational-indoor
+
+status: `validated` · count: 19 · mean=0.4543 min=0.2425 std=0.1207
+
+outlier 없음.
+
+## labeled-science-diagram
+
+status: `validated` · count: 24 · mean=0.5065 min=0.2116 std=0.153
+
+outlier 없음.
+
+## multi-character-collab
+
+status: `validated` · count: 15 · mean=0.5685 min=0.273 std=0.1216
+
+outlier 없음.
+
+## single-character-cutout
+
+status: `validated` · count: 16 · mean=0.48 min=0.1592 std=0.1254
+
+outlier 없음.
+
+## structured-worksheet
+
+status: `validated` · count: 24 · mean=0.5317 min=0.2873 std=0.1118
+
+outlier 없음.

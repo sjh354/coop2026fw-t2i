@@ -1,0 +1,69 @@
+preset: historical-figure-portrait
+status: validated
+count: 20
+stats:
+  mean: 0.3821
+  min: 0.1028
+  std: 0.1353
+outliers: []
+images:
+- path: refs/lecture24/historical-figure-portrait/1.png
+  sha256: 9c2042aa92f65af30706bcffdea7f446da29fe30ff8daf49628704f43939c380
+  mean_similarity: 0.3466
+- path: refs/lecture24/historical-figure-portrait/10.png
+  sha256: e7fc115e691ab74249b3d58e42ceb96e18366684e65bbfc9c06938952783e7b1
+  mean_similarity: 0.3536
+- path: refs/lecture24/historical-figure-portrait/11.png
+  sha256: c92b37c2c6820d20810fb8b9eb3b0d7b3245a55101b096880e431898c5c7e383
+  mean_similarity: 0.3494
+- path: refs/lecture24/historical-figure-portrait/12.png
+  sha256: 23ebd0ec89f3ffe50070be3c732e1a037f259eea936241ca08f65dc914d0f37c
+  mean_similarity: 0.4468
+- path: refs/lecture24/historical-figure-portrait/13.png
+  sha256: 7a1d9410787cb07d1187aaa5d8bdb969ab0aa8536d13afd35eb3e470fe775409
+  mean_similarity: 0.3939
+- path: refs/lecture24/historical-figure-portrait/14.png
+  sha256: edb7cf536f24ee7f443643217543e632917cf19f8816c544e3188dc24d4a47a7
+  mean_similarity: 0.3593
+- path: refs/lecture24/historical-figure-portrait/15.png
+  sha256: 80f95de6f6a57f1ac349c92d058acccd29e9d6440bb89749220fdbb34032ba1e
+  mean_similarity: 0.4413
+- path: refs/lecture24/historical-figure-portrait/16.png
+  sha256: 3a0a63e15b616f46e8d1008d79591c368f2e8c104fb635789905a3319a35bb52
+  mean_similarity: 0.3695
+- path: refs/lecture24/historical-figure-portrait/17.png
+  sha256: a81fb20579346fd7a6194dc6b99c32a543a79f6f0543a90015726ee9ccbd9081
+  mean_similarity: 0.2885
+- path: refs/lecture24/historical-figure-portrait/18.png
+  sha256: 145f2ba7368654c89f612bd542513f4c92d4e634f64480e572d0ee1c7d9687d0
+  mean_similarity: 0.4073
+- path: refs/lecture24/historical-figure-portrait/19.png
+  sha256: 5c590df1f71af6380c3d763b6bde929e45b98cbf5b558afba9c0959b243fa7bf
+  mean_similarity: 0.2677
+- path: refs/lecture24/historical-figure-portrait/2.png
+  sha256: 05a1ced9d60fade7d4db176c2a2d7399dd5b7207e38f9dbeaef2a6e784b7308a
+  mean_similarity: 0.3727
+- path: refs/lecture24/historical-figure-portrait/20.png
+  sha256: 4d7417e491f4889949a0638dbea76b9f4e5fd222141d7b733010c0d358501e76
+  mean_similarity: 0.4225
+- path: refs/lecture24/historical-figure-portrait/3.png
+  sha256: 29dd95cb50f3319fe37c0de30406e01456bfe5a56c7bf8fd64bb94cb900ced3b
+  mean_similarity: 0.3957
+- path: refs/lecture24/historical-figure-portrait/4.png
+  sha256: 5ce7741f346eaf749403f53dd41883ebfc5d3addbcfdf8b2d7914f6f9ef078b3
+  mean_similarity: 0.4153
+- path: refs/lecture24/historical-figure-portrait/5.png
+  sha256: 109b57a3947c3c669003c8dfa433ec6506e26dd1e29caa40eb7e6a9ccd35856e
+  mean_similarity: 0.3822
+- path: refs/lecture24/historical-figure-portrait/6.png
+  sha256: 6f47997d45bc47fb6021e9023f6593d6d39dbfbe25b9083fbc28820eba437f09
+  mean_similarity: 0.4455
+- path: refs/lecture24/historical-figure-portrait/7.png
+  sha256: f1acd608a800fe57b560f563a05d5b73b5dc2db3068f53dbb0024bf6c24dbb19
+  mean_similarity: 0.408
+- path: refs/lecture24/historical-figure-portrait/8.png
+  sha256: 76b0dc2cc27d0e238a6eab900fbd1e0ac78fc317868e2a3e741d953b2f1608ee
+  mean_similarity: 0.4323
+- path: refs/lecture24/historical-figure-portrait/9.png
+  sha256: 4adb51ac6a6cb4ce3f1aefcc696bd0015d303cf407f71ffad227a8e0f1ad6679
+  mean_similarity: 0.3446
