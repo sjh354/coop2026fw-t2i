@@ -1,0 +1,5 @@
+metric,n_points,spearman_rho,spearman_p
+vqascore,36,0.4139,0.012086
+custom_cv,36,-0.2606,0.124797
+csd_target,36,0.3367,0.044645
+judge_pass_rate,36,-0.2293,0.178539

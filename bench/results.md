@@ -422,6 +422,41 @@ delta(리라이팅 − passthrough)가 두 track에서 다르게 나타나는지
   내용(어휘)도 같이 바뀌므로 길이만의 효과는 분리 안 됨. 길이 자체를 보려면 TASK-I 파트 2(단일 리라이팅
   계열을 단어 예산별로 자른 사다리 실험, 신규 생성 필요)가 필요 — `NextJob.md` TASK-I 참고.
 
+## TASK-I · 순수 길이 효과 사다리 (파트 2, 2026-07-29, 서버 157/23)
+
+파트 1이 애매한 신호(p=0.078)만 줘서, 하나의 리라이팅 계열(promptenhancer_cn)을 문장 단위로
+잘라 short(=passthrough 원본, v250)/medium(=신규 생성 v263)/long(=promptenhancer_cn 전체, v262)
+3단으로 만들어 순수 길이 효과만 다시 봤다. structural(counting/attribute-binding) 4카테고리 ×
+3소스 = 12개만 대상. `scripts/build_length_ladder.py`(medium 생성, 문장 단위로 앞을 살리고 뒤를
+자름, 원본↔전체리라이팅 중간 단어수 목표) → `scripts/sweeps/rewrite_generate_length_ladder.sh`
+(157, flux2-klein-4b-nf4, model/steps/guidance/seed는 v250/v262와 동일) → v263(12장, vram 7.8GB,
+11.05s/img) → `scripts/rewrite_score_ladder.sh`(23, 4지표) → `scripts/analyze_length_ladder.py`.
+
+| 지표 | short(v250) | medium(v263) | long(v262) | Spearman rho (36점) | Spearman p |
+|---|---|---|---|---|---|
+| vqascore | 0.784 | 0.845 | 0.878 | **+0.414** | **0.012** |
+| custom_cv | 0.755 | 0.769 | 0.763 | -0.261 | 0.125 |
+| csd_target | 0.647 | 0.616 | 0.649 | **+0.337** | **0.045** |
+| judge_pass_rate | 0.632 | 0.750 | 0.688 | -0.229 | 0.179 |
+
+tier쌍 Wilcoxon(n=12, 상세는 `reports/length-effect-taski/length_ladder_pairwise.csv`): vqascore는
+medium→long만 유의(p=0.0068), short→medium/short→long은 유의하지 않음(p=0.33/0.075). csd_target도
+medium→long만 유의(p=0.0088)하고 short→medium은 오히려 소폭 하락(0.647→0.616, 유의하지 않음).
+
+- **가설과 반대 방향**: 스터디 노트(§2-2)의 "VQAScore는 긴 프롬프트에서 한계"라는 우려와 달리, 이
+  구조화된(counting/attribute-binding) 카테고리 사다리에서는 **길이가 늘수록 VQAScore/csd_target이
+  오히려 오르는 쪽**으로 나타났다(약하지만 유의, rho 0.34~0.41).
+- **단, "길이" 자체의 효과라고 단정할 수 없다** — 상승이 매끄러운 단조 증가가 아니라 medium→long
+  구간에서만 유의하게 뛴다(short→medium은 유의하지 않음). TASK-I 설계 문서에 이미 명시한 한계 그대로,
+  이 사다리는 문장을 뒤에서부터 잘라 만든 것이라 medium은 long 대비 뒷부분 제약(색상 순서, 세부 개수
+  등)이 빠져 있다 — 즉 "단어 수"가 아니라 "얼마나 많은 제약 디테일이 살아남았는가"가 실제 원인일
+  가능성이 높다. 순수 토큰 길이 효과와 디테일 보존 효과는 이 파이프라인으로는 분리되지 않는다.
+- custom_cv/judge_pass_rate는 유의한 추세 없음(judge는 이미 신뢰도 낮음 확정, custom_cv는 n=12로
+  검정력 부족).
+- **결론**: "프롬프트가 길수록 counting/attribute-binding에서 나빠진다"는 가설은 이 실험으로
+  기각된다(오히려 반대 방향). PPT에는 이 반전과 "길이가 아니라 디테일 보존이 원인일 수 있다"는
+  한계를 같이 제시할 것 — 어느 한쪽만 말하면 근거 없는 주장이 된다.
+
 ## TASK-G · ideogram-4 리라이팅/캡션포맷 4조건 생성 + 채점 (2026-07-28~29, 서버 157/23)
 
 `scripts/sweeps/rewrite_generate_ideogram4.sh`로 passthrough(v257)/wan_style(v258)/

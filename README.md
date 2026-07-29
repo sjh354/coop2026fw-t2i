@@ -124,10 +124,12 @@
 - [x] **lecture24 baseline 확정**: 실제 교과서 이미지 기반 완성 프롬프트 24개(`vlm-prompts.json`, 8카테고리×3 VLM 소스)로 3모델(pixart-sigma/flux2-klein-4b-nf4/qwen-image) 생성+채점 완료(v243~v245). **2026-07-24부터 이 테스트를 프로젝트 Baseline으로 고정** — 앞으로 프롬프트/모델/채점 방식 변경은 이 baseline 대비 개선 여부로 판단한다. 상세·리포트 링크는 `bench/results.md`의 "Baseline: lecture24" 절. csd_target은 카테고리당 참조 1장뿐인 provisional 신호라 정식 golden set(카테고리당 15~25장) 보강이 다음 항목.
 - [ ] **CSD golden set 보강(lecture24 8카테고리)**: `score_csd_target.py`가 지금 카테고리당 참조 이미지 1장으로만 비교 중 — `bench/style-presets-v2.md`의 "5. CSD ref_set 수집 기준"과 동일한 방식(피사체 다양·스타일 균일, 15~25장/카테고리)으로 8개 카테고리 각각 golden set을 모아 `scripts/validate_ref_set.py`로 검증 후 `src/scoring.py --components csd`(정식 ref_set 경로)로 전환.
 - [ ] **3단계 병행 개선 루프 진입**: 채점 결과가 가리키는 병목에 따라 프롬프트/모델/채점 중 우선순위를 정해 반복 개선. (파인튜닝·증류는 이 루프에서 결과가 계속 부족할 때만 후순위로 검토.) 위 1차 비교 결과대로면 pixart-sigma의 counting 약점이 우선 조사 대상 — judge 오탐인지 실제 모델 한계인지 이미지 직접 확인 필요.
-- [ ] **프롬프트 리라이팅 효과의 counting/attribute-binding 카테고리 편중 검증(TASK-I)**: 파트 1(재사용
-  분석, 신규 생성 없음) 완료 — promptenhancer_cn의 VQAScore 개선이 structural(counting/attribute-binding)
-  카테고리에 유의에 가깝게 몰림(p=0.078, `bench/results.md` TASK-I 절). n=12/그룹이라 확정 아님 — 파트 2
-  (단어 예산 사다리로 순수 길이 효과 분리, 신규 생성 필요) 진행 여부는 사용자 확인 대기 중.
+- [x] **프롬프트 리라이팅 효과의 counting/attribute-binding 카테고리 편중 검증(TASK-I)**: 파트 1(재사용
+  분석)에서 promptenhancer_cn의 VQAScore 개선이 structural(counting/attribute-binding) 카테고리에
+  유의에 가깝게 몰림(p=0.078)을 보고, 파트 2(short/medium/long 길이 사다리, 신규 생성 v263)로 순수
+  길이 효과를 분리 검증. **결과는 가설과 반대**: 길이가 늘수록 VQAScore/csd_target이 오히려 유의하게
+  오름(rho +0.41/+0.34, `bench/results.md` TASK-I 절) — 단 medium→long 구간에서만 유의해 "길이"보다
+  "제약 디테일 보존"이 실제 원인일 가능성. "길수록 counting이 나빠진다"는 가설은 기각.
 
 ## 실행
 

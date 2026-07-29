@@ -856,14 +856,22 @@ anchor_acc를 grounding과 같은 모델로 재면 순환이다. 완화책 둘:
 
 ---
 
-### TASK-I · 프롬프트 길이 효과 분석 (counting/attribute binding 축) 🟡 파트 1 완료 (2026-07-29)
+### TASK-I · 프롬프트 길이 효과 분석 (counting/attribute binding 축) 🟢 완료 (2026-07-29)
 
 **파트 1 결과**: `scripts/analyze_rewrite_by_category.py` 신규(재사용 분석, 생성 없음). 상세 수치는
 `bench/results.md` TASK-I 절 참고 — 요약: promptenhancer_cn의 VQAScore 개선이 structural(counting/
 attribute-binding) 카테고리에 유의에 가깝게 몰림(Mann-Whitney p=0.078, bootstrap CI [+0.005, +0.204]가
 0을 근소 초과). wan_style_cn/judge_pass_rate도 같은 방향이나 judge 경로는 참고용. custom_cv/csd_target은
-track 차이 없음. **다음 단계**: 파트 1이 애매한 신호(p=0.078, 확정 아님)만 줬으므로, 사용자 확인 후
-파트 2(단어 예산 사다리, 신규 생성) 진행 여부 결정 — 곧바로 파트 2 생성에 들어가지 않는다.
+track 차이 없음.
+
+**파트 2 완료 (2026-07-29, 서버 157/23)**: short(v250)/medium(신규 v263)/long(v262) 3단 길이 사다리,
+structural 12개 항목. 상세는 `bench/results.md` TASK-I "순수 길이 효과 사다리" 절. **결론이 파트 1의
+가설과 반대**로 나왔다 — 길이가 늘수록 VQAScore/csd_target이 유의하게 오르는 방향(Spearman rho
++0.41/+0.34, p=0.012/0.045). 단 medium→long 구간에서만 유의해서 매끄러운 단조 증가가 아니고, "단어
+수"가 아니라 "뒤쪽 제약 디테일이 얼마나 남았는가"가 실제 원인일 가능성이 커서 순수 길이 효과로
+단정할 수 없다(설계 문서에 이미 명시한 한계 그대로). custom_cv/judge_pass_rate는 유의한 추세 없음.
+**TASK-I 종료** — "길수록 counting/attribute-binding이 나빠진다"는 가설은 기각, PPT에는 반전+한계를
+함께 제시.
 
 ```
 [배경]

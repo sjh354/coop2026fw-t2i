@@ -1,0 +1,13 @@
+metric,tier_a,tier_b,n,mean_a,mean_b,wilcoxon_p
+vqascore,short,medium,12,0.7843,0.8453,0.32959
+vqascore,medium,long,12,0.8453,0.878,0.006836
+vqascore,short,long,12,0.7843,0.878,0.074707
+custom_cv,short,medium,12,0.7547,0.7694,0.049316
+custom_cv,medium,long,12,0.7694,0.763,0.504883
+custom_cv,short,long,12,0.7547,0.763,0.607422
+csd_target,short,medium,12,0.6471,0.6156,0.663086
+csd_target,medium,long,12,0.6156,0.6492,0.008789
+csd_target,short,long,12,0.6471,0.6492,0.608398
+judge_pass_rate,short,medium,12,0.6319,0.75,0.3125
+judge_pass_rate,medium,long,12,0.75,0.6875,0.5
+judge_pass_rate,short,long,12,0.6319,0.6875,0.6875
