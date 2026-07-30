@@ -1,0 +1,25 @@
+image,type,source,csd_golden
+v256_00_structured_worksheet_template_claude.png,Structured Worksheet Template,claude,0.4834
+v256_01_structured_worksheet_template_chatgpt.png,Structured Worksheet Template,chatgpt,0.624
+v256_02_structured_worksheet_template_qwen.png,Structured Worksheet Template,qwen,0.4834
+v256_03_data_visualization_chart_claude.png,Data Visualization Chart,claude,0.3968
+v256_04_data_visualization_chart_chatgpt.png,Data Visualization Chart,chatgpt,0.5872
+v256_05_data_visualization_chart_qwen.png,Data Visualization Chart,qwen,0.6257
+v256_06_historical_figure_portrait_claude.png,Historical Figure Portrait,claude,0.4631
+v256_07_historical_figure_portrait_chatgpt.png,Historical Figure Portrait,chatgpt,0.4242
+v256_08_historical_figure_portrait_qwen.png,Historical Figure Portrait,qwen,0.4933
+v256_09_multi_character_classroom_collaboration_claude.png,Multi-Character Classroom Collaboration,claude,0.3423
+v256_10_multi_character_classroom_collaboration_chatgpt.png,Multi-Character Classroom Collaboration,chatgpt,0.5995
+v256_11_multi_character_classroom_collaboration_qwen.png,Multi-Character Classroom Collaboration,qwen,0.5413
+v256_12_intergenerational_indoor_scene_claude.png,Intergenerational Indoor Scene,claude,0.3514
+v256_13_intergenerational_indoor_scene_chatgpt.png,Intergenerational Indoor Scene,chatgpt,0.5017
+v256_14_intergenerational_indoor_scene_qwen.png,Intergenerational Indoor Scene,qwen,0.4914
+v256_15_single_character_cutout_claude.png,Single-Character Cutout,claude,0.4132
+v256_16_single_character_cutout_chatgpt.png,Single-Character Cutout,chatgpt,0.4809
+v256_17_single_character_cutout_qwen.png,Single-Character Cutout,qwen,0.5304
+v256_18_labeled_science_diagram_claude.png,Labeled Science Diagram,claude,0.4384
+v256_19_labeled_science_diagram_chatgpt.png,Labeled Science Diagram,chatgpt,0.5478
+v256_20_labeled_science_diagram_qwen.png,Labeled Science Diagram,qwen,0.5651
+v256_21_geometric_shape_set_claude.png,Geometric Shape Set,claude,0.5535
+v256_22_geometric_shape_set_chatgpt.png,Geometric Shape Set,chatgpt,0.6461
+v256_23_geometric_shape_set_qwen.png,Geometric Shape Set,qwen,0.6344

@@ -498,3 +498,32 @@ VQAScore/custom_cv/csd_target/VLM-judge(InternVL3-8B, lecture24 4축) 채점 완
 **다음 단계**: 리포트를 열어 텍스트/라벨이 필요한 카테고리의 ideogram_guide 열을 육안 판정 —
 공식 스키마 캡션이 실제로 글자를 더 잘 그리는지가 TASK-G의 핵심 질문이었고, 자동 지표만으로는
 결론이 나지 않음(오히려 스타일 유사도·judge 판정은 guide가 불리하게 나옴).
+
+## lecture24 CSD golden set 보강 — csd_target → csd_golden 전환
+
+README.md 체크리스트에 미해결로 남아있던 "CSD golden set 보강(lecture24 8카테고리)"을 완료했다.
+`refs/lecture24/<카테고리>/`에 이미 모여있던 후보 이미지(카테고리당 15~24장, 총 158장, git에는
+`.gitignore`로 인해 한 번도 커밋되지 않은 상태였음)를 `scripts/validate_ref_set.py`로 검증(8개
+전부 `status=validated`, outlier 없음, 매니페스트 `configs/ref_sets/*.yaml`)한 뒤, 다중참조
+평균 유사도로 채점하는 `scripts/score_csd_golden.py`를 새로 작성해 기존 `csd_target`(카테고리당
+참조 1장, provisional) 채점이 있던 18개 run·420장 전체를 재채점했다.
+
+**결과 요약** (전체 리포트: `reports/csd-golden-set-lecture24/index.html`):
+- 상관관계는 강함(Pearson r=0.83, Spearman ρ=0.78) — golden set 전환 후에도 이미지 간 상대
+  순위는 대체로 유지된다.
+- 절대값은 전반적으로 하락: 420장 중 334장(80%)에서 csd_golden < csd_target, 평균 delta -0.107.
+  참조 1장과 우연히 잘 맞던 값이 다수 평균 대비 낮아지는 방향으로 해석된다(추론, 미검증).
+- **카테고리별로 방향·크기가 다르다** — Single-Character Cutout(-0.240)처럼 크게 떨어지는
+  카테고리가 있는 반면 Historical Figure Portrait(+0.046)는 오히려 오른다. 원인은 이번 탐색에서
+  확정하지 못한 열린 질문(golden set 내부 self-similarity만으로는 설명 안 됨).
+- run(모델·조건) 간 상대적 순위는 안정적 — TASK-F(qwen-image vs lightning), ideogram-4 스키마
+  비교(TASK-G) 등 기존 결론이 뒤집힌 사례 없음.
+
+**적용 범위**: run 간 상대 비교(TASK-F, TASK-G 등)는 csd_target 결론을 재검토할 필요 없음.
+다만 **카테고리를 그룹으로 묶어 절대값을 해석하는 분석(TASK-I의 counting/attribute-binding
+그룹 분류 등)은 csd_golden 기준으로 재검토가 필요**하다 — 카테고리별 delta 방향이 균일하지 않기
+때문이다.
+
+**다음 단계(사용자 확인 필요)**: (a) csd_golden을 정식 채점 경로로 승격하고 기존 문서의
+csd_target 언급을 갱신할지, (b) 카테고리별 delta 방향이 갈리는 원인을 추가 조사할지, (c) 보류한
+TASK-J(스타일 프리셋 LoRA 전환 임계값)로 복귀할지.
