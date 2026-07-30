@@ -230,6 +230,29 @@ prompt_source(claude/chatgpt/qwen)별 Cohen's κ 계산.
 주 근거로 계속 쓸지, VQAScore/CSD 등 다른 지표로 무게중심을 옮길지 프로젝트 차원의 결정
 필요(`NextJob.md` TASK-C/TASK-E 섹션 참고, 아직 미결정).
 
+## TASK-C · InternVL3-8B STAGE 3 규모 재검증 (2026-07-30, 서버 23, 125건/588건)
+
+파일럿(v243, 29건)에서 InternVL3-8B만 유일하게 κ=0.61로 0.6 기준을 넘겼던 것이 표본 크기
+문제인지 확인하기 위해, Gemma-3와 동일한 STAGE 3 규모(v246/v247/v249, worklist 125건 +
+전체 spec item 588건)로 재실행. `scripts/judge_spec.py`(기본 judge 모델 InternVL3-8B-hf) +
+`scripts/judge_agreement.py`.
+
+| 비교 | n | 일치율 | 전체 κ | claude κ | chatgpt κ | qwen κ |
+|---|---|---|---|---|---|---|
+| 사람 vs InternVL3-8B | 125 | 0.74 | **0.33** | 0.50 | 0.44 | 0.11 |
+| Qwen2.5-VL-7B vs InternVL3-8B | 588 | 0.88 | **0.51** | 0.53 | 0.46 | 0.53 |
+| Gemma-3-12B-4bit vs InternVL3-8B | 588 | 0.88 | **0.41** | 0.39 | 0.34 | 0.48 |
+
+- **파일럿의 "InternVL3만 신뢰 가능"이라는 결론은 표본 크기(n=29) 문제였음이 확정** — STAGE 3
+  규모(n=125)에서는 InternVL3도 κ=0.33으로 기준(0.6) 미달. 세 judge(Qwen 0.37 / Gemma-3 0.19 /
+  InternVL3 0.33) 전부 이 규모에서 신뢰 불가로 결론 확정.
+- **자기 계열 선호 가설, 세 번째 judge에서도 지지되지 않음** — 오히려 qwen 소스에서 InternVL3가
+  사람 라벨과 가장 안 맞음(κ=0.11, 세 소스 중 최저).
+- 결과: `bench/scores/stage3_auto_internvl3_v2.csv`,
+  `bench/scores/stage3_disagreement_manual_vs_internvl3_v2.csv`(불일치 33건),
+  `bench/scores/stage3_disagreement_qwen_vs_internvl3_v2.csv`·
+  `stage3_disagreement_gemma3_vs_internvl3_v2.csv`(각 불일치 73건).
+
 ## TASK-E · 리라이팅 3조건 실제 생성 (2026-07-27, 서버 157, flux2-klein-4b-nf4)
 
 `scripts/sweeps/rewrite_generate_flux2klein.sh`로 리라이팅 3백엔드(passthrough/wan_style/
@@ -321,6 +344,8 @@ transformer 위에 얹는 공식 경로는 호환성 문제가 보고돼 있어,
 | latency p50 / p90 | 152.15s / 153.62s | 50.44s / 51.27s |
 | vqascore (mean, 24) | 0.8701 | **0.8784** |
 | csd_target (mean, 24) | 0.6319 | **0.6421** |
+| custom_cv (mean, 24) | 0.7692 | 0.7625 |
+| judge_pass_rate (InternVL3-8B, 96문항=24×4축, 2026-07-30 추가) | 74/96 | **77/96** |
 
 - **품질 저하 없음** — vqascore·csd_target 둘 다 lightning이 오히려 근소하게 높다(둘 다
   n=24, 시드 1개라 유의차 검정은 안 했지만 최소한 "distillation으로 품질이 깎였다"는 우려는
