@@ -100,48 +100,36 @@ One env per model or model family, matching the `env:` field in `configs/models/
 
 First PixArt run downloads ~12GB (T5-XXL text encoder) — point `HF_HOME` at a large partition before running.
 
-## GPU servers & keeping everything in sync
+## GPU server & keeping everything in sync
 
-Two remote GPU servers are available for running experiments (each a single RTX 3090, 24GB VRAM),
-**each with a fixed, separate role** (2026-07-19 split, after both disks filled up from mixing
-generation + scoring model caches on the same 97GB disk):
+`root@172.10.5.157` (기존 이미지 생성 전용 서버, RTX 3090)는 2026-07-31 반납되었다. 반납 전
+산출물(`image-prompts/*/images/` — gitignored라 git으로는 안 넘어가는 부분 포함),
+`logs/`의 gitignored 런 로그, conda env(`t2i`, `t2i-ideogram`, `t2i-qwen`)의 `pip freeze`
+스냅샷(`envs/*.txt`)을 모두 `ubuntu@172.10.5.23`으로 백업/병합 완료. HF 캐시(모델 가중치, 58GB)는
+재다운로드 가능하므로 백업하지 않고 폐기했다.
 
-- `root@172.10.5.157` — repo at `/root/t2i` — **이미지 생성(T2I 추론) 전용.**
-  env는 `t2i` 하나만 유지 — 지금 확정된 3개 후보(lumina2, pixart-sigma, flux2-klein-4b-nf4)가
-  전부 이 env를 씀. `t2i-score`/`t2i-judge`/`t2i-qwen`/`t2i-ideogram` 같은 채점·비후보 모델 env는
-  여기 만들지 않는다 — 디스크(97GB)가 금방 찬다.
-- `ubuntu@172.10.5.23` — repo at `/home/ubuntu/t2i` — **채점(scoring) + 프롬프트 리라이팅(rewrite) 전용.**
-  env는 `t2i-score`(VQAScore/CSD/custom_cv, `src/scoring.py`), `t2i-judge2`(로컬 InternVL3-8B
-  VLM-judge, 2026-07-28부터 기본, `scripts/judge.py`), `t2i-judge`(Qwen2.5-VL-7B-Instruct,
-  교차검증용 보조 judge), `t2i-rewrite`(로컬 LLM 기반 프롬프트 리라이터 backend,
-  `scripts/rewrite.py` — 2026-07-27 TASK-E 추가) 이렇게 유지. T2I 생성 모델 env(`t2i` 등)나
-  그 가중치 캐시를 여기 두지 않는다.
-  **디스크 여유가 30GB 이상 필요한 큰 모델(예: PromptEnhancer-7B, 대체 judge 모델)을 새로
-  받기 전에는 반드시 `df -h /`로 먼저 확인** — 채점/리라이팅 env가 여러 개 쌓이면 97GB가
-  금방 찬다. 안 쓰는 env는 지우기 전에 `pip freeze > envs/<name>.txt`로 먼저 백업하고
-  커밋한 뒤 지울 것 (재현 가능하게).
+이제 **`ubuntu@172.10.5.23` (repo at `/home/ubuntu/t2i`, RTX 3090) 하나가 생성(T2I 추론) +
+채점(scoring) + 프롬프트 리라이팅(rewrite)을 전부 담당**한다. 기존 채점/리라이팅 env
+(`t2i-score`, `t2i-judge2`, `t2i-judge`, `t2i-rewrite`)에 더해, 생성용 env(`t2i`, `t2i-ideogram`,
+`t2i-qwen` 등, 필요시 `envs/*.txt`에서 재현)도 여기서 운용한다.
 
-**두 서버 다 새 역할과 맞지 않는 env/모델 캐시를 발견하면 바로 지운다** (예: 157에 `t2i-score` env가
-생겼거나, 23에 T2I 생성 모델 가중치가 캐시돼 있으면) — 역할이 섞이기 시작하면 다시 디스크가 찬다.
-`df -h /`로 여유 공간을 수시로 확인할 것.
+디스크가 97GB로 여러 역할을 겸하니 여유 공간에 특히 주의할 것 — **큰 모델을 새로 받거나 새 env를
+만들기 전에는 반드시 `df -h /`로 먼저 확인**. 안 쓰는 env는 지우기 전에
+`pip freeze > envs/<name>.txt`로 먼저 백업하고 커밋한 뒤 지울 것 (재현 가능하게).
 
-본 실험 워크플로우상 생성은 157에서, 채점은 23에서 도니 **생성된 PNG를 23으로 옮기는 단계가
-필요하다** (`image-prompts/*/images/`는 gitignored라 git으로는 안 넘어감) — `scp`/`rsync`로 직접
-옮기거나, 로컬을 경유지로 쓸 것. `docs/eval_runbook.md`가 채점 실행 순서를 다룬다.
+`ssh -i /Users/sjh354/.ssh/id_ed25519 ubuntu@172.10.5.23`. Note the repo directory is named `t2i` on the server, not `t2i-lab`.
 
-Both accept `ssh -i /Users/sjh354/.ssh/id_ed25519 <user>@<host>`. Note the repo directory is named `t2i` on both servers, not `t2i-lab`.
-
-This repo lives in three places (local + two servers) and must never drift. Follow these sync rules:
+This repo lives in two places (local + the server) and must never drift. Follow these sync rules:
 
 **After local code changes** (editing configs, adapters, scripts — anything not a model run):
 1. Commit and push from local.
-2. SSH into both servers and `git pull` so they pick up the change before any run uses it.
+2. SSH into the server and `git pull` so it picks up the change before any run uses it.
 
-**After a server-side run** (a model generation, sweep, or any long-running experiment executed via SSH on one of the two servers):
-1. On that server: commit the results (e.g. updated `image-prompts/*.md` notes, `bench/results.md`, frozen env files) and push.
-2. Pull the update back to local, and `git pull` it on the *other* server too, so all three checkouts stay current.
+**After a server-side run** (a model generation, sweep, or any long-running experiment executed via SSH on the server):
+1. On the server: commit the results (e.g. updated `image-prompts/*.md` notes, `bench/results.md`, frozen env files) and push.
+2. Pull the update back to local, so both checkouts stay current.
 
-The goal: local and both servers should always be pullable to the same latest commit before starting new work. Don't leave a server ahead of origin (uncommitted/unpushed run results) or behind origin (stale config) when handing off between machines.
+The goal: local and the server should always be pullable to the same latest commit before starting new work. Don't leave the server ahead of origin (uncommitted/unpushed run results) or behind origin (stale config) when handing off between machines.
 
 ## Bench notes (`bench/results.md`)
 

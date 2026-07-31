@@ -10,11 +10,9 @@
 - `configs/keywords/bench_v1.yaml` 존재 (`python -m scripts.build_bench_v1_keywords`로 생성)
 - 각 run의 note(`vNNN_<model>/vNNN_<model>.md`)에 `keyword_set: bench_v1`이 기록돼 있을 것
   (`--exp <preset>-benchv1`로 생성된 run만 해당 — `scripts/run_main_experiment.sh`가 이렇게 만든다)
-- **서버 역할 분리(2026-07-19)**: 생성은 `root@172.10.5.157`(env `t2i`만), 채점은
-  `ubuntu@172.10.5.23`(env `t2i-score`/`t2i-judge`만) — CLAUDE.md 참고. 두 서버가 물리적으로
-  분리돼 있고 `image-prompts/*/images/`는 gitignored라, **아래 1~4번을 돌리기 전에 157에서
-  생성된 run 디렉토리(`vNNN_<model>/` 전체, note+images)를 23으로 옮겨야 한다**:
-  `scp -r root@172.10.5.157:~/t2i/image-prompts/vNNN_<model> ~/t2i/image-prompts/` (또는 로컬 경유).
+- **서버 통합(2026-07-31)**: 생성 전용 서버 `root@172.10.5.157`은 반납되었고, 이제
+  `ubuntu@172.10.5.23` 하나가 생성+채점을 전부 담당한다 — CLAUDE.md 참고. 같은 서버 안에서
+  생성과 채점이 다 돌아가므로 run 디렉토리를 서버 간에 옮길 필요는 없다.
 
 ## 1. 채점 패스1 (vqascore + custom_cv) — run별
 
