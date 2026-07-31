@@ -584,6 +584,37 @@ ideogram_magic_prompt_captions.py` → `image-prompts/rewrite/ideogram_magicprom
 소스처럼 원본이 장황한 경우) `max_text_tokens=2048`을 초과해 하드 실패할 수 있음. 프로덕션에
 magic-prompt를 채택한다면 캡션 길이 상한 처리(truncate 또는 재시도)가 필요.
 
+### magic-prompt LLM 교체 검증 — v265(gpt-4o-mini) vs v264(ideogram-4-v1)
+
+바로 위 결론("magic-prompt를 쓰면 차단율이 낮아진다")이 **magic-prompt라는 방식 자체 때문인지,
+아니면 ideogram-4-v1이라는 특정 백엔드 때문인지**를 분리하기 위해, 같은 시스템 프롬프트
+(`ideogram4/magic_prompt_system_prompts/v1.txt`)를 OpenAI `gpt-4o-mini`에 직접 태워(후처리는
+`reorder_caption_keys`/`strip_aspect_ratio_and_bboxes` 동일 재사용, `scripts/
+ideogram_magic_prompt_captions_openai.py` → `ideogram_magicprompt_openai.json`) 같은 24개
+프롬프트로 v265를 생성했다(24/24 성공, sec/img=164.41, vram_peak=19.11GB — 이번엔 SSH 안 끊기고
+깨끗하게 완주).
+
+| 조건 | 버전 | 차단 이미지 | Multi-Character Classroom Collaboration |
+|---|---|---|---|
+| passthrough (대조군) | v257 | 8/24 | 3/3 차단 |
+| ideogram_guide (수작업 스키마) | v260 | 19/24 | 3/3 차단 |
+| magic-prompt (ideogram-4-v1 API) | v264 | 1/23 | **0/3 차단** |
+| **magic-prompt (동일 스키마, gpt-4o-mini)** | **v265** | **9/24** | **3/3 차단(원상복귀)** |
+
+**결론이 뒤집힌다**: LLM만 gpt-4o-mini로 바꾸면 차단율이 1/23 → 9/24로 passthrough(8/24)와
+비슷한 수준으로 돌아가고, `Multi-Character Classroom Collaboration`도 완전히 해소됐던 게
+다시 3/3 전부 차단으로 재발한다. 즉 **"magic-prompt(공식 스키마로 변환)를 쓰면 차단이 줄어든다"는
+결론은 틀렸고, 정확히는 "ideogram-4-v1이 만드는 캡션이 (우연히든 의도적으로든) 학습 분포에
+가까워서 차단이 줄어든다"**이다 — 스키마 형식이 아니라 **어떤 LLM으로 캡션을 만드는지**가
+핵심 변수. 이는 캡션 길이/구조 비교(같은 세션 내 채팅 분석)와도 일치한다: gpt-4o-mini 캡션은
+ideogram-4-v1보다 훨씬 짧고(평균 1,359자 vs 3,662자) elements 수도 적어(5.9 vs 14.2) 더 "간결/
+generic"한 묘사인데, 오히려 이쪽이 차단화면 출력 모드를 더 많이 유발한다 — 캡션이 장황할수록
+안전한 게 아니라, **ideogram-4-v1 특유의 캡션 스타일(무엇이 되었든)에 얼마나 가까운가**가
+관건으로 보인다(추론, 정확한 원인은 미확정).
+
+**프로덕션 함의**: magic-prompt를 채택한다면 백엔드를 반드시 `ideogram-4-v1`(공식 호스티드)로
+써야 한다 — 동일 스키마라도 다른 LLM으로 대체하면 차단 완화 효과가 사라진다.
+
 ## lecture24 CSD golden set 보강 — csd_target → csd_golden 전환
 
 README.md 체크리스트에 미해결로 남아있던 "CSD golden set 보강(lecture24 8카테고리)"을 완료했다.
