@@ -9,6 +9,12 @@ CaptionVerifier가 non-JSON을 감지해 raise_on_caption_issues=True 기본값�
 것이었다. magic-prompt(LLM 캡션 확장, API 키 필요)는 안 쓰고, raise_on_caption_issues=False로
 예외는 억제하되, 우리 keyword+style 문장을 최소 스키마(high_level_description +
 compositional_deconstruction)에 담아 JSON으로 직렬화해서 넣는다.
+
+정정(2026-07-31, TASK-G): 위 CaptionVerifier 원인론은 틀렸다. 실제로 관찰되는
+"Image blocked by safety filter" 회색 이미지는 코드가 만드는 게 아니라(패키지 전체를
+grep해도 그 문구를 렌더링하는 코드가 없음) 모델이 diffusion으로 직접 생성하는 픽셀이다 —
+raise_on_caption_issues=False는 이 현상과 무관하다. 프롬프트를 공식 magic-prompt API로
+변환하면 차단율이 크게 줄어드는 것을 확인했다(bench/results.md TASK-G 추가조사 절).
 """
 import json
 

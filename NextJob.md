@@ -678,7 +678,7 @@ GPU: RTX 3090 24GB, 서빙 예산 16GB.
 
 ---
 
-### TASK-G · Ideogram-4 block 문제 + 텍스트 렌더링 평가 🟢 4조건 생성+채점 완료, 육안 판정만 남음 (2026-07-29)
+### TASK-G · Ideogram-4 block 문제 + 텍스트 렌더링 평가 🟢 원인 정정 + magic-prompt 5번째 조건 검증 완료 (2026-07-31)
 
 **진행 상황 (2026-07-29)**: 계획 4~6번 실행 완료. 4조건(passthrough/wan_style/promptenhancer/
 ideogram_guide) × 24프롬프트를 ideogram-4-nf4(48-step)로 생성(`v257`~`v260`, 서버 157) →
@@ -730,6 +730,21 @@ env `t2i-ideogram` — 이미 존재, 추론도 이미 해봄. 오픈 웨이트 
   프롬프트에서 `type:"text"` 요소(공식 스키마가 글자를 그리게 하는 유일한 경로)를 한 번도 쓴 적이
   없다는 게 텍스트 렌더링 품질 저하의 유력한 원인으로 새로 확인됐다.
 
+**정정(2026-07-31) — 위 두 결론 다 틀렸다.** 채점 전 std 스크리닝 임계값이 잘못 잡혀서(std>8을
+"정상"으로 판정했는데 실제 차단화면 std는 9.7~10.6) v257~v260 96장 중 40장이 실제로는
+"Image blocked by safety filter" 회색 화면인데 정상 이미지로 채점됐다(`Multi-Character
+Classroom Collaboration`은 12/12 전부 차단, ideogram_guide는 19/24 차단). 그리고 "이
+self-host 경로에는 실제 safety filter가 아예 연결돼 있지 않다"는 것도 맞지만, "그럼 CaptionVerifier가
+원인"이라는 결론은 틀렸다 — 서버 157의 `ideogram4` 패키지 전체를 다시 grep한 결과 "blocked by
+safety filter" 텍스트를 렌더링하는 코드가 어디에도 없다. 즉 이 화면은 **모델이 diffusion으로
+직접 생성한 픽셀**이다(학습 데이터에 실제 차단 스크린샷이 필터링 안 되고 섞여 들어가 모델이
+그 자체를 하나의 출력 모드로 학습한 것으로 추정). 어댑터의 `raise_on_caption_issues=False`/
+JSON 이중래핑 방지 수정은 원인이 아니었던 CaptionVerifier 예외를 억제한 것뿐이라 이 현상과 무관.
+공식 magic-prompt API(`ideogram-4-v1`)로 24개를 실제 변환해 생성(v264)한 결과 차단율이
+passthrough 8/24 → 1/23로, `Multi-Character Classroom Collaboration`은 12/12(전체 조건 통틀어
+100%) → 0/3으로 완전히 해소됐다 — 상세 근거·표는 `bench/results.md`의 "TASK-G 추가조사(2026-07-31)"
+절 참고.
+
 **GitHub 소스 확인 경로**: `docs/prompting.md`(`gh api repos/ideogram-oss/ideogram4/contents/docs/prompting.md`
 로 원문 확보 — WebFetch 요약은 필드명 스펠링이 어긋나는 등 신뢰 불가라 원문 대조 필수였음),
 `src/ideogram4/caption_verifier.py`, `src/ideogram4/safety.py`, `src/ideogram4/pipeline_ideogram4.py`
@@ -770,8 +785,9 @@ env `t2i-ideogram` — 이미 존재, 추론도 이미 해봄. 오픈 웨이트 
   충분하다.
 - "no text/no letters"라고 명시한 원본 프롬프트에 글자를 지어내 type:"text"로 넣지 마라.
   베이스라인 24개 세트와의 비교 가능성이 깨진다.
-- 안전 필터를 우회하는 프롬프트 트릭을 시도하지 마라 — 애초에 이 self-host 경로엔 안전
-  필터가 연결돼 있지 않다는 게 이번에 확인된 사실이라 이 항목 자체가 성립하지 않는다.
+- (정정 2026-07-31) "안전 필터 자체가 없으니 차단 화면 걱정할 필요 없다"고 넘기지 마라 —
+  코드 레벨 필터는 없지만 모델이 학습한 차단화면 출력 모드는 실재하며(96장 중 40장 재현),
+  magic-prompt로 캡션을 학습 분포에 맞추는 것이 지금까지 확인된 유일한 완화책이다.
 ```
 
 ---

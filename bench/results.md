@@ -524,6 +524,66 @@ VQAScore/custom_cv/csd_target/VLM-judge(InternVL3-8B, lecture24 4축) 채점 완
 공식 스키마 캡션이 실제로 글자를 더 잘 그리는지가 TASK-G의 핵심 질문이었고, 자동 지표만으로는
 결론이 나지 않음(오히려 스타일 유사도·judge 판정은 guide가 불리하게 나옴).
 
+### TASK-G 추가조사(2026-07-31): "safety filter block" 원인 정정 + magic-prompt 검증
+
+**위 512번째 줄 "96장 전부 std>8로 차단화면 없음" 결론은 틀렸다.** 스크리닝 임계값(std>8)이
+실제 차단화면의 std(9.7~10.6)보다 낮게 잡혀 전부 통과 판정된 false negative였다. 이미지를 직접
+열어보면 v257/v260 다수가 실제로 "Image blocked by safety filter" 문구가 박힌 회색 화면이다.
+재스크리닝(9≤std≤11) 결과:
+
+| 조건 | 버전 | 차단 이미지 |
+|---|---|---|
+| passthrough | v257 | 8/24 |
+| wan_style | v258 | 8/24 |
+| promptenhancer | v259 | 5/24 |
+| ideogram_guide | v260 | **19/24** |
+
+`Multi-Character Classroom Collaboration` 카테고리는 v257~v260 4조건 × 3 VLM 소스 **12/12 전부
+차단** — 이 카테고리는 4조건 비교에서 사용 가능한 데이터가 0건이었다. **즉 위 표의 VQAScore/
+custom_cv/csd_target 수치와 judge content_present/텍스트 판정은 전부 차단화면이 정상 이미지처럼
+섞여 채점된 오염된 결과다.** 특히 ideogram_guide(v260)가 csd_target·judge에서 가장 나쁘게 나온
+것은 "손으로 쓴 스키마 캡션이 나쁘다"가 아니라 **ideogram_guide의 차단율이 79%(19/24)로 압도적으로
+높았기 때문**일 가능성이 크다 — TASK-G의 4-way 순위 비교 결론은 재검토 전까지 무효로 취급한다.
+
+**원인 재조사**: 커밋 `51a4416`("Hive safety filter 미연결, CaptionVerifier가 원인")은 틀렸다.
+서버 157에 설치된 `ideogram4` 패키지 전체(`pipeline_ideogram4.py`/`caption_verifier.py`/
+`safety.py`/`constants.py`)를 직접 grep·통독한 결과, "blocked by safety filter" 텍스트를 렌더링
+하거나 이미지를 회색 화면으로 치환하는 코드가 어디에도 없다. `_verify_prompts`는
+`raise_on_issues=False`일 때 `warnings.warn`만 하고 반환 이미지를 건드리지 않으며, `__call__`의
+유일한 출력 경로는 diffusion latent → `_decode()`(VAE 디코드)뿐이다. 즉 차단 이미지는 **모델
+(`ideogram-4-nf4` 체크포인트) 자신이 diffusion 결과로 생성한 픽셀**이다 — 학습 데이터에 호스티드
+ideogram.ai가 실제 안전 필터에 걸어 반환한 스크린샷이 필터링되지 않고 섞여 들어가, 모델이 그
+화면 자체를 하나의 출력 모드로 학습한 것으로 보인다(추론). `Multi-Character Classroom
+Collaboration`(여러 인물 협업)처럼 원 서비스에서 모더레이션 트리거율이 높았을 법한 의미
+카테고리가 4조건 전부·3 VLM 소스 전부에서 100% 재현되는 것이 이 가설과 정합적이다 — 정확한
+워딩이 아니라 **의미 카테고리 자체**가 이 모드를 유발한다는 뜻. 40장의 SHA256 해시가 전부
+다른 것도 확인했다(정적 이미지 재사용이 아니라 매 호출 새로 렌더링됨). 어댑터 레벨 코드
+수정(`raise_on_caption_issues=False`, JSON 이중래핑 방지)은 애초에 원인이 아니었던 CaptionVerifier
+예외를 억제한 것뿐이라 이 현상에는 영향이 없다.
+
+**magic-prompt(공식 API) 검증 — v264**: 공식 문서(`docs/prompting.md#magic-prompt`)가 안내하는
+`ideogram4.magic_prompt.Ideogram4MagicPromptV1`(Ideogram 호스티드 무료 API, `IDEOGRAM_API_KEY`)로
+동일한 24개 원본 프롬프트(passthrough와 동일 소스)를 실제로 변환해(`scripts/
+ideogram_magic_prompt_captions.py` → `image-prompts/rewrite/ideogram_magicprompt.json`)
+`scripts.lecture_generate --model ideogram-4`로 생성했다(v264, 23/24 성공 — 1건은 차단이 아니라
+캡션이 11,888자로 부풀려져 `max_text_tokens=2048` 초과 하드 실패, `geometric_shape_set/chatgpt`).
+
+| 조건 | 버전 | 차단 이미지 |
+|---|---|---|
+| passthrough (대조군) | v257 | 8/24 |
+| ideogram_guide (수작업 스키마) | v260 | 19/24 |
+| **magic-prompt (ideogram-4-v1 API)** | **v264** | **1/23** |
+
+`Multi-Character Classroom Collaboration`은 v264에서 **3/3 전부 차단 해제**(육안 확인 결과 실제
+교실 협업 장면 렌더링 확인) — 4조건 전체에서 100% 차단이던 카테고리가 magic-prompt 조건에서는
+완전히 정상화됐다. 손으로 스키마를 흉내 낸 ideogram_guide보다 실제 magic-prompt가 차단율을
+압도적으로 낮춘다 — **원인은 스키마의 존재 여부가 아니라 캡션이 학습 분포에 얼마나 가까운가**로
+보인다(magic-prompt는 실제 학습 캡션 생성 파이프라인과 같은 소스로 추정).
+
+**남은 문제**: magic-prompt 캡션 길이가 소스별로 편차가 크다(1,508~11,888자) — 일부(특히 ChatGPT
+소스처럼 원본이 장황한 경우) `max_text_tokens=2048`을 초과해 하드 실패할 수 있음. 프로덕션에
+magic-prompt를 채택한다면 캡션 길이 상한 처리(truncate 또는 재시도)가 필요.
+
 ## lecture24 CSD golden set 보강 — csd_target → csd_golden 전환
 
 README.md 체크리스트에 미해결로 남아있던 "CSD golden set 보강(lecture24 8카테고리)"을 완료했다.
