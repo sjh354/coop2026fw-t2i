@@ -44,7 +44,12 @@ def openai_expand(messages, api_key, model, *, timeout=120.0):
     resp = requests.post(
         OPENAI_CHAT_URL,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={"model": model, "messages": messages, "max_completion_tokens": 6000},
+        json={
+            "model": model,
+            "messages": messages,
+            "max_completion_tokens": 6000,
+            "response_format": {"type": "json_object"},
+        },
         timeout=timeout,
     )
     resp.raise_for_status()
@@ -56,6 +61,20 @@ def openai_expand(messages, api_key, model, *, timeout=120.0):
     if not content:
         raise RuntimeError(f"OpenAI returned an empty message: {choices[0]}")
     return content.strip()
+
+
+def expand_with_retry(messages, api_key, model, *, retries=2):
+    from ideogram4.magic_prompt import reorder_caption_keys
+
+    last_err = None
+    for attempt in range(retries + 1):
+        try:
+            raw = openai_expand(messages, api_key, model)
+            return reorder_caption_keys(json.loads(raw))
+        except (json.JSONDecodeError, RuntimeError) as e:
+            last_err = e
+            print(f"  retry {attempt + 1}/{retries} after error: {e}")
+    raise last_err
 
 
 def main():
@@ -72,14 +91,11 @@ def main():
     if not api_key:
         raise SystemExit("OPENAI_API_KEY not set (.env or environment)")
 
-    from ideogram4.magic_prompt import (
-        build_messages,
-        reorder_caption_keys,
-        strip_aspect_ratio_and_bboxes,
-    )
+    from ideogram4.magic_prompt import build_messages, strip_aspect_ratio_and_bboxes
 
     categories = json.loads(args.prompts_json.read_text(encoding="utf-8"))
     out_items = []
+    failed = []
     total = sum(1 for cat in categories for s in SOURCES if cat.get(s))
     done = 0
     for cat in categories:
@@ -89,8 +105,14 @@ def main():
             if not src_entry:
                 continue
             messages = build_messages("v1.txt", src_entry["prompt"], args.aspect_ratio)
-            raw = openai_expand(messages, api_key, args.model)
-            caption_obj = reorder_caption_keys(json.loads(raw))
+            try:
+                caption_obj = expand_with_retry(messages, api_key, args.model)
+            except (json.JSONDecodeError, RuntimeError) as e:
+                done += 1
+                print(f"[{done}/{total}] {cat['type']} ({source}) -> FAILED: {e}")
+                failed.append(f"{cat['type']} ({source}): {e}")
+                time.sleep(args.sleep)
+                continue
             caption = strip_aspect_ratio_and_bboxes(
                 json.dumps(caption_obj, ensure_ascii=False, separators=(",", ":"))
             )
@@ -104,6 +126,8 @@ def main():
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out_items, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"wrote {len(out_items)} categories -> {out_path}")
+    if failed:
+        print(f"failed ({len(failed)}): {failed}")
 
 
 if __name__ == "__main__":
