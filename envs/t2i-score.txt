@@ -83,6 +83,7 @@ jsonschema-specifications==2025.9.1
 kiwisolver==1.5.0
 lazy-loader==0.5
 librosa==0.10.1
+llava @ git+https://github.com/LLaVA-VL/LLaVA-NeXT.git@bce12e479bc4dfee2b9c50c88137b01ff51bd483
 llvmlite==0.48.0
 lxml==6.1.1
 markdown2==2.5.5
@@ -195,7 +196,7 @@ toml==0.10.2
 torch==2.5.1+cu121
 torchaudio==2.5.1+cu121
 TorchCodec==0.1.0
-torchvision==0.20.1
+torchvision==0.20.1+cu121
 tqdm==4.69.0
 traitlets==5.15.1
 transaction==5.1
