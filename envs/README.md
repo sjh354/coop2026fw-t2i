@@ -37,6 +37,7 @@ ideogram-4만 별도 env가 필요했다(둘 다 요구하는 torch/transformers
 | lumina2 | t2i | |
 | qwen-image | t2i-qwen | bitsandbytes 필요 (nf4 GGUF), t2i-ideogram과 버전 충돌해서 분리 |
 | ideogram-4 | t2i-ideogram | ideogram4 패키지 자체 의존성 때문에 분리 |
+| flux2-klein-4b-svdquant | t2i-flux2-svdquant | nunchaku(SVDQuant) 요구 torch 2.11+cu13.0 이 t2i env의 torch 2.5.1+cu121과 충돌해서 분리. 공식 업스트림 미지원이라 community wheel(tonera/vitoom-nunchaku) 사용 |
 
 ## 채점 전용 env: t2i-score
 

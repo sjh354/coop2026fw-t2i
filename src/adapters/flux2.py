@@ -18,9 +18,18 @@ def build(cfg):
             components_to_quantize=["transformer"],
         )
 
+    if q == "svdquant":
+        from nunchaku import NunchakuFlux2Transformer2DModel
+        from nunchaku.utils import get_precision
+        name = cfg["repo"].split("/")[-1]
+        kwargs["transformer"] = NunchakuFlux2Transformer2DModel.from_pretrained(
+            f"{cfg['repo']}/svdq-{get_precision()}_r32-{name}.safetensors",
+            torch_dtype=kwargs["torch_dtype"],
+        )
+
     pipe = Flux2KleinPipeline.from_pretrained(cfg["repo"], **kwargs)
     offload = cfg.get("offload")
-    if q or offload == "full":
+    if q in QUANT or offload == "full":
         pipe.enable_model_cpu_offload()
     elif offload == "text_encoder":
         pipe.transformer.to("cuda")

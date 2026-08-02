@@ -1,0 +1,10 @@
+name: flux2-klein-4b-svdquant
+adapter: flux2
+env: t2i-flux2-svdquant
+repo: tonera/FLUX.2-klein-4B-Nunchaku
+dtype: bfloat16
+steps: 4
+guidance: 1.0
+supports_negative: false
+quantization: svdquant     # nunchaku NunchakuFlux2Transformer2DModel, int4 (RTX 3090 = sm_86)
+notes: flux2-klein-4b.yaml와 동일 모델, transformer만 SVDQuant(nunchaku, community vitoom-nunchaku fork) 양자화. 공식 diffusers/nunchaku 업스트림에 FLUX.2 지원 아직 미병합(nunchaku-ai/nunchaku PR#926).
