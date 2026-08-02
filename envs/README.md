@@ -3,12 +3,12 @@
 모델 하나(또는 같은 아키텍처 계열)당 env 하나. `configs/models/*.yaml`의 `env` 필드와
 이름을 맞춘다.
 
-**서버 역할 분리 (2026-07-19)**: 생성 env(`t2i`, `t2i-qwen`, `t2i-ideogram`)와 채점 env
-(`t2i-score`, `t2i-judge`)를 같은 디스크에 같이 두면 97GB가 금방 찬다(실제로 두 서버 다
-찬 적 있음). 그래서 서버별로 역할을 고정한다 — `root@172.10.5.157`은 생성 전용(env `t2i`만),
-`ubuntu@172.10.5.23`은 채점 전용(env `t2i-score`/`t2i-judge`만). 자세한 건 CLAUDE.md의
-"GPU servers & keeping everything in sync" 절 참고. 새 env를 만들기 전에 그 서버의 역할과
-맞는지 먼저 확인할 것.
+**서버 역할 통합 (2026-07-31, 157 반납)**: 원래는 생성 env(`t2i`, `t2i-qwen`, `t2i-ideogram`)와
+채점 env(`t2i-score`, `t2i-judge`)를 서버별로 분리해서 97GB 디스크가 금방 차는 걸 피했지만,
+`root@172.10.5.157`이 반납되면서 지금은 `ubuntu@172.10.5.23` 하나가 생성+채점+리라이팅을
+전부 담당한다. 디스크가 여유 없으니(2026-08-02 기준 7.6GB) 새 env를 만들기 전에 반드시
+`df -h /`로 먼저 확인하고, 안 쓰는 env는 `pip freeze`로 백업 후 지울 것. 자세한 건 CLAUDE.md의
+"GPU 서버 & keeping everything in sync" 절 참고.
 
 공통 베이스:
 
