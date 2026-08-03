@@ -156,6 +156,8 @@
       v001_pixart-sigma/
         v001_pixart-sigma.md    frontmatter = single source of truth
         images/
+    docs/
+      NextJob.md    다 쓴 작업 계획/진행 메모 — 백업용, 더 이상 갱신 안 함
     envs/           conda env 규칙 + 성공한 pip freeze 스냅샷
     bench/          결론과 삽질 메모
     reports/        생성된 리포트(md/html) — bench/reports/였던 것도 여기로 통합
@@ -240,5 +242,32 @@ Ideogram이 텍스트 잘 만듬
 그래프 그리기는 또 다른데 어떻게 함?
 
 일단 계획대로 ㄱㄱ
+
+```
+
+---
+
+### 8.3 미팅 코멘트
+
+```text
+
+말풍선 내부 user controlbility 확인
+그림과 consistency 한지
+향상시킬 수 있는 방법이 있는지?
+
+라이센스 이슈 확인, 다른 모델에서 말풍선 어떻게 할건지 파이프라인
+
+quantiztion도 좀 깨지는게 있었는데 
+
+metric에 관한 citation?
+이런이런게 있다 (인용을 하는 습관을 들이자)
+citation을 매 페이지
+
+기존 연구에 비하면 metric은 이런걸 쓰더라, 퍼블릭 데이터는 없는지, 왜 이렇게 변형했는지 등등
+
+quantization 논문 좀 더 필요한거 있으면 읽어보면 되고
+
+다음주에는 
+유해 컨텐츠 필터링 ㄱㄱ
 
 ```
