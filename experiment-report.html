@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>t2i-lab 실험 종합 리포트</title>
+<style>
+:root{
+  --bg:#faf9f7; --panel:#ffffff; --ink:#1c1a17; --sub:#5b564e; --line:#e6e2da;
+  --accent:#8a5a2b; --accent-soft:#f1e4d2; --good:#3f7d52; --bad:#b1453a; --warn:#b8860b;
+  --code-bg:#f3f1ec; --shadow: 0 1px 2px rgba(28,26,23,.06), 0 4px 16px rgba(28,26,23,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17140f; --panel:#211d17; --ink:#f2ede4; --sub:#b9b0a1; --line:#393226;
+    --accent:#e0a85c; --accent-soft:#3a2c18; --good:#7bc493; --bad:#e8877c; --warn:#e0c46c;
+    --code-bg:#221e18; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17140f; --panel:#211d17; --ink:#f2ede4; --sub:#b9b0a1; --line:#393226;
+  --accent:#e0a85c; --accent-soft:#3a2c18; --good:#7bc493; --bad:#e8877c; --warn:#e0c46c;
+  --code-bg:#221e18; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:"Pretendard","Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;}
+.wrap{max-width:980px;margin:0 auto;padding:48px 24px 120px;}
+header.hero{margin-bottom:40px;}
+header.hero .kicker{color:var(--accent);font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;}
+header.hero h1{font-size:2.1rem;margin:.3em 0 .2em;letter-spacing:-.01em;}
+header.hero p.lead{color:var(--sub);font-size:1.02rem;max-width:70ch;}
+nav.toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;box-shadow:var(--shadow);margin:28px 0 40px;}
+nav.toc div.title{font-weight:700;font-size:.85rem;color:var(--sub);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+nav.toc ol{margin:0;padding-left:1.2em;columns:2;column-gap:28px;}
+nav.toc li{margin-bottom:6px;break-inside:avoid;}
+nav.toc a{color:var(--ink);text-decoration:none;font-size:.93rem;}
+nav.toc a:hover{color:var(--accent);text-decoration:underline;}
+section{margin:56px 0;}
+section h2{font-size:1.4rem;border-bottom:2px solid var(--accent-soft);padding-bottom:10px;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+section h2 .num{color:var(--accent);font-variant-numeric:tabular-nums;}
+h3{font-size:1.08rem;margin:28px 0 10px;color:var(--ink);}
+h4{font-size:.96rem;margin:20px 0 8px;color:var(--sub);}
+p{margin:.6em 0;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;box-shadow:var(--shadow);margin:16px 0;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media (max-width:680px){.grid2{grid-template-columns:1fr;} nav.toc ol{columns:1;}}
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin:14px 0;}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+th{color:var(--sub);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;}
+tr:hover td{background:var(--accent-soft);}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;}
+.tablewrap table{margin:0;}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.02em;}
+.b-good{background:rgba(63,125,82,.15);color:var(--good);}
+.b-bad{background:rgba(177,69,58,.15);color:var(--bad);}
+.b-warn{background:rgba(184,134,11,.15);color:var(--warn);}
+.b-neutral{background:var(--code-bg);color:var(--sub);}
+code, .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em;background:var(--code-bg);padding:.1em .4em;border-radius:5px;}
+.finding{border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:.92rem;}
+.finding.warn{border-color:var(--warn);}
+.finding.bad{border-color:var(--bad);}
+ul.tight{margin:.4em 0;padding-left:1.3em;}
+ul.tight li{margin-bottom:.35em;font-size:.94rem;}
+.bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:.85rem;}
+.bar-row .label{width:170px;flex-shrink:0;color:var(--sub);}
+.bar-track{flex:1;background:var(--code-bg);border-radius:6px;height:20px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent) 100%);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:.72rem;font-weight:700;}
+footer.foot{margin-top:80px;padding-top:20px;border-top:1px solid var(--line);color:var(--sub);font-size:.8rem;}
+.path{color:var(--sub);font-size:.85em;}
+.status-included{color:var(--good);font-weight:600;}
+.status-excluded{color:var(--bad);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">t2i-lab · coop2026fw-t2i</div>
+  <h1>K-12 교육용 T2I 파이프라인 실험 종합 리포트</h1>
+  <p class="lead">
+    <code>README.md</code>, <code>bench/*.md</code>, <code>reports/*</code>, <code>bench/scores/*</code>에 흩어진
+    실험 기록·리포트·수치를 한 문서로 정리했습니다. 원본 마크다운/CSV/HTML은 레포에 그대로 남아있으며,
+    이 문서는 그것들의 요약·재구성입니다.
+  </p>
+</header>
+
+<nav class="toc">
+  <div class="title">목차</div>
+  <ol>
+    <li><a href="#overview">1. 프로젝트 개요 &amp; 리서치 방향</a></li>
+    <li><a href="#data-status">2. 레포에 포함된 것 / 안 된 것</a></li>
+    <li><a href="#pipeline">3. 파이프라인 구조 (프롬프트→생성→채점)</a></li>
+    <li><a href="#model-compare">4. 모델 후보 1차 비교 (bench_v1, 12 run)</a></li>
+    <li><a href="#hardware">5. VRAM / Latency 실측</a></li>
+    <li><a href="#style">6. 스타일 프리셋 v2 &amp; leakage 방지</a></li>
+    <li><a href="#rewriter">7. 프롬프트 리라이터 검증</a></li>
+    <li><a href="#lecture24">8. lecture24 Baseline (핵심 비교축)</a></li>
+    <li><a href="#judge">9. VLM Judge 신뢰성 검증 (κ 삼각검증)</a></li>
+    <li><a href="#rewrite-effect">10. 프롬프트 리라이팅 효과 (TASK-E/I)</a></li>
+    <li><a href="#lightning">11. Qwen-Image-Lightning 파일럿 (TASK-F)</a></li>
+    <li><a href="#ideogram">12. Ideogram-4 캡션 포맷 실험 (TASK-G)</a></li>
+    <li><a href="#csd-golden">13. CSD Golden Set 전환</a></li>
+    <li><a href="#open">14. 결론 &amp; 미결 사항</a></li>
+  </ol>
+</nav>
+
+<section id="overview">
+  <h2><span class="num">1.</span> 프로젝트 개요 &amp; 리서치 방향</h2>
+  <p>
+    K-12 수업 프레젠테이션용 삽화를 만들기 위해 T2I 모델 후보(PixArt-Sigma, SDXL, Flux2-Klein, Z-Image,
+    SD3.5, Sana, Lumina2, Qwen-Image, Ideogram-4)를 <strong>16GB VRAM 예산</strong> 안에서 동일 조건으로 비교하는
+    연구 하네스입니다. 연구개발 단계라 라이선스/파인튜닝은 의도적으로 뒤로 미루고, 지금은 "돌아가는지, 얼마나
+    쓰는지, 결과가 얼마나 좋은지"만 본다는 게 원칙입니다.
+  </p>
+  <div class="card">
+    <h4 style="margin-top:0">핵심 운영 원칙</h4>
+    <ul class="tight">
+      <li>파인튜닝(LoRA)/distillation은 지금 하지 않는다 — teacher 모델 그대로 e2e가 충분히 좋으면 그걸로 끝.</li>
+      <li>텍스트 렌더링 여부는 더 이상 정책적으로 막지 않는다 — 되면 좋고, 안 되면 텍스트 없는 삽화로 취급.</li>
+      <li>프롬프트/모델/채점 중 무엇을 먼저 고칠지는 <strong>채점 결과가 가리키는 병목</strong>으로 판단한다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="data-status">
+  <h2><span class="num">2.</span> 레포에 포함된 것 / 안 된 것</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0">✅ 포함 (git tracked)</h4>
+      <ul class="tight">
+        <li><span class="status-included">정량 채점 결과</span> — <span class="path">bench/scores/</span> 31개 run별 CSV/MD (csd, judge, pass1)</li>
+        <li><span class="status-included">벤치마크 리포트</span> — <span class="path">bench/results.md</span>, <span class="path">bench_v1-rewrite-report.md</span> 등</li>
+        <li><span class="status-included">HTML 비교 리포트</span> — <span class="path">reports/*/index.html</span> 6종</li>
+        <li><span class="status-included">통계 분석 산출물</span> — <span class="path">reports/stats_lecture24_v2/</span> (wilcoxon, fisher exact, boxplot PNG)</li>
+        <li><span class="status-included">실험 로그</span> — <span class="path">logs/</span> (파일럿/스윕 summary.tsv, archive 포함)</li>
+        <li><span class="status-included">프롬프트 노트</span> — <span class="path">image-prompts/*/*.md</span> (frontmatter, 실험 기록)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">❌ 제외 (.gitignore)</h4>
+      <ul class="tight">
+        <li><span class="status-excluded">생성된 원본 이미지</span> — <span class="path">image-prompts/*/images/</span>, <span class="path">bench/cost_images/</span>, <span class="path">refs/</span></li>
+        <li>사유(레포 주석 원문): <em>"생성물, 용량 큼, 재현 가능"</em></li>
+        <li>레포 전체 실제 이미지 파일(png/jpg/webp) 잔존 개수: <strong>3개</strong>뿐</li>
+        <li>모델 가중치 캐시, 데이터셋, 학습 산출물(checkpoints/outputs/wandb 등)도 동일하게 제외</li>
+      </ul>
+    </div>
+  </div>
+  <p class="finding warn">이미지 자체가 필요하면 각 노트의 frontmatter 파라미터로 재생성하거나, 서버(<span class="path">ubuntu@172.10.5.23</span>)에서 별도로 받아와야 합니다. 정량 지표·통계·결론은 이 문서 + 레포 안에서 전부 확인 가능합니다.</p>
+</section>
+
+<section id="pipeline">
+  <h2><span class="num">3.</span> 파이프라인 구조</h2>
+  <p>세 축(프롬프트 리라이터 / T2I 모델 / 채점 방식)을 동시에 발전시키는 순환 구조입니다.</p>
+  <div class="card" style="text-align:center;font-family:ui-monospace,monospace;font-size:.85rem;line-height:2;">
+    ① 프롬프트 구축 (rewriter + style preset) &nbsp;→&nbsp; ② T2I 이미지 생성 (model candidates) &nbsp;→&nbsp; ③ 메트릭 채점 (충실도 + 스타일 + 종합)<br>
+    <span style="color:var(--sub)">↑____________________________ 채점 결과가 다음 라운드 개선 방향을 정함 ____________________________↓</span>
+  </div>
+  <ul class="tight">
+    <li><strong>①</strong> 한국어 입력 → 영어 확장 rewriter(부정문→긍정 치환) + 목적별 style preset(S/M/L 티어) 결합</li>
+    <li><strong>②</strong> <code>configs/models/</code> 후보군, 모델별 "프롬프트 방언" 차이 유의 (CLIP 키워드형 vs T5/LLM 서술형 vs negative 미지원)</li>
+    <li><strong>③</strong> 프롬프트 충실도(VQAScore) + 스타일 반영도(CSD, custom CV) + VLM-as-judge 보조 지표, 조화평균으로 종합</li>
+  </ul>
+</section>
+
+<section id="model-compare">
+  <h2><span class="num">4.</span> 모델 후보 1차 비교 (bench_v1)</h2>
+  <p>40개 벤치마크 프롬프트 × 스타일 프리셋 4종 × 모델 3종(lumina2 / pixart-sigma / flux2-klein-4b-nf4) = 12 run(480장), 4개 컴포넌트 조화평균으로 종합.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>model</th><th>vqascore</th><th>custom_cv</th><th>csd</th><th>judge_pass_rate</th><th>harmonic</th></tr></thead>
+    <tbody>
+      <tr><td><strong>flux2-klein-4b-nf4</strong></td><td>0.837</td><td>0.756</td><td>0.480</td><td>0.925</td><td><strong>0.653</strong> 🥇</td></tr>
+      <tr><td>lumina2</td><td>0.840</td><td>0.739</td><td>0.443</td><td>0.944</td><td>0.630</td></tr>
+      <tr><td>pixart-sigma</td><td>0.805</td><td>0.740</td><td>0.429</td><td>0.810</td><td>0.580</td></tr>
+    </tbody>
+  </table></div>
+  <div class="bar-row"><div class="label">flux2-klein-4b-nf4</div><div class="bar-track"><div class="bar-fill" style="width:100%">0.653</div></div></div>
+  <div class="bar-row"><div class="label">lumina2</div><div class="bar-track"><div class="bar-fill" style="width:96.5%">0.630</div></div></div>
+  <div class="bar-row"><div class="label">pixart-sigma</div><div class="bar-track"><div class="bar-fill" style="width:88.8%">0.580</div></div></div>
+  <div class="finding">pixart-sigma는 judge counting 축에서 66%(21/32)로 유독 낮음(lumina2 94%, flux2-klein 81%) — 방언 파일럿의 "lumina2가 복합 프롬프트 전 축에서 가장 안정적"과 일치.</div>
+
+  <h3>방언(dialect) 재표현 효과</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>모델</th><th>수량</th><th>공간</th><th>속성</th><th>종합</th></tr></thead>
+    <tbody>
+      <tr><td>flux2-klein-4b</td><td class="b-good" style="display:table-cell">방언으로 개선(4→3개)</td><td>차이 없음</td><td>차이 없음</td><td>복합 프롬프트에서 방언 효과가 관측된 유일 사례</td></tr>
+      <tr><td>pixart-sigma</td><td>차이 없음</td><td>차이 없음</td><td class="b-bad" style="display:table-cell">둘 다 실패(색 전이)</td><td>방언 효과 없음, 속성 결합은 능력 한계</td></tr>
+      <tr><td>sd35-medium</td><td class="b-bad" style="display:table-cell">둘 다 실패(항상 4개)</td><td class="b-bad" style="display:table-cell">둘 다 실패(좌우 반전 고정)</td><td>차이 없음</td><td>능력 한계</td></tr>
+      <tr><td>zimage-turbo</td><td class="b-bad" style="display:table-cell">둘 다 실패(항상 2개)</td><td>차이 없음</td><td>차이 없음</td><td>능력 한계 + 저채도 스타일 이슈</td></tr>
+      <tr><td>lumina2</td><td class="b-good" style="display:table-cell">둘 다 성공</td><td class="b-good" style="display:table-cell">둘 다 성공</td><td class="b-good" style="display:table-cell">둘 다 성공</td><td><strong>5개 중 복합 프롬프트 최고 성능</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p style="color:var(--sub);font-size:.88rem">결론: 방언 재표현으로 실제로 고쳐진 사례는 flux2-klein-4b 수량 축 하나뿐. 나머지 실패는 조건과 무관하게 재현되어 모델 능력 한계로 판단.</p>
+</section>
+
+<section id="hardware">
+  <h2><span class="num">5.</span> VRAM / Latency 실측 (서버 157, 2026-07-27)</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>model</th><th>vram torch/smi (GB)</th><th>steps</th><th>p50 (s)</th><th>p90 (s)</th></tr></thead>
+    <tbody>
+      <tr><td>flux2-klein-4b-nf4</td><td>7.8 / 8.16</td><td>4</td><td>11.35</td><td>12.11</td></tr>
+      <tr><td>flux2-klein-4b (bf16)</td><td>17.32 / 19.67</td><td>4</td><td>2.77</td><td>2.78</td></tr>
+      <tr><td>flux2-klein-4b-base (bf16)</td><td>17.33 / 19.67</td><td>50</td><td>63.0</td><td>63.32</td></tr>
+      <tr><td>lumina2</td><td>12.28 / 14.9</td><td>30</td><td>29.48</td><td>29.54</td></tr>
+      <tr><td>pixart-sigma</td><td>14.46 / 16.54</td><td>20</td><td>5.8</td><td>5.85</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding">NF4 dequant 오버헤드가 실제 원인 — 같은 4-step distilled 체크포인트에서 NF4가 bf16보다 <strong>4.1배 느림</strong>(11.35s vs 2.77s), 다만 육안 품질은 사실상 동일. bf16은 19.67GB로 16GB 예산 초과라 현재는 NF4 유지가 맞음.</div>
+  <div class="finding warn">pixart-sigma는 nvidia-smi 실측 16.54GB로 16GB 예산에 거의 다 참 — 다른 프로세스 동시 사용 시 OOM 위험.</div>
+  <p style="color:var(--sub);font-size:.85rem"><strong>flux2-klein-4b 16GB 진입 시도</strong>: 기본 조건(양자화·offload 없음)은 16GB 초과로 탈락 대상이었으나, transformer NF4 양자화 + <code>enable_model_cpu_offload()</code> 조합으로 진입 성공(전체 offload 단독보다 VRAM·속도 둘 다 우수). "text encoder만 offload"는 파이프라인 구조상 실질적 절감이 없어 폐기.</p>
+</section>
+
+<section id="style">
+  <h2><span class="num">6.</span> 스타일 프리셋 v2 &amp; Style→Object Leakage 방지</h2>
+  <p>12개 프리셋 → <strong>4개로 통합</strong>: <code>edu-flat-v2</code> / <code>playful-soft</code> / <code>storybook-scene</code> / <code>observational</code> (+ 보류 1개 <code>mono-minimal</code>).</p>
+  <div class="finding bad">
+    <strong>발견된 문제(style→object leakage):</strong> LLM/T5 텍스트 인코더 모델(qwen-image, lumina2 등)은 스타일 프롬프트 속 구체 명사를 오브젝트로 렌더링한다. 예: <code>"textbook infographic style"</code> 문구가 실제 책 오브젝트로 그려짐 — dialect 변환 confound가 아니라 원본 스타일 프리셋 자체의 문제로 확인.
+  </div>
+  <p>R1~R9 authoring rules(등장 가능 명사 금지, 매체→시각결과 치환, 장르명 내장 명사 검사, 긍정 서술 우선 등)로 재작성. <code>educational-flat</code> → <code>edu-flat-v2</code> 파생 완료, apple/cat 재검증에서 <strong>책 오브젝트 완전 소멸</strong>, 스타일 유지 확인.</p>
+  <p>v2 4개 프리셋 R9 스모크 테스트(lumina2 + apple/cat/book) 전부 leakage 없음 → <code>status: validated</code>.</p>
+
+  <h4>CSD ref_set 검증 결과 (일부)</h4>
+  <div class="tablewrap"><table>
+    <thead><tr><th>프리셋</th><th>status</th><th>count</th><th>mean</th><th>std</th></tr></thead>
+    <tbody>
+      <tr><td>edu-flat-v2</td><td><span class="badge b-good">validated</span></td><td>15</td><td>0.6097</td><td>0.0686</td></tr>
+      <tr><td>observational</td><td><span class="badge b-good">validated</span></td><td>10</td><td>0.5189</td><td>0.104</td></tr>
+      <tr><td>playful-soft</td><td><span class="badge b-good">validated</span></td><td>10</td><td>0.7138</td><td>0.0473</td></tr>
+      <tr><td>storybook-scene</td><td><span class="badge b-good">validated</span></td><td>10</td><td>0.592</td><td>0.1033</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="rewriter">
+  <h2><span class="num">7.</span> 프롬프트 리라이터 검증</h2>
+  <p>한국어 입력 → 영어 확장 rewriter(<code>src/rewriter</code>, OpenAI gpt-5 기반). 과목별 20개 샘플로 수량/스타일오염/길이 자동 체크.</p>
+  <div class="grid2">
+    <div class="card"><div style="font-size:2.2rem;font-weight:800;color:var(--good)">20/20</div><div style="color:var(--sub);font-size:.85rem">rewriter-verification-report.md 통과율</div></div>
+    <div class="card"><div style="font-size:2.2rem;font-weight:800;color:var(--good)">39/40</div><div style="color:var(--sub);font-size:.85rem">bench_v1 변환(재시도 1건 포함 총 40개 중 성공)</div></div>
+  </div>
+  <p style="color:var(--sub);font-size:.88rem">부정문("~가 아닌")을 긍정 서술로 치환(diffusion 모델은 "no X"를 넣으면 오히려 X를 그리는 경향), counting/entity layout은 few-shot으로 명시 유도.</p>
+</section>
+
+<section id="lecture24">
+  <h2><span class="num">8.</span> lecture24 Baseline — 실제 교과서 기반 24프롬프트</h2>
+  <p>실 교과서 이미지를 VLM(Claude/ChatGPT/Qwen2.5-VL)에 넣어 뽑은 8카테고리 × 3소스 = 24개 완성 프롬프트. <strong>2026-07-24부터 프로젝트 고정 baseline.</strong></p>
+  <div class="finding bad">
+    <strong>⚠️ 프롬프트 드리프트 사고(2026-07-27):</strong> 초기 v243/v244/v245는 커밋으로 baseline 프롬프트가 재작성되며 채점 spec과 실제 이미지가 서로 다른 프롬프트를 가리키는 상태가 됨 → 무효화, <strong>v246/v247/v249</strong>로 재생성하여 baseline 교체. 이하 수치는 재생성된 baseline 기준.
+  </div>
+
+  <h3>모델 3종 비교 (n=24 paired, 서버 23)</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>metric</th><th>pixart-sigma</th><th>flux2-klein-4b-nf4</th><th>qwen-image</th></tr></thead>
+    <tbody>
+      <tr><td>vqascore</td><td>0.7692</td><td>0.8323</td><td><strong>0.8701</strong></td></tr>
+      <tr><td>custom_cv</td><td>0.7089</td><td>0.7335</td><td><strong>0.7692</strong></td></tr>
+      <tr><td>csd_target</td><td>0.5307</td><td>0.6302</td><td><strong>0.6319</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p style="color:var(--sub);font-size:.88rem">Wilcoxon signed-rank: vqascore는 세 쌍 전부 유의(p&lt;0.01, pixart-sigma 최저 / qwen-image 최고). csd_target은 pixart-sigma가 나머지 둘보다 유의하게 낮음(p&lt;0.01); flux2-klein-4b-nf4 vs qwen-image는 유의하지 않음(p=0.73) — 사실상 동급.</p>
+</section>
+
+<section id="judge">
+  <h2><span class="num">9.</span> VLM Judge 신뢰성 검증 — 세 judge 삼각검증</h2>
+  <p>Spec item 채점(사람 손 라벨 vs VLM judge)의 신뢰도를 Cohen's κ로 검증. 파일럿(29건) → STAGE 3 규모(125건)로 확대 재검증.</p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>비교</th><th>n</th><th>전체 κ</th><th>claude κ</th><th>chatgpt κ</th><th>qwen κ</th></tr></thead>
+    <tbody>
+      <tr><td>사람 vs Qwen2.5-VL-7B</td><td>125</td><td>0.37</td><td>0.41</td><td>0.39</td><td>0.33</td></tr>
+      <tr><td>사람 vs Gemma-3-12B-4bit</td><td>125</td><td>0.19</td><td>0.34</td><td>-0.04</td><td>0.22</td></tr>
+      <tr><td>사람 vs InternVL3-8B</td><td>125</td><td>0.33</td><td>0.50</td><td>0.44</td><td>0.11</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="finding bad">
+    <strong>결론: 세 judge 전부 κ&lt;0.6 — spec item VLM 채점은 신뢰 불가로 확정.</strong> 표본을 29건→125건으로 늘려도 결론 불변(표본 크기 문제 아님). InternVL3-8B가 파일럿(n=29)에서 κ=0.61로 유일하게 기준을 넘겼던 것도 125건 규모에서는 κ=0.33으로 재현 안 됨.
+  </div>
+  <ul class="tight">
+    <li><strong>자기 계열 선호 가설(self-enhancement bias)은 3개 judge 모두에서 지지되지 않음</strong> — qwen 소스 프롬프트에 Qwen judge가 유독 후한 패턴 없음.</li>
+    <li><strong>chatgpt 소스 spec item 문구의 모호성</strong>이 judge 문제와 별개로 존재하는 것으로 보임(사람 vs Gemma-3 비교에서 chatgpt 소스 κ=-0.04, 표본 커질수록 악화).</li>
+    <li>결정: spec item 채점을 모델 비교의 최종 근거로 쓰지 않고, <strong>vqascore/csd_target 같은 연속형 지표를 주 근거로 사용</strong>하는 쪽으로 방향 전환.</li>
+  </ul>
+</section>
+
+<section id="rewrite-effect">
+  <h2><span class="num">10.</span> 프롬프트 리라이팅 효과 (TASK-E, TASK-I)</h2>
+
+  <h3>리라이팅 시스템 프롬프트 개량 (공식 레포 구조 정합)</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>backend</th><th>버전</th><th>VQAScore</th><th>custom_cv</th><th>csd_target</th><th>photo-word 누출</th></tr></thead>
+    <tbody>
+      <tr><td>wan_style (기존)</td><td>v251</td><td><strong>0.902</strong></td><td>0.734</td><td>0.620</td><td>0</td></tr>
+      <tr><td>wan_style_cn (신규)</td><td>v261</td><td>0.887</td><td><strong>0.750</strong></td><td><strong>0.639</strong></td><td>0</td></tr>
+      <tr><td>promptenhancer (기존)</td><td>v252</td><td>0.829</td><td>0.750</td><td><strong>0.659</strong></td><td>7</td></tr>
+      <tr><td>promptenhancer_cn (신규)</td><td>v262</td><td><strong>0.876</strong></td><td>0.751</td><td>0.654</td><td><strong>0</strong></td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding">promptenhancer_cn이 가장 뚜렷한 개선: VQAScore 0.829→0.876, photo-word 누출 7건→0건. 시스템 프롬프트를 공식 레포 구조에 맞게 재작성한 것만으로 핵심 실패 모드(사진/영상 어휘 누출)가 해소됨.</div>
+
+  <h3>카테고리별 효과 분포 (TASK-I 파트1) — structural vs illustration track</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>조건</th><th>지표</th><th>structural Δ</th><th>illustration Δ</th><th>Mann-Whitney p</th></tr></thead>
+    <tbody>
+      <tr><td>promptenhancer_cn</td><td>vqascore</td><td><strong>+0.094</strong></td><td>-0.007</td><td>0.078</td></tr>
+      <tr><td>wan_style_cn</td><td>vqascore</td><td>+0.090</td><td>+0.019</td><td>0.194</td></tr>
+    </tbody>
+  </table></div>
+  <p style="color:var(--sub);font-size:.88rem">promptenhancer_cn만 structural(counting/attribute-binding) 카테고리 쪽으로 유의에 가까운 개선(bootstrap 95% CI가 0을 겨우 벗어남) — 다만 n=12/그룹이라 확정적 결론은 아님.</p>
+
+  <h3>순수 길이 효과 사다리 (TASK-I 파트2) — short/medium/long</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>지표</th><th>short(v250)</th><th>medium(v263)</th><th>long(v262)</th><th>Spearman ρ</th><th>p</th></tr></thead>
+    <tbody>
+      <tr><td>vqascore</td><td>0.784</td><td>0.845</td><td>0.878</td><td><strong>+0.414</strong></td><td>0.012</td></tr>
+      <tr><td>csd_target</td><td>0.647</td><td>0.616</td><td>0.649</td><td><strong>+0.337</strong></td><td>0.045</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding warn">
+    <strong>가설과 반대 방향:</strong> "긴 프롬프트일수록 counting/attribute-binding이 나빠진다"는 우려와 달리, 길이가 늘수록 VQAScore/csd_target이 오히려 (약하지만 유의하게) 오름. 단, medium→long 구간에서만 유의해서 "길이" 자체보다 "제약 디테일 보존 여부"가 실제 원인일 가능성 — 순수 토큰 길이 효과와 디테일 보존 효과는 이 파이프라인으로는 분리되지 않음. 가설은 <strong>기각</strong>.
+  </div>
+</section>
+
+<section id="lightning">
+  <h2><span class="num">11.</span> Qwen-Image-Lightning 파일럿 (TASK-F)</h2>
+  <p>8-step Lightning LoRA 병합 GGUF vs full 30-step qwen-image, 동일 24프롬프트(lecture24) 정식 비교.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>항목</th><th>qwen-image (full, 30-step)</th><th>qwen-image-lightning (8-step)</th></tr></thead>
+    <tbody>
+      <tr><td>peak VRAM (torch/smi)</td><td>15.53 / 16.04 GB</td><td>15.53 / 16.05 GB</td></tr>
+      <tr><td>latency p50 / p90</td><td>152.15s / 153.62s</td><td><strong>50.44s / 51.27s</strong></td></tr>
+      <tr><td>vqascore (mean, 24)</td><td>0.8701</td><td><strong>0.8784</strong></td></tr>
+      <tr><td>csd_target (mean, 24)</td><td>0.6319</td><td><strong>0.6421</strong></td></tr>
+      <tr><td>custom_cv (mean, 24)</td><td><strong>0.7692</strong></td><td>0.7625</td></tr>
+      <tr><td>judge_pass_rate (96문항)</td><td>74/96</td><td><strong>77/96</strong></td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding">품질 저하 없음 — vqascore·csd_target 둘 다 lightning이 오히려 근소하게 높음. 속도는 약 <strong>3배</strong> 빠름, VRAM은 동일. Lightning으로 교체를 막을 품질상의 근거 없음.</div>
+</section>
+
+<section id="ideogram">
+  <h2><span class="num">12.</span> Ideogram-4 캡션 포맷 실험 (TASK-G)</h2>
+  <p>passthrough / wan_style / promptenhancer / ideogram_guide(공식 스키마 수작업 캡션) 4조건 비교 시도.</p>
+  <div class="finding bad">
+    <strong>초기 결론 정정:</strong> "96장 전부 안전필터 차단 없음" 판단은 스크리닝 임계값(std&gt;8)이 너무 낮아 생긴 false negative였음. 재스크리닝(9≤std≤11) 결과 다수 이미지가 실제로 "Image blocked by safety filter" 회색 화면.
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>조건</th><th>버전</th><th>차단 이미지</th></tr></thead>
+    <tbody>
+      <tr><td>passthrough</td><td>v257</td><td>8/24</td></tr>
+      <tr><td>wan_style</td><td>v258</td><td>8/24</td></tr>
+      <tr><td>promptenhancer</td><td>v259</td><td>5/24</td></tr>
+      <tr><td>ideogram_guide (수작업 스키마)</td><td>v260</td><td class="b-bad" style="display:table-cell"><strong>19/24</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.88rem;color:var(--sub)"><code>Multi-Character Classroom Collaboration</code> 카테고리는 4조건×3소스 <strong>12/12 전부 차단</strong> — 4-way 비교의 원래 수치(VQAScore/csd_target/judge)는 차단화면이 섞여 오염된 것으로 무효 처리.</p>
+
+  <h3>Magic-prompt(공식 API) 검증 — 원인 재조사</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>조건</th><th>버전</th><th>차단 이미지</th></tr></thead>
+    <tbody>
+      <tr><td>passthrough (대조군)</td><td>v257</td><td>8/24</td></tr>
+      <tr><td>ideogram_guide (수작업)</td><td>v260</td><td>19/24</td></tr>
+      <tr><td><strong>magic-prompt (ideogram-4-v1 API)</strong></td><td>v264</td><td class="b-good" style="display:table-cell"><strong>1/23</strong></td></tr>
+      <tr><td>magic-prompt (동일 스키마, gpt-4o-mini로 교체)</td><td>v265</td><td>9/24 (원상복귀)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="finding">
+    <strong>결론이 뒤집힘:</strong> "magic-prompt(공식 스키마 변환)를 쓰면 차단이 준다"는 틀렸음. 정확히는 <strong>"ideogram-4-v1이 만드는 캡션 자체가 학습 분포에 가까워서 차단이 준다"</strong> — 스키마 형식이 아니라 <strong>어떤 LLM으로 캡션을 만드는지</strong>가 핵심 변수. LLM만 gpt-4o-mini로 바꾸면 효과가 사라짐. 프로덕션에서 magic-prompt를 채택한다면 반드시 <code>ideogram-4-v1</code> 백엔드를 써야 함.
+  </div>
+</section>
+
+<section id="csd-golden">
+  <h2><span class="num">13.</span> CSD Golden Set 전환 (csd_target → csd_golden)</h2>
+  <p>lecture24 8카테고리 참조 이미지(카테고리당 15~24장, 총 158장)를 검증·매니페스트화하여 카테고리당 참조 1장(provisional)이던 기존 csd_target을 다중참조 평균 방식으로 전환, 기존 18개 run·420장 재채점.</p>
+  <ul class="tight">
+    <li>상관관계 강함: <strong>Pearson r=0.83, Spearman ρ=0.78</strong> — 상대 순위는 대체로 유지.</li>
+    <li>절대값은 전반적으로 하락: 420장 중 <strong>334장(80%)</strong>에서 csd_golden &lt; csd_target, 평균 delta -0.107.</li>
+    <li>카테고리별 방향·크기가 다름: Single-Character Cutout(-0.240) 크게 하락 vs Historical Figure Portrait(+0.046) 오히려 상승 — 원인 미확정(열린 질문).</li>
+    <li>run 간 상대 비교(TASK-F, TASK-G)는 재검토 불필요, but 카테고리 그룹 절대값 해석(TASK-I 등)은 재검토 필요.</li>
+  </ul>
+</section>
+
+<section id="open">
+  <h2><span class="num">14.</span> 결론 &amp; 미결 사항</h2>
+  <div class="card">
+    <h4 style="margin-top:0">확정된 결론</h4>
+    <ul class="tight">
+      <li>모델 후보: <strong>flux2-klein-4b-nf4</strong>가 종합 1위(harmonic 0.653), lumina2가 복합 프롬프트 안정성 1위, pixart-sigma는 counting 약점.</li>
+      <li>VLM spec-item judge(Qwen2.5-VL/Gemma-3/InternVL3 3종 전부) 신뢰 불가(κ&lt;0.6 확정) — 연속형 지표(vqascore/csd_target) 중심으로 전환.</li>
+      <li>리라이팅 시스템 프롬프트를 공식 레포 구조에 맞게 재작성하면(_cn 버전) 뚜렷한 개선 — 특히 promptenhancer_cn.</li>
+      <li>"프롬프트가 길수록 counting이 나빠진다" 가설 기각 — 오히려 반대(단, 길이보다 디테일 보존이 실제 원인일 가능성).</li>
+      <li>Ideogram-4 안전필터 차단은 캡션 스키마가 아니라 <strong>캡션을 생성한 LLM/백엔드</strong>가 핵심 변수.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0">아직 미결 (README.md 체크리스트 마지막 항목)</h4>
+    <ul class="tight">
+      <li>3단계 병행 개선 루프 진입 — pixart-sigma의 counting 약점이 judge 오탐인지 실제 모델 한계인지 이미지 직접 확인 필요 (미체크).</li>
+      <li>csd_golden 카테고리별 delta 방향이 갈리는 원인 조사.</li>
+      <li>csd_golden을 정식 채점 경로로 승격할지 여부.</li>
+      <li>TASK-J(스타일 프리셋 LoRA 전환 임계값) — 보류 상태.</li>
+      <li>Ideogram-4 텍스트 렌더링 성공 여부(원래 TASK-G 목적)는 자동 지표로 답 안 나옴 — 육안 판정 필요, 미완료.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="foot">
+  원본 출처: <code>README.md</code>, <code>bench/results.md</code>, <code>bench/bench_v1-rewrite-report.md</code>,
+  <code>bench/rewriter-verification-report.md</code>, <code>bench/style-presets-v2.md</code>,
+  <code>reports/ref_set_validation.md</code>, <code>reports/task-f_qwen_lightning_comparison.md</code>,
+  <code>reports/stats_lecture24_v2/</code>, <code>bench/scores/</code>. 이 파일은 리포지토리 루트에
+  <code>experiment-report.html</code>로 저장되었으며 git에는 커밋되지 않았습니다.
+</footer>
+
+</div>
+</body>
+</html>
